@@ -7,10 +7,15 @@
 var app = app | null;
 
 function Storage() {
-  this.reset();
+  this.init();
 }
 
 Storage.prototype = {
+  init: function () {
+    // request data from server
+    
+    this.reset();
+  },
   reset: function () {
     this.data = new Idea(null, "Home");
   },

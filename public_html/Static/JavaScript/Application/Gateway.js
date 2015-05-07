@@ -4,15 +4,13 @@
  * and open the template in the editor.
  */
 
-function Database() {
-  this.keys = {
-    "TAB": {
-      code: 9,
-      symbol: "\t"
-    },
-    "ENTER": {
-      code: 13,
-      symbol: "\n"
-    }
-  };
+var keys = {
+  "TAB": {
+    code: 9,
+    symbol: "\t"
+  },
+  "ENTER": {
+    code: 13,
+    symbol: "\n"
+  }
 };

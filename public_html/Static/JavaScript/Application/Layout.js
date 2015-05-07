@@ -6,12 +6,13 @@
 
 var app = app | null;
 
-function Layout (editor) {
+function Canvas (editor) {
 		this.editor = editor;
-		this.id = "visual_panel";
+		this.id = "canvas";
 		this.element = $("#" + this.id);
+    this.init();
 };
 
-Layout.prototype.update = function() {
-		this.element.html(app.storage.getHTML());
+Canvas.prototype.init = function() {
+  // create an empty textIdea
 };

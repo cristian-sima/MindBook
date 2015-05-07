@@ -4,14 +4,14 @@
  * and open the template in the editor.
  */
 
-var app = app | null;
 
-function Menu () {
-}
-
-Menu.prototype = {
-  init: function() {
+var keys = {
+  "TAB": {
+    code: 9,
+    symbol: "\t"
   },
-  addListeners: function() {
+  "ENTER": {
+    code: 13,
+    symbol: "\n"
   }
 };

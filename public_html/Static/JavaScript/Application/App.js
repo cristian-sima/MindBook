@@ -7,21 +7,13 @@
 var app = app | null;
 
 function App() {
-  this.editor = null;
-  this.db = new Database();
   this.storage = new Storage();
   this.menu = new Menu();
+  this.gateway  = new Gateway();
+  this.layout = new Layout();
   this.init();
 }
 
 App.prototype.init = function () {
-  this.editor = new Editor("editor_textarea");
-};
-
-App.prototype.log = function (text) {
-  console.log(text);
-};
-
-App.prototype.warn = function (text) {
-  console.log(text);
+  
 };
