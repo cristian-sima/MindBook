@@ -1,0 +1,109 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 02.05.2015, 18:27:51
+    Author     : Cristian
+*/
+
+body {
+    width: 100%;
+}
+
+#layout {
+    display: table;
+    display:table;
+    width: 100%;
+}
+
+.cell {
+    padding: 8px;
+    border: 1px solid #dfdfdf;
+    display: table-cell;
+    width: 50%;
+}​
+
+#left-cell {
+    width: 50%;
+}
+
+#editor_textarea {
+    width: 95%;
+    margin: 6px;
+    padding: 3px;
+    font-size: 13px;
+    min-height: 74px;
+    border: 1px solid #BECEFF;
+				-moz-tab-size : 4;
+				-o-tab-size : 4;
+				tab-size : 4;
+
+}
+
+.info-span {
+    color: rgb(226, 226, 226); 
+    font-family: Georgia;
+    font-size: 15px;
+}
+
+#right-cell {
+    width: 50%;
+    /* margin-right: -20px; */
+}
+
+
+/* Design of processed text */ 
+
+
+.idea {
+    padding: 2px;
+    border: 1px solid rgb(215, 215, 215);
+    margin-bottom: 1px;
+    font-family: Georgia;
+    display: inline-block;
+    color: rgb(138, 139, 140);
+				border-radius: 3px;
+				margin: 1px;
+    min-width: 74px;
+				
+    min-height: 16px;
+}
+
+#lineNumber {
+				
+}
+
+button {
+  padding: 2px;
+  font-size: 16px;
+  color: rgb(132, 132, 132);
+  border-radius: 4px;
+  background: rgb(225, 239, 255);
+  border: 1px solid #BECEFF;
+}
+
+#lines {
+				width: 50px;
+				background: #BECEFF;
+    display: inline-block;
+}
+
+.parent-idea {
+    font-weight: bold;
+    background: rgb(163, 210, 255);
+}
+
+.child-idea {
+    background: rgb(199, 255, 192);
+}
+
+.home-idea {
+				background: rgb(255, 233, 192);
+    font-weight: bold;
+}
+
+.children-idea {
+				margin-left: 3em;
+}
