@@ -8,7 +8,7 @@ Idea = Class.extend({
     this.level = 0;
     this.children = [];
     this.parent = null;
-    this.content = id;
+    this.content = "";
   },
   insert: function (previousIdea) {
     var HTML = this.getHTML();
@@ -289,9 +289,9 @@ var ChildIdea = Idea.extend({
   },
   updateHTML: function () {
     var nr = this.children.length;
-    if (nr === 0) {
-      nr = "";
-    }
+    //  if (nr === 0) {
+    nr = "";
+    // }
     this.element.children("#content").children("#childrennr").html(nr);
 
     if (this.isParent() && this.getContent().length === 0) {
@@ -351,29 +351,29 @@ var ChildIdea = Idea.extend({
     }, x);
   },
   updateChildrenPosition: function () {
-  
-  var itemBefore = this;
-  
+
+    var itemBefore = this;
+
     for (var i = 0; i < this.children.length; i++) {
       var child = this.children[i];
-      
-      
+
+
       itemBefore = child.getParent().getPreviousChild(child);
-      
-      if(!itemBefore) {
+
+      if (!itemBefore) {
         itemBefore = child.getParent();
       } else {
         itemBefore = itemBefore.getPositionOfLastIdeaFromChildren();
       }
-   
+
       child.deleteHTML();
       child.insert(itemBefore);
-            
+
       console.log('Muta ' + child.id + "  (after " + itemBefore.id + ")")
-      
-      
+
+
       itemBefore = child;
-      
+
       child.updateChildrenPosition();
     }
     this.highLight();
