@@ -4,14 +4,10 @@
  * and open the template in the editor.
  */
 
+
 var app = app | null;
 
-function Menu () {
-}
+/*
+ * Represents an idea that has parent
+ */
 
-Menu.prototype = {
-  init: function() {
-  },
-  addListeners: function() {
-  }
-};

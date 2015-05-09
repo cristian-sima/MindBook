@@ -4,13 +4,3 @@
  * and open the template in the editor.
  */
 
-var keys = {
-  "TAB": {
-    code: 9,
-    symbol: "\t"
-  },
-  "ENTER": {
-    code: 13,
-    symbol: "\n"
-  }
-};

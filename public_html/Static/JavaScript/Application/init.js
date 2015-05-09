@@ -2,7 +2,8 @@
  * @author Cristian Sima
  */
 
-var app = app | null;
+var app = app | null,
+  Idea = Idea | null;
 
 $(document).ready(init);
 
