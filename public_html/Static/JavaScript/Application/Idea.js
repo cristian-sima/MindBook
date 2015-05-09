@@ -292,7 +292,7 @@ var ChildIdea = Idea.extend({
     if (nr === 0) {
       nr = "";
     }
-    this.element.children("#childrennr").html(nr);
+    this.element.children("#content").children("#childrennr").html(nr);
 
     if (this.isParent() && this.getContent().length === 0) {
       this.showWarning("Randul este parinte si nu contine nimic");
