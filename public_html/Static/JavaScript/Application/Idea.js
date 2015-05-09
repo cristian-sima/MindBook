@@ -358,10 +358,12 @@ var ChildIdea = Idea.extend({
       var child = this.children[i];
       
       
-      itemBefore = child.getParent().getPreviousChild(child).getPositionOfLastIdeaFromChildren();
+      itemBefore = child.getParent().getPreviousChild(child);
       
       if(!itemBefore) {
         itemBefore = child.getParent();
+      } else {
+        itemBefore = itemBefore.getPositionOfLastIdeaFromChildren();
       }
    
       child.deleteHTML();
