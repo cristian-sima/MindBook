@@ -1,6 +1,8 @@
 /*global NProgress, app*/
 
-function GUI() {}
+function GUI() {
+    this.search = new Search();
+}
 GUI.prototype = {
     init: function () {
         this.showLoading();
