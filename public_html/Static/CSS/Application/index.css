@@ -9,99 +9,103 @@ and open the template in the editor.
 */
 
 body {
-  width: 100%;
+    width: 100%;
 }
 
-#layout {
-  display: table;
-  display:table;
-  width: 99%;
+#main-content {
+    width: 100%;
 }
 
-.cell {
-  border: 1px solid #dfdfdf;
-  display: table-cell;
-  width: 50%;
-}​
+#left-div {
+    width: 100%;    
+    overflow: hidden;
+}
 
-#left-cell {
-  width: 50%;
+#app {
+    width: 100%;
+    overflow: hidden;
+}
+
+#right-div {
+    width: 0%;
 }
 
 
 .idea-div{
-  margin: 0px;
-  padding: 0px;
-  -webkit-animation-delay: 2s; /* Chrome, Safari, Opera */
-  animation-delay: 2s;
-  transition:all 0.2s;
+    margin: 0px;
+    padding: 0px;
+    -webkit-animation-delay: 2s; /* Chrome, Safari, Opera */
+    animation-delay: 2s;
+    transition:all 0.2s;
+    overflow: hidden;
 }
 
 .idea-id {
-  display: inline-block;
-  width: 20px;
-  color:gray;
+    display: inline-block;
+    width: 20px;
+    color:gray;
 }
 
 .idea-textarea {  
-  -webkit-animation-delay: 2s; /* Chrome, Safari, Opera */
-  animation-delay: 2s;
+    -webkit-animation-delay: 2s; /* Chrome, Safari, Opera */
+    animation-delay: 2s;
     padding: 3px;
     min-width: 400px;
-  font-size: 13px;
-  height: 18px;
-  display: inline;
-  border: 1px solid #FFFFFF;
-  resize: none;  
-  border-bottom: 1px solid rgb(234, 239, 255);
-  -moz-tab-size : 4;
-  -o-tab-size : 4;
-  tab-size : 4;
-  padding-bottom: 0px;
-  transition:all 0.2s;
+    font-size: 13px;
+    height: 18px;
+    display: inline;
+    border: 1px solid #FFFFFF;
+    resize: none;  
+    border-bottom: 1px solid rgb(234, 239, 255);
+    -moz-tab-size : 4;
+    -o-tab-size : 4;
+    tab-size : 4;
+    padding-bottom: 0px;
+    transition:all 0.2s;
 
 }
 
 .idea-textarea:focus {
-  border: 1px solid #FFFFFF;
-  border-bottom:1px solid #F4F4F4;
-  outline: 0;
+    border: 1px solid #FFFFFF;
+    border-bottom:1px solid #F4F4F4;
+    outline: 0;
 }
 
 
 .info-span {
-  color: rgb(226, 226, 226); 
-  font-family: Georgia;
-  font-size: 15px;
+    color: rgb(226, 226, 226); 
+    font-family: Georgia;
+    font-size: 15px;
 }
 
 #right-cell {
-  width: 50%;
-  /* margin-right: -20px; */
+    width: 50%;
+    /* margin-right: -20px; */
 }
 
 .numberOfChildren {
-  color:rgb(70, 227, 255);
-  width: 25px;
-  display: inline;
+    color:rgb(70, 227, 255);
+    width: 25px;
+    display: inline;
 }
 
 .warning {
-  width: 30px;  
-  margin-left: 5px;
-  display: inline-block;
+    width: 30px;  
+    margin-left: 5px;
+    display: inline-block;
 }
 
 .content {
-  display: inline;
+    display: inline;
+    overflow: hidden;
 }
 
 .idea-id {
-  display: inline;
+    display: inline;
 }
 
 .parent-focused {
-  border-bottom: 1px solid #F4F4F4;
-  font-weight: bold;
-  font-size: 15px;
+    border-bottom: 1px solid #F4F4F4;
+    font-weight: bold;
+    font-size: 15px;
 }
