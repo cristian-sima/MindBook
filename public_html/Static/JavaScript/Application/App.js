@@ -49,8 +49,8 @@
             this.currentIdea = idea;
             this.currentIdea.select();
         },
-        findIdeadById: function (id) {
-            return this.home.getChildById(id);
+        getIdeaByIndex: function (id) {
+            return this.home.getChildByIndex(id);
         },
         moveUp: function () {
             var idea = this.currentIdea,
@@ -87,15 +87,6 @@
                 this.setCurrentIdea(nextIdea);
             }
         },
-        firedCurrentIdeaSelected: function (id) {
-            if (!id) {
-                throw "No ID for choosing";
-            }
-            var idea = this.home.getChildById(id);
-            if (idea) {
-                this.setCurrentIdea(idea);
-            }
-        },
         removeIdea: function (idea, event) {
             if (this.canIdeaBeRemoved(idea)) {
                 event.preventDefault();
@@ -114,6 +105,9 @@
                 return true;
             }
             return false;
+        },
+        getData: function () {
+            return JSON.stringify(this.home.getJSON());
         }
     };
 }($));

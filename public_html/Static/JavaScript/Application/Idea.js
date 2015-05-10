@@ -10,16 +10,6 @@
             this.parent = null;
             this.content = id;
         },
-        insert: function (previousIdea) {
-            var HTML = this.getHTML();
-            if (!previousIdea) {
-                $("#app").append(HTML);
-            } else {
-                $(HTML).insertAfter(previousIdea.element);
-            }
-            this.getJQueryElements();
-            this.activateListeners();
-        },
         addChild: function (child, previousItem) {
             var position = null;
             if (previousItem) {
@@ -40,14 +30,14 @@
             this.updateLevel();
             this.updateHTML();
         },
-        getChildById: function (id) {
+        getChildByIndex: function (id) {
             var i, child, result;
             for (i = 0; i < this.children.length; i = i + 1) {
                 child = this.children[i];
                 if (child.id === id) {
                     return child;
                 }
-                result = child.getChildById(id);
+                result = child.getChildByIndex(id);
                 if (result) {
                     return result;
                 }
@@ -114,6 +104,30 @@
         },
         getContent: function () {
             return this.content;
+        },
+        insert: function (previousIdea) {
+            var HTML = this.getHTML();
+            if (!previousIdea) {
+                $("#app").append(HTML);
+            } else {
+                $(HTML).insertAfter(previousIdea.element);
+            }
+            this.getJQueryElements();
+            this.activateListeners();
+        },
+        getJSON: function () {
+            var data = {
+                "id": this.id,
+                "content": this.getContent(),
+                "children": {}
+            },
+                index = null,
+                child = null;
+            for (index = 0; index < this.children.length; index = index + 1) {
+                child = this.children[index];
+                data.children[child.id] = child.getJSON();
+            }
+            return data;
         },
         updateHTML: function () {},
         updateLevel: function () {},

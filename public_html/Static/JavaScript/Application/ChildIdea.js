@@ -79,7 +79,6 @@
         activateMouseListeners: function () {
             var idea = this;
             this.textarea.on("click", function () {
-                console.log(idea);
                 app.setCurrentIdea(idea);
             });
             this.element.on("click", function () {
