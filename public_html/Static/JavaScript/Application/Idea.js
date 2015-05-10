@@ -8,7 +8,7 @@
             this.level = 0;
             this.children = [];
             this.parent = null;
-            this.content = id;
+            this.content = "";
         },
         addChild: function (child, previousItem) {
             var position = null;

@@ -46,7 +46,7 @@
                 }
                 switch (keyCode) {
                     case app.data.keys.ENTER.code:
-                        app.createIdea(idea.getParent());
+                        app.editor.createIdea(idea.getParent());
                         break;
                     case app.data.keys.TAB.code:
                         if (event.shiftKey) {
@@ -61,13 +61,13 @@
                         }
                         break;
                     case app.data.keys.BACKSPACE.code:
-                        app.removeIdea(idea, event);
+                        app.editor.removeIdea(idea, event);
                         break;
                     case app.data.keys["ARROW-UP"].code:
-                        app.moveUp();
+                        app.editor.moveUp();
                         break;
                     case app.data.keys["ARROW-DOWN"].code:
-                        app.moveDown();
+                        app.editor.moveDown();
                         break;
                 }
             });
@@ -79,10 +79,10 @@
         activateMouseListeners: function () {
             var idea = this;
             this.textarea.on("click", function () {
-                app.setCurrentIdea(idea);
+                app.editor.setCurrentIdea(idea);
             });
             this.element.on("click", function () {
-                app.setCurrentIdea(idea);
+                app.editor.setCurrentIdea(idea);
             });
         },
         select: function () {
@@ -170,9 +170,9 @@
                 realChildren = this.children.copy();
             if (!toBeSelected) {
                 // este prima sau nu mai sus mai sus
-                if (parent === app.home) {
+                if (parent === app.editor.home) {
                     if (realChildren[0]) {
-                        previousIdea = app.home;
+                        previousIdea = app.editor.home;
                         toBeSelected = realChildren[0];
                     } else {
                         previousIdea = toBeSelected = parent.getNextChild(this);
@@ -193,7 +193,7 @@
                 child.setParent(parent, previousIdea);
                 previousIdea = child;
             }
-            app.setCurrentIdea(toBeSelected);
+            app.editor.setCurrentIdea(toBeSelected);
             this.getParent().removeChild(this);
             this.deleteHTML();
         },
@@ -244,8 +244,8 @@
                     this.insert(oldParent.getIndexOfLastIdeaFromChildren());
                     // link idea to parent
                     this.setParent(newParent, oldParent);
-                    app.currentIdea = null;
-                    app.setCurrentIdea(this);
+                    app.editor.currentIdea = null;
+                    app.editor.setCurrentIdea(this);
                     this.updateChildrenPosition();
                 }
                 this.setParent(newParent, oldParent);

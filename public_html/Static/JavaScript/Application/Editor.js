@@ -7,12 +7,12 @@ var Editor = function Editor() {
     this.home = null;
     this.counter = 1;
     this.currentIdea;
+    this.init();
 };
 Editor.prototype = {
     init: function () {
         this.createHomeIdea();
         this.createIdea(this.home);
-        this.loadData();
     },
     createHomeIdea: function () {
         this.home = new HomeIdea();

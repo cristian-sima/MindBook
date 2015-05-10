@@ -1,16 +1,17 @@
 /*global NProgress, app*/
-function GUI() {
-    this.status = NProgress;
-}
 
+function GUI() {}
 GUI.prototype = {
     init: function () {
         this.showLoading();
     },
+    start: function () {
+        this.hideLoading();
+    },
     showLoading: function () {
-        this.status.start();
+        NProgress.start();
     },
     hideLoading: function () {
-        this.status.done();
+        NProgress.done();
     }
 };

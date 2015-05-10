@@ -4,6 +4,7 @@
     App = function App() {
         this.gui = new GUI();
         this.gateway = new Gateway();
+        this.editor = new Editor();
         this.init();
     };
     App.prototype = {
