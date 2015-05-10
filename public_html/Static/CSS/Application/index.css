@@ -12,6 +12,19 @@ body {
     width: 100%;
 }
 
+
+/* Header */
+
+header {
+    
+}
+
+header #logo {
+    color: darkgrey;
+    font-size: 20px;
+    font-family: fantasy;
+}
+
 #main-content {
     width: 100%;
 }
