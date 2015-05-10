@@ -64,12 +64,18 @@
             }
             return -1;
         },
-        getPositionOfLastIdeaFromChildren: function () {
+        getIndexOfLastIdeaFromChildren: function () {
             if (this.isParent()) {
                 var lastChild = this.getLastChild();
-                return lastChild.getPositionOfLastIdeaFromChildren();
+                return lastChild.getIndexOfLastIdeaFromChildren();
             }
             return this;
+        },
+        getFirstChild: function () {
+            return this.children[0];
+        },
+        getLastChild: function () {
+            return this.children[this.children.length - 1];
         },
         getPreviousChild: function (currentIdea) {
             var i, idea;
@@ -91,32 +97,23 @@
             }
             return null;
         },
-        getFirstChild: function () {
-            return this.children[0];
-        },
-        getLastChild: function () {
-            return this.children[this.children.length - 1];
-        },
         isParent: function () {
             return (this.getNumberOfChildren() !== 0);
+        },
+        getNumberOfChildren: function () {
+            return this.children.length;
+        },
+        hasParent: function () {
+            return (!this.getParent());
         },
         getParent: function () {
             return this.parent;
         },
-        getContent: function () {
-            return this.content;
-        },
         setContent: function (content) {
             this.content = content;
         },
-        hasParent: function () {
-            return (!this.getParent);
-        },
-        getChildPosition: function (child) {
-            return this.children.indexOf(child);
-        },
-        getNumberOfChildren: function () {
-            return this.children.length;
+        getContent: function () {
+            return this.content;
         },
         updateHTML: function () {},
         updateLevel: function () {},

@@ -183,7 +183,7 @@
                 }
             } else {
                 if(toBeSelected.isParent()) {
-                    toBeSelected = toBeSelected.getPositionOfLastIdeaFromChildren();
+                    toBeSelected = toBeSelected.getIndexOfLastIdeaFromChildren();
                 }
             }
             if (!previousIdea) {
@@ -222,7 +222,7 @@
                 if (!itemBefore) {
                     itemBefore = child.getParent();
                 } else {
-                    itemBefore = itemBefore.getPositionOfLastIdeaFromChildren();
+                    itemBefore = itemBefore.getIndexOfLastIdeaFromChildren();
                 }
                 child.deleteHTML();
                 child.insert(itemBefore);
@@ -242,7 +242,7 @@
                         oldParent.removeChild(this);
                     }
                     this.deleteHTML();
-                    this.insert(oldParent.getPositionOfLastIdeaFromChildren());
+                    this.insert(oldParent.getIndexOfLastIdeaFromChildren());
                     // link idea to parent
                     this.setParent(newParent, oldParent);
                     app.currentIdea = null;

@@ -24,7 +24,7 @@
                 previousIdea = idea,
                 newIdea = null;
             if (idea && idea.isParent()) {
-                previousIdea = idea.getPositionOfLastIdeaFromChildren();
+                previousIdea = idea.getIndexOfLastIdeaFromChildren();
             }
             newIdea = new ChildIdea(this.counter);
             newIdea.insert(previousIdea);
@@ -58,7 +58,7 @@
             previous = idea.getParent().getPreviousChild(idea);
             if (previous) {
                 if (previous.isParent()) {
-                    previous = previous.getPositionOfLastIdeaFromChildren();
+                    previous = previous.getIndexOfLastIdeaFromChildren();
                 } else {
                     previous = idea.getParent().getPreviousChild(idea);
                 }
