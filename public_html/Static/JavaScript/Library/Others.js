@@ -13,6 +13,10 @@ Array.prototype.insert = function (index, item) {
   this.splice(index, 0, item);
 };
 
+Array.prototype.copy = function () {
+    return this.slice();
+};
+
 $.fn.focusToEnd = function () {
   return this.each(function () {
     var v = $(this).val();
