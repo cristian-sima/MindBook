@@ -11,7 +11,7 @@
             }
 
             function getID(id) {
-                return "<div class='idea-id' style='display:inline' id='id'>" + id + " </div>";
+                return "<div class='idea-id' style='display:none' id='id'>" + id + " </div>";
             }
 
             function getNumberOfChildren(nrOfChildren) {
@@ -181,6 +181,10 @@
                 } else {
                     previousIdea = toBeSelected = parent;
                 }
+            } else {
+                if(toBeSelected.isParent()) {
+                    toBeSelected = toBeSelected.getPositionOfLastIdeaFromChildren();
+                }
             }
             if (!previousIdea) {
                 throw "Daria is going to sleep";
@@ -190,7 +194,6 @@
                 child.setParent(parent, previousIdea);
                 previousIdea = child;
             }
-            app.currentIdea = null;
             app.setCurrentIdea(toBeSelected);
             this.getParent().removeChild(this);
             this.deleteHTML();
