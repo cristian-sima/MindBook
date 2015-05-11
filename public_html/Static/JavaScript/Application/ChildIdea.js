@@ -181,16 +181,15 @@
                     previousIdea = toBeSelected = parent;
                 }
             } else {
-                if(toBeSelected.isParent()) {
+                if (toBeSelected.isParent()) {
                     toBeSelected = toBeSelected.getIndexOfLastIdeaFromChildren();
                 }
             }
             
-            console.log("To select " + previousIdea.id);
-            
-            if (!previousIdea) {
-                throw "Daria is going to sleep";
+            if (parent && previousIdea && previousIdea.id === app.editor.home.id && parent.id === app.editor.home.id) {
+                previousIdea = null;
             }
+            
             for (i = 0; i < realChildren.length; i = i + 1) {
                 child = realChildren[i];
                 child.setParent(parent, previousIdea);
