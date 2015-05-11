@@ -10,6 +10,7 @@ and open the template in the editor.
 
 body {
     width: 100%;
+    overflow:hidden;
 }
 
 
@@ -38,7 +39,60 @@ header #search {
     padding-left:20px;
     margin-right: 60px;
     float: right;
+    display: block;
 }
+
+
+#menu {
+    position: fixed;
+    top: 100px;
+    left: 0px;
+    padding-bottom: 2px;
+    border: 1px solid #f1f1f1;
+}
+
+#menu ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+
+#menu ul li {    
+    border-bottom: 1px solid #f1f1f1;
+    transition:all 0.2s;
+    border-left: 10px solid white;
+    cursor: pointer;
+    margin-bottom: -1px;
+}
+
+
+#menu ul li:last-child {
+    border-bottom: none;
+}
+
+
+#menu ul .selected {
+    border-left: 10px solid cornflowerblue; 
+}
+
+#menu ul li a img  {
+    width: 48px;
+    height: 48px;
+    margin: 20px;
+    -webkit-filter: brightness(50%);
+    margin-left: 10px;
+}
+
+
+#menu ul li a img:hover {
+    -webkit-filter: brightness(100%);
+    -webkit-filter: contrast(100%); 
+    -webkit-filter: sepia(0%);
+    color: #dfdfdf;
+}
+
 
 
 /* all */
@@ -59,7 +113,17 @@ header #search:-moz-placeholder {
 
 #main-content {
     width: 100%;
+    margin-left: 117px;
+    margin-top: 21px;
 }
+
+
+#main-content > div {
+    display: none;
+    width: 100%;
+    transition:all 0.2s;
+}
+
 
 #left-div {
     width: 100%;    
@@ -154,3 +218,6 @@ header #search:-moz-placeholder {
     font-weight: bold;
     font-size: 15px;
 }
+
+
+/* Visual List */

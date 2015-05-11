@@ -161,7 +161,7 @@
             this.element.remove();
             this.textarea.off();
         },
-        remove: function () {
+        removeIdeaAndSaveChildren: function () {
             var parent = this.getParent(),
                 toBeSelected = parent.getPreviousChild(this),
                 previousIdea = toBeSelected,
@@ -185,6 +185,9 @@
                     toBeSelected = toBeSelected.getIndexOfLastIdeaFromChildren();
                 }
             }
+            
+            console.log("To select " + previousIdea.id);
+            
             if (!previousIdea) {
                 throw "Daria is going to sleep";
             }

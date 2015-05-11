@@ -4,7 +4,7 @@
     App = function App() {
         this.gui = new GUI();
         this.gateway = new Gateway();
-        this.editor = new Editor();
+        this.startingContent = "editor";
         this.init();
     };
     App.prototype = {
@@ -24,6 +24,26 @@
         },
         fired_applicationIsConnected: function () {
             this.start();
+        },
+        selectContent: function (id) {
+            switch (id) {
+                case "list":
+                    this.selectList();
+                    break;
+                case "editor":
+                    this.selectEditor();
+                    break;
+            }
+        },
+        selectList: function () {
+            if(this.editor) {
+                this.editor.close();
+                delete this.editor;
+            }
+        },
+        selectEditor: function (homeIdeaID) {
+            
+            this.editor = new Editor();
         }
     };
 }($));

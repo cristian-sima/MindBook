@@ -86,7 +86,7 @@ Editor.prototype = {
     removeIdea: function (idea, event) {
         if (this.canIdeaBeRemoved(idea)) {
             event.preventDefault();
-            idea.remove();
+            idea.removeIdeaAndSaveChildren();
             idea = null;
         }
     },
@@ -104,5 +104,9 @@ Editor.prototype = {
     },
     getData: function () {
         return JSON.stringify(this.home.getJSON());
+    },
+    close: function () {
+        this.home.remove();
+        this.home = null;
     }
-}
+};

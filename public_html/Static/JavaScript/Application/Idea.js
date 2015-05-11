@@ -8,7 +8,7 @@
             this.level = 0;
             this.children = [];
             this.parent = null;
-            this.content = "";
+            this.content = id;
         },
         addChild: function (child, previousItem) {
             var position = null;
@@ -128,6 +128,19 @@
                 data.children[child.id] = child.getJSON();
             }
             return data;
+        },        
+        remove: function () {
+            var i, child;
+            for(i=0; i< this.children.length; i++ ){
+                child = this.children[i];
+                child.remove();
+                child = null;
+            }
+            if(this.textarea) {
+                this.textarea.off();
+                this.textarea.remove();
+            }
+            this.element.remove();
         },
         updateHTML: function () {},
         updateLevel: function () {},

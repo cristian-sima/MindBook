@@ -7,6 +7,7 @@ var socketio = require('socket.io'),
         children: []
     },
     ideaCounter = 1;
+
 exports.listen = function (server) {
     io = socketio.listen(server);
     io.set('log level', 1);
@@ -21,7 +22,7 @@ function handleEvents(socket) {
 
 function handleRequestHomeIdea(socket) {
     socket.on("getHomeIdea", function (socket) {
-       sendHomeIdea(socket); 
+        sendHomeIdea(socket);
     });
 }
 
