@@ -9,16 +9,17 @@ Gateway.prototype = {
         this.handleEvents();
     },
     connectToServer: function () {
-        
+        this.getHomeIdeaID(function (data) {
+            app.setHomeIdeaID(data);
+            app.start();
+        });
     },
     handleEvents: function () {
         this.handleConnectionStarts();
         this.handleCommunication();
         this.handleDisconnect();
     },
-    handleConnectionStarts: function () {
-       
-    },
+    handleConnectionStarts: function () {},
     handleCommunication: function () {
         this.handleRequestEvents();
         this.handleResponseEvents();
@@ -29,8 +30,14 @@ Gateway.prototype = {
     handleResponseEvents: function () {
         // TODO
     },
-    handleDisconnect: function () {
-    },
-    getContentOfIdea: function (id, callback) {
+    handleDisconnect: function () {},
+    getHomeIdeaID: function (callback) {
+        $.ajax({
+            data: {
+                "url": "/api",
+                "action": "getHomeIdeaID"
+            },
+            done: callback
+        });
     }
 };

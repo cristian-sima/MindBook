@@ -4,7 +4,7 @@
     App = function App() {
         this.gui = new GUI();
         this.gateway = new Gateway();
-        this.homeID = 1;
+        this.homeID = null;
         this.startingContent = "editor";
         this.init();
     };
@@ -44,10 +44,13 @@
         },
         selectEditor: function (id) {
             if (!id) {
-                id = this.startingContent;
+                id = this.homeID;
             }
             this.gateway.getContentOfIdea(id);
             this.editor = new Editor(id);
+        },
+        setHomeIdeaID: function (id) {
+            this.homeID = id;
         }
     };
 }($));
