@@ -1,0 +1,228 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 02.05.2015, 18:27:51
+    Author     : Cristian
+*/
+
+body {
+    width: 100%;
+    overflow:hidden;
+}
+
+
+/* Header */
+
+header {
+    height: 50px;
+}
+
+header #logo {
+    color: #29d;
+    font-size: 23px;
+    font-family: fantasy;
+}
+
+header #search {
+    color: rgb(197, 197, 197);
+    border: 1px solid #F4F4F4;
+    border-radius: 2px;
+    height: 22px;
+    width: 200px;
+    background-image:url('../../Images/search.png');
+    background-repeat:no-repeat;
+    background-position-y: 1px;
+    background-position-x: 1px;
+    padding-left:20px;
+    margin-right: 60px;
+    float: right;
+    display: block;
+}
+
+
+#menu {
+    position: fixed;
+    top: 100px;
+    left: 0px;
+    padding-bottom: 2px;
+    border: 1px solid #f1f1f1;
+}
+
+#menu ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+
+#menu ul li {    
+    border-bottom: 1px solid #f1f1f1;
+    transition:all 0.2s;
+    border-left: 10px solid white;
+    cursor: pointer;
+    margin-bottom: -1px;
+}
+
+
+#menu ul li:last-child {
+    border-bottom: none;
+}
+
+
+#menu ul .selected {
+    border-left: 10px solid cornflowerblue; 
+}
+
+#menu ul li a img  {
+    width: 48px;
+    height: 48px;
+    margin: 20px;
+    -webkit-filter: brightness(50%);
+    margin-left: 10px;
+}
+
+
+#menu ul li a img:hover {
+    -webkit-filter: brightness(100%);
+    -webkit-filter: contrast(100%); 
+    -webkit-filter: sepia(0%);
+    color: #dfdfdf;
+}
+
+
+
+/* all */
+header #search::-webkit-input-placeholder { 
+    color:rgb(226, 226, 226);
+}
+header #search::-moz-placeholder { 
+    color:rgb(226, 226, 226);
+} /* firefox 19+ */
+header #search:-ms-input-placeholder { 
+    color:rgb(226, 226, 226);
+} /* ie */
+header #search:-moz-placeholder { 
+    color:rgb(226, 226, 226);
+}
+
+
+
+#main-content {
+    width: 100%;
+    margin-left: 117px;
+    margin-top: 21px;
+}
+
+
+#main-content > div {
+    display: none;
+    width: 100%;
+    transition:all 0.2s;
+}
+
+
+#left-div {
+    width: 100%;    
+    overflow: hidden;
+}
+
+#app {
+    width: 100%;
+    overflow: hidden;
+}
+
+#right-div {
+    width: 0%;
+}
+
+.idea-home {
+    color: rgb(145, 96, 229);
+    font-size: 19px;
+}
+
+
+.idea-div{
+    margin: 0px;
+    padding: 0px;
+    -webkit-animation-delay: 2s; /* Chrome, Safari, Opera */
+    animation-delay: 2s;
+    transition:all 0.2s;
+    overflow: hidden;
+}
+
+.idea-id {
+    display: inline-block;
+    width: 20px;
+    color:gray;
+}
+
+.idea-textarea {  
+    -webkit-animation-delay: 2s; /* Chrome, Safari, Opera */
+    animation-delay: 2s;
+    padding: 3px;
+    min-width: 400px;
+    font-size: 13px;
+    height: 18px;
+    display: inline;
+    border: 1px solid #FFFFFF;
+    resize: none;  
+    border-bottom: 1px solid rgb(234, 239, 255);
+    -moz-tab-size : 4;
+    -o-tab-size : 4;
+    tab-size : 4;
+    padding-bottom: 0px;
+    transition:all 0.2s;
+
+}
+
+.idea-textarea:focus {
+    border: 1px solid #FFFFFF;
+    border-bottom:1px solid #F4F4F4;
+    outline: 0;
+}
+
+
+.info-span {
+    color: rgb(226, 226, 226); 
+    font-family: Georgia;
+    font-size: 15px;
+}
+
+#right-cell {
+    width: 50%;
+    /* margin-right: -20px; */
+}
+
+.numberOfChildren {
+    color:rgb(70, 227, 255);
+    width: 25px;
+    display: inline;
+}
+
+.warning {
+    width: 30px;  
+    margin-left: 5px;
+    display: inline-block;
+}
+
+.content {
+    display: inline;
+    overflow: hidden;
+}
+
+.idea-id {
+    display: inline;
+}
+
+.parent-focused {
+    border-bottom: 1px solid #F4F4F4;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+
+/* Visual List */
