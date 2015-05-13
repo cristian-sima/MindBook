@@ -1,7 +1,7 @@
 /*global app*/
 var Editor = function Editor(data, container) {
         this.container = container;
-        this.counter = this.app;
+        this.counter = app.counter;
         this.currentIdea;
         this.init(data);
     };
@@ -14,7 +14,8 @@ Editor.prototype = {
         var example = this.createChildIdea({
             id: 2,
             content: "Example idea",
-            parent: this.home
+            parent: this.home,
+            position: 0
         }, this.home);
         this.setCurrentIdea(example);
         /*var child, index;
@@ -39,11 +40,18 @@ Editor.prototype = {
     createNewChildIdea: function (parent) {
         var idea = this.currentIdea,
             previousIdea = idea,
-            newIdea = null;
+            newIdea = null,
+            position = 0;
         if (idea && idea.isParent()) {
             previousIdea = idea.getIndexOfLastIdeaFromChildren();
         }
-        var newIdea = this.createChildIdea(this.counter, "", parent, previousIdea);
+        position = parent.getChildIndex(previousIdea) + 1;
+        var newIdea = this.createChildIdea({
+            id: this.counter,
+            content: "",
+            parent: parent,
+            position: position
+        }, previousIdea);
         this.setCurrentIdea(newIdea);
         this.incrementCounter();
     },
@@ -52,6 +60,9 @@ Editor.prototype = {
     },
     setCurrentIdea: function (idea) {
         var oldIdea = this.currentIdea;
+        if (!idea.id) {
+            throw "It is not idea"
+        }
         if (oldIdea) {
             oldIdea.deselect();
         }

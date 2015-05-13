@@ -12,6 +12,7 @@
             this.insertElement(element);
             this.getElements();
             this.activateListeners();
+            this.update();
         },
         getHTML: function () {
             // overwriteen             
@@ -42,7 +43,7 @@
         getIdea: function () {
             return this.idea;
         },
-        updateHTML: function () {
+        update: function () {
             
         },
         remove: function () {

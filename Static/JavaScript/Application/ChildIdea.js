@@ -4,7 +4,8 @@
     var ChildIdeaTemplate = {
         init: function (info, home) {
             this.home = home;
-            this._super(info.id, info.content, info.parent);
+            this._super(info.id, info.content);
+            this.changeParentAtPosition(info.parent, info.position);
         },
         createLineElement: function (previousIdea) {
             this.line = new ChildLine(this, previousIdea.getLine());
@@ -14,7 +15,7 @@
             this.changeParentAtPosition(newParent, lastPosition);
         },
         changeParentAtPosition: function (newParent, position) {
-            if (this.hasParent()) {
+            if (this.getParent()) {
                 this.getParent().removeChild(this);
             }
             this.parent = newParent;
@@ -34,7 +35,7 @@
                 child = this.children[i];
                 child.updateLevel();
             }
-            this.update();
+            this.updateLine();
         },
         getLevel: function () {
             return this.level;
@@ -52,13 +53,20 @@
         fired_childRealeased: function () {
             this.getLine().unboldText();
         },
+        fired_enterKeyPressed: function () {
+            var parent = this.getParent();
+            this.getEditor().createNewChildIdea(parent);
+        },
         fired_tabKeyPressed: function () {
             var previousIdea = this.getParent().getPreviousChild(this);
             if (previousIdea) {
                 this.changeParent(previousIdea);
             }
         },
-        /* to check */        
+        fired_shiftTabKeyPressed: function () {
+            this.reduceLevel();
+        },
+        /* to check */
         removeIdeaAndSaveChildren: function () {
             var parent = this.getParent(),
                 toBeSelected = parent.getPreviousChild(this),
@@ -92,8 +100,8 @@
                 previousIdea = child;
             }
             app.editor.setCurrentIdea(toBeSelected);
-            this.getParent().removeChild(this);
-            this.deleteHTML();
+            this.children = [];
+            this.remove();
         },
         updateChildrenPosition: function () {
             var itemBefore = this,
@@ -107,12 +115,12 @@
                 } else {
                     itemBefore = itemBefore.getIndexOfLastIdeaFromChildren();
                 }
-                child.deleteHTML();
-                child.insert(itemBefore);
+                child.getLine().remove();
+                child.createLineElement(itemBefore);
                 itemBefore = child;
                 child.updateChildrenPosition();
             }
-            this.highLight();
+            this.getLine().highLight();
         },
         reduceLevel: function () {
             var nextIdea = this.getParent().getNextChild(this),
@@ -124,15 +132,15 @@
                     if (oldParent) {
                         oldParent.removeChild(this);
                     }
-                    this.deleteHTML();
-                    this.insert(oldParent.getIndexOfLastIdeaFromChildren());
+                    this.getLine().remove();
+                    this.createLineElement(oldParent.getIndexOfLastIdeaFromChildren());
                     // link idea to parent
-                    this.setParent(newParent, oldParent);
+                    this.changeParent(newParent);
                     app.editor.currentIdea = null;
                     app.editor.setCurrentIdea(this);
                     this.updateChildrenPosition();
                 }
-                this.setParent(newParent, oldParent);
+                this.changeParent(newParent);
             }
         }
     };

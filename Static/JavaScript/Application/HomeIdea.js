@@ -16,7 +16,7 @@
             return this;
         },
         getLevel: function () {
-            return 1;
+            return 0;
         },
         getEditor: function () {
             return this.editor;

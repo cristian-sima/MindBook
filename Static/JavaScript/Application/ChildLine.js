@@ -9,7 +9,6 @@
         },
         insertElement: function (previousLine) {
             var HTML = this.getHTML();
-            console.log(previousLine);
             $(HTML).insertAfter(previousLine.getElement());
         },
         getHTML: function () {
@@ -49,7 +48,8 @@
             this.textarea = this.getElement().children("#content").children("#textarea");
         },
         activateKeyListenes: function () {
-            var idea = this.idea;
+            var idea = this.idea,
+                editor = idea.getEditor();
             this.textarea.on("keydown", function (event) {
                 var keyCode = event.keyCode || event.which,
                     previousIdea;
@@ -58,11 +58,7 @@
                 }
                 switch (keyCode) {
                     case app.data.keys.ENTER.code:
-                        var editor = idea.getEditor();
-                        
-                        // TODO
-                        
-                        
+                        idea.fired_enterKeyPressed();
                         break;
                     case app.data.keys.TAB.code:
                         if (event.shiftKey) {
@@ -70,33 +66,31 @@
                             idea.reduceLevel();
                         } else {
                             // -----> (TAB)
-                            idea.fired_tabKey();
+                            idea.fired_tabKeyPressed();
                         }
                         break;
                     case app.data.keys.BACKSPACE.code:
-                        app.editor.removeIdea(idea, event);
+                        editor.removeIdea(idea, event);
                         break;
                     case app.data.keys["ARROW-UP"].code:
-                        app.editor.moveUp();
+                        editor.moveUp();
                         break;
                     case app.data.keys["ARROW-DOWN"].code:
-                        app.editor.moveDown();
+                        editor.moveDown();
                         break;
                 }
             });
             this.textarea.on("keyup", function () {
-                var content = idea.textarea.val();
+                var content = idea.getLine().textarea.val();
                 idea.setContent(content);
-                idea.update();
+                idea.updateLine();
             });
         },
         activateMouseListeners: function () {
-            var idea = this;
+            var idea = this.getIdea(),
+                editor = idea.getEditor();
             this.textarea.on("click", function () {
-                app.editor.setCurrentIdea(idea);
-            });
-            this.element.on("click", function () {
-                app.editor.setCurrentIdea(idea);
+                editor.setCurrentIdea(idea);
             });
         },
         select: function () {
@@ -127,8 +121,8 @@
             }, x);
         },
         update: function () {
-            updateHTML();
-            updateWarning();
+            this.updateHTML();
+            this.updateWarning();
         },
         updateHTML: function () {
             var levelWidth = 30,
@@ -144,7 +138,7 @@
             this.element.children("#content").children("#childrennr").html(numberOfChildren);
         },
         updateWarning: function () {
-            var content = this.idea.getContent();s
+            var content = this.idea.getContent();
             if (content.length === 0) {
                 this.showWarning("Randul este parinte si nu contine nimic");
             } else {
