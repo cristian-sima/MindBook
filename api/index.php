@@ -24,7 +24,18 @@
             $id = Request::extract("id");
             echo $book->getAllChildrenOfIdea($id);
             break;
+        case "getCounterIndex":
+            echo $book->getCounterIndex();
+            break;
+        case "init":
+            echo $book->getInitData();
+            break;
+        case "createIdea":
+            $parent = Request::extract("parent");
+            $content = Request::extract("content");
+            echo $book->createIdea($parent, $content);
         default :
             echo "It is working";
             break;
+        
     }

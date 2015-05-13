@@ -2,8 +2,8 @@
 (function () {
     "use strict";
     var ChildIdeaTemplate = {
-        init: function (id) {
-            this._super(id);
+        init: function (id, content) {
+            this._super(id, content);
         },
         getHTML: function () {
             function getTextarea(id, content) {
@@ -27,6 +27,15 @@
             toReturn += "</div>";
             toReturn += "</div>";
             return toReturn;
+        },
+        insertHTMLElement: function (previousIdea) {
+            // pentru homeidea
+            var HTML = this.getContent();
+            if (!previousIdea) {
+                $(this.parent.element).append(this.getContent());
+            } else {
+                $(HTML).insertAfter(previousIdea.element);
+            }
         },
         getJQueryElements: function () {
             this.element = $("#element-" + this.id);
@@ -185,11 +194,9 @@
                     toBeSelected = toBeSelected.getIndexOfLastIdeaFromChildren();
                 }
             }
-            
             if (parent && previousIdea && previousIdea.id === app.editor.home.id && parent.id === app.editor.home.id) {
                 previousIdea = null;
             }
-            
             for (i = 0; i < realChildren.length; i = i + 1) {
                 child = realChildren[i];
                 child.setParent(parent, previousIdea);

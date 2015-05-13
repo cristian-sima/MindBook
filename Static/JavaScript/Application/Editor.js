@@ -1,36 +1,38 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-var Editor = function Editor(startingID) {
-    this.home = null;
-    this.counter = 1;
-    this.currentIdea;
-    this.init();
-};
+/*global app*/
+var Editor = function Editor(data, container) {
+        this.data = data;
+        this.container = container;
+        this.counter = this.app;
+        this.currentIdea;
+        this.init();
+    };
 Editor.prototype = {
     init: function () {
+        var child, index;
         this.createHomeIdea();
-        this.createIdea(this.home);
-    },
-    loadData: function (startingID) {
-        
+        for(index in this.data.children ) {
+            child = this.data.children[index];
+            this.createChildIdea(child.id, child.content, this.home, this.home);
+        }
     },
     createHomeIdea: function () {
-        this.home = new HomeIdea();
-        this.home.insert(null);
+        this.home = new HomeIdea(this.data.id, this.data.content);
+        this.home.insert(this.container);
     },
-    createIdea: function (parent) {
+    createChildIdea: function (id, content, parent, previousIdea) {   
+        var newIdea = new ChildIdea(id, content);
+        newIdea.insert(previousIdea);
+        newIdea.setParent(parent, previousIdea);
+        return newIdea;
+    },
+    createNewChildIdea: function (parent) {
         var idea = this.currentIdea,
             previousIdea = idea,
             newIdea = null;
         if (idea && idea.isParent()) {
             previousIdea = idea.getIndexOfLastIdeaFromChildren();
         }
-        newIdea = new ChildIdea(this.counter);
-        newIdea.insert(previousIdea);
-        newIdea.setParent(parent, idea);
+        var newIdea = this.createChildIdea(this.counter, "", parent, previousIdea);
         this.setCurrentIdea(newIdea);
         this.incrementCounter();
     },

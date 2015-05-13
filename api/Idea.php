@@ -9,7 +9,6 @@ class Idea {
 
     public function Idea($id) {
         $this->id = $id;
-
         $this->loadContent();
         $this->loadChildren();
     }
@@ -37,7 +36,7 @@ class Idea {
 
         foreach ($sth->fetchAll() as $row) {
             $id = $row['id'];
-            $content = $row["content"];
+            $content = $row['content'];
             $this->children[$id] = array("id" => $id, "content" => $content);
         }
     }
@@ -49,25 +48,19 @@ class Idea {
     public function getId() {
         return $this->id;
     }
-    
-    public function getContent () {
+
+    public function getContent() {
         return $this->content;
     }
 
     public function __toString() {
+        
         $array = array("id" => $this->id,
-            "parent" => $this->parent,
-            "content" => $this->content,
-            "children" => $this->children);
+        "parent" => $this->parent,
+        "content" => $this->content,
+        "children" => $this->children);
 
         return json_encode($array, JSON_PRETTY_PRINT);
     }
-    
-    public function loadAllChildren() {
-        foreach($this->children as &$child) {
-            $child = new Idea($child["id"]);
-            $child = $child->__toString();
-          //  $this->children[$child["id"]]->loadAllChildren();
-        }
-    }
+
 }

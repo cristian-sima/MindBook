@@ -4,7 +4,7 @@
     App = function App() {
         this.gui = new GUI();
         this.gateway = new Gateway();
-        this.homeID = null;
+        this.home = null;
         this.startingContent = "editor";
         this.init();
     };
@@ -15,6 +15,12 @@
             this.gateway.init();
         },
         start: function () {
+            this.gateway.start();
+        },
+        load: function (data) {
+            this.home = parseInt(data.home);
+            this.counter = parseInt(data.counter);
+          //  this.start();
             this.gui.start();
         },
         loadData: function () {
@@ -32,7 +38,7 @@
                     this.selectList();
                     break;
                 case "editor":
-                    this.selectEditor();
+                    this.selectEditor(app.home);
                     break;
             }
         },
@@ -44,13 +50,14 @@
         },
         selectEditor: function (id) {
             if (!id) {
-                id = this.homeID;
+                id = this.home;
             }
-            this.gateway.getContentOfIdea(id);
-            this.editor = new Editor(id);
+            this.editor = this.createEditor(id, $("#app"));
         },
-        setHomeIdeaID: function (id) {
-            this.homeID = id;
+        createEditor: function (id, elementHTML) {
+            app.gateway.getIdea(id, function (data) {
+                app.editor = new Editor(data, elementHTML);
+            });
         }
     };
 }($));

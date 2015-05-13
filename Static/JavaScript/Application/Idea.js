@@ -3,12 +3,12 @@
     "use strict";
     var IdeaTemplate = {
         // constructor
-        init: function (id) {
-            this.id = id;
+        init: function (id, content) {
+            this.id = parseInt(id);
             this.level = 0;
             this.children = [];
             this.parent = null;
-            this.content = "";
+            this.content = content;
         },
         addChild: function (child, previousItem) {
             var position = null;
@@ -106,12 +106,7 @@
             return this.content;
         },
         insert: function (previousIdea) {
-            var HTML = this.getHTML();
-            if (!previousIdea) {
-                $("#app").append(HTML);
-            } else {
-                $(HTML).insertAfter(previousIdea.element);
-            }
+            this.insertHTMLElement(previousIdea);
             this.getJQueryElements();
             this.activateListeners();
         },
@@ -145,6 +140,7 @@
         updateHTML: function () {},
         updateLevel: function () {},
         getHTML: function () {},
+        insertHTMLElement: function (element) {},
         getJQueryElements: function () {},
         activateListeners: function () {},
         select: function () {},

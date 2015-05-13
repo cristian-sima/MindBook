@@ -5,39 +5,50 @@ function Gateway() {
 };
 Gateway.prototype = {
     init: function () {
-        this.connectToServer();
-        this.handleEvents();
     },
-    connectToServer: function () {
-        this.getHomeIdeaID(function (data) {
-            app.setHomeIdeaID(data);
-            app.start();
+    start: function () {
+        this.getInitData(function (data) {
+            app.load(data);
         });
     },
-    handleEvents: function () {
-        this.handleConnectionStarts();
-        this.handleCommunication();
-        this.handleDisconnect();
-    },
-    handleConnectionStarts: function () {},
-    handleCommunication: function () {
-        this.handleRequestEvents();
-        this.handleResponseEvents();
-    },
-    handleRequestEvents: function () {
-        // nothing
-    },
-    handleResponseEvents: function () {
-        // TODO
-    },
-    handleDisconnect: function () {},
     getHomeIdeaID: function (callback) {
+        this.sendAjaxRequest("", {
+            "action" : "getHomeIdeaID"
+        }, callback);
+    },
+    getInitData: function (callback) {
+        this.sendAjaxRequest("", {
+            "action" : "init"
+        }, callback);
+    },
+    getIdea: function (id, callback) {
+        this.sendAjaxRequest("", {            
+            "action" : "getIdea",
+            "id": id
+        }, callback);
+    },
+    createIdea: function (idea, callback) {
+        this.sendAjaxRequest("", {
+            "action" : "createIdea",
+            "parent" : idea.parent,
+            "content" : idea.content
+        }, callback);
+    },
+    sendAjaxRequest: function (url, data, callback) {
+        app.gui.showLoading();
+        
+        var fired_requestDone = (function () {
+            var c = callback;
+            return function(data) {
+                app.gui.hideLoading();
+              c(jQuery.parseJSON(data));  
+            };
+        })();
+        
         $.ajax({
-            data: {
-                "url": "/api",
-                "action": "getHomeIdeaID"
-            },
-            done: callback
+            url: "api/" + url,
+            data: data,
+            success: fired_requestDone
         });
     }
 };
