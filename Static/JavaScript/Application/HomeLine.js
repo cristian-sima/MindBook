@@ -3,12 +3,12 @@
     "use strict";
     var HomeLineTemplate = {
         // constructor
-        init: function (idea, parent) {
-            this._super(idea, parent);
+        init: function (idea, container) {
+            this._super(idea, container);
         },
-        insertElement: function (element) {
+        insertElement: function (container) {
             var html = this.getHTML();
-            $(element).html(html);
+            $(container).html(html);
         },
         getHTML: function () {
             var id = this.idea.id,
@@ -16,7 +16,8 @@
             return "<div  id='element-" + id + "' class='idea-div idea-home'>" + content + " </div>";
         },
         getElements: function () {
-            // empty
+            var id = this.idea.id;
+            this.element = $("#element-" + id);
         },
         insertHTMLElement: function (container) {
             var HTML = this.getContent();

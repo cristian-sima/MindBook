@@ -7,29 +7,33 @@ var Editor = function Editor(data, container) {
     };
 Editor.prototype = {
     init: function (data) {
-        this.createHomeLine({
+        this.createHomeIdea({
             id: data.id,
             content: data.content
         });
+        var example = this.createChildIdea({
+            id: 2,
+            content: "Example idea",
+            parent: this.home
+        }, this.home);
+        this.setCurrentIdea(example);
         /*var child, index;
             for(index in this.data.children ) {
             child = this.data.children[index];
             this.createChildIdea(child.id, child.content, this.home, this.home);
         }*/
     },
-    createHomeLine: function (idea) {
-        var homeIdea = new HomeIdea(idea.id, idea.content),
-            line = new HomeLine(homeIdea, this.container);
-        this.home = line;
+    createHomeIdea: function (info) {
+        this.home = new HomeIdea(info.id, info.content, this);
+        this.home.createLineElement(this.container);
     },
     crateLine: function (idea, parent) {
         var line = new Line(idea, parent);
         return line;
     },
-    createChildIdea: function (id, content, parent, previousIdea) {
-        var newIdea = new ChildIdea(id, content);
-        newIdea.insert(previousIdea);
-        newIdea.setParent(parent, previousIdea);
+    createChildIdea: function (info, previousElement) {
+        var newIdea = new ChildIdea(info, this.home);
+        newIdea.createLineElement(previousElement);
         return newIdea;
     },
     createNewChildIdea: function (parent) {
@@ -48,9 +52,6 @@ Editor.prototype = {
     },
     setCurrentIdea: function (idea) {
         var oldIdea = this.currentIdea;
-        if (!idea.id) {
-            return;
-        }
         if (oldIdea) {
             oldIdea.deselect();
         }

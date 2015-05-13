@@ -3,13 +3,14 @@
     "use strict";
     var ChildLineTemplate = {
         // constructor
-        init: function (idea, parent) {
-            this._super(idea, parent);
+        init: function (idea, previousLine) {
+            this._super(idea, previousLine);
             this.highlightTimeout = null;
         },
-        insertElement: function (element) {
+        insertElement: function (previousLine) {
             var HTML = this.getHTML();
-            $(HTML).insertAfter(element);
+            console.log(previousLine);
+            $(HTML).insertAfter(previousLine.getElement());
         },
         getHTML: function () {
             var id = this.idea.id,
@@ -43,8 +44,9 @@
             this.activateMouseListeners();
         },
         getElements: function () {
-            console.log(this.element);
-            this.textarea = this.element.children("#content").children("#textarea");
+            var id = this.idea.id;
+            this.element = $("#element-" + id);
+            this.textarea = this.getElement().children("#content").children("#textarea");
         },
         activateKeyListenes: function () {
             var idea = this.idea;
@@ -56,7 +58,11 @@
                 }
                 switch (keyCode) {
                     case app.data.keys.ENTER.code:
-                        app.editor.createIdea(idea.getParent());
+                        var editor = idea.getEditor();
+                        
+                        // TODO
+                        
+                        
                         break;
                     case app.data.keys.TAB.code:
                         if (event.shiftKey) {
@@ -64,10 +70,7 @@
                             idea.reduceLevel();
                         } else {
                             // -----> (TAB)
-                            previousIdea = idea.getParent().getPreviousChild(idea);
-                            if (previousIdea) {
-                                idea.setParent(previousIdea, idea);
-                            }
+                            idea.fired_tabKey();
                         }
                         break;
                     case app.data.keys.BACKSPACE.code:
@@ -82,8 +85,9 @@
                 }
             });
             this.textarea.on("keyup", function () {
-                idea.setContent(idea.textarea.val());
-                idea.updateHTML();
+                var content = idea.textarea.val();
+                idea.setContent(content);
+                idea.update();
             });
         },
         activateMouseListeners: function () {
@@ -96,20 +100,16 @@
             });
         },
         select: function () {
-            this.textarea.focusTosEnd();
-            if (this.parent.parent) {
-                this.parent.activateParent();
-            }
+            this.textarea.focusToEnd();
+            this.getIdea().getParent().fired_childSelected();
         },
         deselect: function () {
-            if (this.parent.parent) {
-                this.parent.disableParent();
-            }
+            this.getIdea().getParent().fired_childRealeased();
         },
-        activateParent: function () {
+        boldText: function () {
             this.textarea.addClass("parent-focused");
         },
-        disableParent: function () {
+        unboldText: function () {
             this.textarea.removeClass("parent-focused");
         },
         highLight: function () {
@@ -126,12 +126,15 @@
                 });
             }, x);
         },
+        update: function () {
+            updateHTML();
+            updateWarning();
+        },
         updateHTML: function () {
             var levelWidth = 30,
                 level = this.idea.getLevel(),
                 margin = levelWidth * level,
-                numberOfChildren = this.idea.getNumberOfChildren(),
-                content = this.idea.getContent();
+                numberOfChildren = this.idea.getNumberOfChildren();
             
             // update the level
             this.element.children("#content").css({
@@ -139,12 +142,15 @@
             });
             // check warnings
             this.element.children("#content").children("#childrennr").html(numberOfChildren);
-            if (!this.idea.isHome() && content.length === 0) {
+        },
+        updateWarning: function () {
+            var content = this.idea.getContent();s
+            if (content.length === 0) {
                 this.showWarning("Randul este parinte si nu contine nimic");
             } else {
                 this.hideWarning();
             }
-        },
+        },        
         showWarning: function (message) {
             var atentie = this.element.children("#warning");
             atentie.html('<img src="Static/Images/warning.png" alt="Atentie" title="' + message + '">');

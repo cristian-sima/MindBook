@@ -2,19 +2,28 @@
 (function () {
     "use strict";
     var HomeIdeaTemplate = {
-        init: function (id, content) {
+        init: function (id, content, editor) {
+            this.editor = editor;
             this._super(id, content);
-        },
-        updateLevel: function () {
-            var i, child;
-            this.level = 0;
-            for (i = 0; i < this.children.length; i = i + 1) {
-                child = this.children[i];
-                child.updateLevel();
-            }
         },
         isHome: function () {
             return true;
+        },
+        createLineElement: function (container) {            
+            this.line = new HomeLine(this, container);
+        },
+        getHome: function () {
+            return this;
+        },
+        getLevel: function () {
+            return 1;
+        },
+        getEditor: function () {
+            return this.editor;
+        },       
+        fired_childSelected: function () {
+        },
+        fired_childRealeased: function () {
         }
     };
     HomeIdea = Idea.extend(HomeIdeaTemplate);

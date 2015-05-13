@@ -1,43 +1,64 @@
-/*global app,Class,Idea,$*/
+/*global app,Class,Idea,ChildLine,$*/
 (function () {
     "use strict";
     var ChildIdeaTemplate = {
-        init: function (id, content) {
-            this._super(id, content);
+        init: function (info, home) {
+            this.home = home;
+            this._super(info.id, info.content, info.parent);
+        },
+        createLineElement: function (previousIdea) {
+            this.line = new ChildLine(this, previousIdea.getLine());
+        },
+        changeParent: function (newParent) {
+            var lastPosition = newParent.getNumberOfChildren();
+            this.changeParentAtPosition(newParent, lastPosition);
+        },
+        changeParentAtPosition: function (newParent, position) {
+            if (this.hasParent()) {
+                this.getParent().removeChild(this);
+            }
+            this.parent = newParent;
+            this.parent.addChild(this, position);
+            this.updateLevel();
+        },
+        isHome: function () {
+            return false;
+        },
+        getHome: function () {
+            return this.home;
         },
         updateLevel: function () {
-            var margin = 0,
-                i = null,
-                child = null;
-            this.level = this.getParent().level + 1;
-      
-          
-            if (this.getParent().hasParent()) {
-                this.getParent().updateHTML();
-            }
+            var i, child;
+            this.level = this.getParent().getLevel() + 1;
             for (i = 0; i < this.children.length; i = i + 1) {
                 child = this.children[i];
                 child.updateLevel();
-                child.getParent().updateHTML();
             }
-            this.updateHTML();
+            this.update();
         },
-        setParent: function (parent, previousItem) {
-            if (this.getParent()) {
-                this.getParent().removeChild(this);
-                if (this.getParent().getParent()) {
-                    this.getParent().disableParent();
-                }
-                this.getParent().updateHTML();
-            }
-            this.parent = parent;
-            this.parent.addChild(this, previousItem);
-            this.parent.updateHTML();
-            this.updateLevel();
-            if (this.getParent().getParent()) {
-                this.getParent().activateParent();
+        getLevel: function () {
+            return this.level;
+        },
+        select: function () {
+            this.getLine().select();
+        },
+        deselect: function () {
+            this.getLine().deselect();
+        },
+        /* Listeners */
+        fired_childSelected: function () {
+            this.getLine().boldText();
+        },
+        fired_childRealeased: function () {
+            this.getLine().unboldText();
+        },
+        fired_tabKeyPressed: function () {
+            var previousIdea = this.getParent().getPreviousChild(this);
+            if (previousIdea) {
+                this.changeParent(previousIdea);
             }
         },
+        /* to check */        
         removeIdeaAndSaveChildren: function () {
             var parent = this.getParent(),
                 toBeSelected = parent.getPreviousChild(this),
@@ -113,9 +134,6 @@
                 }
                 this.setParent(newParent, oldParent);
             }
-        },
-        isHome: function () {
-            return false;
         }
     };
     ChildIdea = Idea.extend(ChildIdeaTemplate);

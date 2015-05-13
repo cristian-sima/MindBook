@@ -23,11 +23,31 @@
             // overwriteen             
         },
         getElements: function () {
-            this.element = $("#element-" + this.id);
         },
         insertHTMLElement: function (container) {
             var HTML = this.getContent();
             $(container).html(HTML);
+        },        
+        updateLevel: function () {
+            var i, child;
+            this.level = 0;
+            for (i = 0; i < this.children.length; i = i + 1) {
+                child = this.children[i];
+                child.updateLevel();
+            }
+        },
+        getElement: function () {
+            return this.element;
+        },
+        getIdea: function () {
+            return this.idea;
+        },
+        updateHTML: function () {
+            
+        },
+        remove: function () {
+            this.element.off();
+            this.element.remove();       
         }
     };
     Line = Class.extend(LineTemplate);
