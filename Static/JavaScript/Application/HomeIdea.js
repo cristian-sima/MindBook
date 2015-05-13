@@ -5,12 +5,6 @@
         init: function (id, content) {
             this._super(id, content);
         },
-        getHTML: function () {
-            return "<div  id='element-" + this.id + "' class='idea-div idea-home'>" + this.content +" </div>";
-        },
-        getJQueryElements: function () {
-            this.element = $("#element-" + this.id);
-        },
         updateLevel: function () {
             var i, child;
             this.level = 0;
@@ -19,9 +13,8 @@
                 child.updateLevel();
             }
         },
-        insertHTMLElement: function (container) {
-            var HTML = this.getContent();
-            $(container).html(HTML);
+        isHome: function () {
+            return true;
         }
     };
     HomeIdea = Idea.extend(HomeIdeaTemplate);

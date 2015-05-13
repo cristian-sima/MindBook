@@ -1,25 +1,32 @@
 /*global app*/
 var Editor = function Editor(data, container) {
-        this.data = data;
         this.container = container;
         this.counter = this.app;
         this.currentIdea;
-        this.init();
+        this.init(data);
     };
 Editor.prototype = {
-    init: function () {
-        var child, index;
-        this.createHomeIdea();
-        for(index in this.data.children ) {
+    init: function (data) {
+        this.createHomeLine({
+            id: data.id,
+            content: data.content
+        });
+        /*var child, index;
+            for(index in this.data.children ) {
             child = this.data.children[index];
             this.createChildIdea(child.id, child.content, this.home, this.home);
-        }
+        }*/
     },
-    createHomeIdea: function () {
-        this.home = new HomeIdea(this.data.id, this.data.content);
-        this.home.insert(this.container);
+    createHomeLine: function (idea) {
+        var homeIdea = new HomeIdea(idea.id, idea.content),
+            line = new HomeLine(homeIdea, this.container);
+        this.home = line;
     },
-    createChildIdea: function (id, content, parent, previousIdea) {   
+    crateLine: function (idea, parent) {
+        var line = new Line(idea, parent);
+        return line;
+    },
+    createChildIdea: function (id, content, parent, previousIdea) {
         var newIdea = new ChildIdea(id, content);
         newIdea.insert(previousIdea);
         newIdea.setParent(parent, previousIdea);

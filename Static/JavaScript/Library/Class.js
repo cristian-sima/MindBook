@@ -10,11 +10,17 @@
          }) ? /\b_super\b/ : /.*/;
      // The base Class implementation (does nothing)
      this.Class = function () {};
-     this.ChildIdea = function () {};
+     
+     this.Idea = function () {};
      this.HomeIdea = function () {};
+     this.ChildIdea = function () {};     
+     
+     this.Line = function () {};
+     this.HomeLine = function () {};
+     this.ChildLine = function () {};
+     
      this.Data = function () {};
      this.App = function () {};
-     this.Idea = function () {};
      // Create a new Class that inherits from this class
      Class.extend = function (prop) {
          var _super = this.prototype;

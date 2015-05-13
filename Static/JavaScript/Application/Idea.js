@@ -137,12 +137,10 @@
             }
             this.element.remove();
         },
+        isHome: function () {},
         updateHTML: function () {},
         updateLevel: function () {},
         getHTML: function () {},
-        insertHTMLElement: function (element) {},
-        getJQueryElements: function () {},
-        activateListeners: function () {},
         select: function () {},
         deselect: function () {}
     };

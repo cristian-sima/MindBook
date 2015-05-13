@@ -5,121 +5,13 @@
         init: function (id, content) {
             this._super(id, content);
         },
-        getHTML: function () {
-            function getTextarea(id, content) {
-                return "<textarea spellcheck='false' class='idea-textarea' id='textarea' data-id='" + id + "' >" + content + "</textarea>";
-            }
-
-            function getID(id) {
-                return "<div class='idea-id' style='display:none' id='id'>" + id + " </div>";
-            }
-
-            function getNumberOfChildren(nrOfChildren) {
-                return "<div class='numberOfChildren' id='childrennr'>" + nrOfChildren + "&nbsp;</div>";
-            }
-            var toReturn = "";
-            toReturn += "<div id='element-" + this.id + "' class='idea-div'> ";
-            toReturn += "<div class='warning' id='warning'>" + '<img src="Static/Images/warning.png" alt="Atentie" title="">' + "</div>";
-            toReturn += "<div class='content' id='content'>";
-            toReturn += getID(this.id);
-            toReturn += getNumberOfChildren(this.getNumberOfChildren());
-            toReturn += getTextarea(this.id, this.getContent());
-            toReturn += "</div>";
-            toReturn += "</div>";
-            return toReturn;
-        },
-        insertHTMLElement: function (previousIdea) {
-            // pentru homeidea
-            var HTML = this.getContent();
-            if (!previousIdea) {
-                $(this.parent.element).append(this.getContent());
-            } else {
-                $(HTML).insertAfter(previousIdea.element);
-            }
-        },
-        getJQueryElements: function () {
-            this.element = $("#element-" + this.id);
-            this.textarea = this.element.children("#content").children("#textarea");
-        },
-        activateListeners: function () {
-            this.activateKeyListenes();
-            this.activateMouseListeners();
-        },
-        activateKeyListenes: function () {
-            var idea = this;
-            this.textarea.on("keydown", function (event) {
-                var keyCode = event.keyCode || event.which,
-                    previousIdea;
-                if (app.data.isSpecialKey(keyCode)) {
-                    event.preventDefault();
-                }
-                switch (keyCode) {
-                    case app.data.keys.ENTER.code:
-                        app.editor.createIdea(idea.getParent());
-                        break;
-                    case app.data.keys.TAB.code:
-                        if (event.shiftKey) {
-                            // <-----
-                            idea.reduceLevel();
-                        } else {
-                            // -----> (TAB)
-                            previousIdea = idea.getParent().getPreviousChild(idea);
-                            if (previousIdea) {
-                                idea.setParent(previousIdea, idea);
-                            }
-                        }
-                        break;
-                    case app.data.keys.BACKSPACE.code:
-                        app.editor.removeIdea(idea, event);
-                        break;
-                    case app.data.keys["ARROW-UP"].code:
-                        app.editor.moveUp();
-                        break;
-                    case app.data.keys["ARROW-DOWN"].code:
-                        app.editor.moveDown();
-                        break;
-                }
-            });
-            this.textarea.on("keyup", function () {
-                idea.setContent(idea.textarea.val());
-                idea.updateHTML();
-            });
-        },
-        activateMouseListeners: function () {
-            var idea = this;
-            this.textarea.on("click", function () {
-                app.editor.setCurrentIdea(idea);
-            });
-            this.element.on("click", function () {
-                app.editor.setCurrentIdea(idea);
-            });
-        },
-        select: function () {
-            this.textarea.focusToEnd();
-            if (this.parent.parent) {
-                this.parent.activateParent();
-            }
-        },
-        deselect: function () {
-            if (this.parent.parent) {
-                this.parent.disableParent();
-            }
-        },
-        activateParent: function () {
-            this.textarea.addClass("parent-focused");
-        },
-        disableParent: function () {
-            this.textarea.removeClass("parent-focused");
-        },
         updateLevel: function () {
             var margin = 0,
                 i = null,
                 child = null;
             this.level = this.getParent().level + 1;
-            margin = this.level * 30;
-            this.element.children("#content").css({
-                marginLeft: margin + "px"
-            });
+      
+          
             if (this.getParent().hasParent()) {
                 this.getParent().updateHTML();
             }
@@ -129,26 +21,6 @@
                 child.getParent().updateHTML();
             }
             this.updateHTML();
-        },
-        updateHTML: function () {
-            var nr = this.children.length;
-            //  if (nr === 0) {
-            nr = "";
-            // }
-            this.element.children("#content").children("#childrennr").html(nr);
-            if (this.isParent() && this.getContent().length === 0) {
-                this.showWarning("Randul este parinte si nu contine nimic");
-            } else {
-                this.hideWarning();
-            }
-        },
-        showWarning: function (message) {
-            var atentie = this.element.children("#warning");
-            atentie.html('<img src="Static/Images/warning.png" alt="Atentie" title="' + message + '">');
-        },
-        hideWarning: function () {
-            var atentie = this.element.children("#warning");
-            atentie.html('');
         },
         setParent: function (parent, previousItem) {
             if (this.getParent()) {
@@ -165,10 +37,6 @@
             if (this.getParent().getParent()) {
                 this.getParent().activateParent();
             }
-        },
-        deleteHTML: function () {
-            this.element.remove();
-            this.textarea.off();
         },
         removeIdeaAndSaveChildren: function () {
             var parent = this.getParent(),
@@ -205,20 +73,6 @@
             app.editor.setCurrentIdea(toBeSelected);
             this.getParent().removeChild(this);
             this.deleteHTML();
-        },
-        highLight: function () {
-            clearTimeout(this.highlightTimeout);
-            var element = this.textarea,
-                oldColor = element.css("background"),
-                x = 400;
-            element.css({
-                "background": "rgb(255, 253, 70)"
-            });
-            this.highlightTimeout = setTimeout(function () {
-                element.css({
-                    "background": oldColor
-                });
-            }, x);
         },
         updateChildrenPosition: function () {
             var itemBefore = this,
@@ -259,6 +113,9 @@
                 }
                 this.setParent(newParent, oldParent);
             }
+        },
+        isHome: function () {
+            return false;
         }
     };
     ChildIdea = Idea.extend(ChildIdeaTemplate);
