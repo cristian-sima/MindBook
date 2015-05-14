@@ -1,4 +1,4 @@
-/*global app,$,HomeIdea,ChildIdea,Data,App*/
+/*global app,$,HomeIdea,ChildIdea,Data,App,GUI,Gateway,Editor*/
 (function () {
     'use strict';
     App = function App() {
@@ -18,9 +18,9 @@
             this.gateway.start();
         },
         load: function (data) {
-            this.home = parseInt(data.home);
-            this.counter = parseInt(data.counter);
-          //  this.start();
+            this.home = parseInt(data.home, 10);
+            this.counter = parseInt(data.counter, 10);
+            //  this.start();
             this.gui.start();
         },
         loadData: function () {

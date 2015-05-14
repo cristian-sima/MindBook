@@ -1,16 +1,18 @@
-/*global app,Class,Idea,$*/
+/*global app,Class,Idea,HomeLine*/
 (function () {
     "use strict";
     var HomeIdeaTemplate = {
         init: function (id, content, editor) {
             this.editor = editor;
             this._super(id, content);
+            this.createLineElement();
         },
         isHome: function () {
             return true;
         },
-        createLineElement: function (container) {            
-            this.line = new HomeLine(this, container);
+        createLineElement: function () {
+            var element = this.getEditor().getContainer();
+            this.line = new HomeLine(this, element);
         },
         getHome: function () {
             return this;
@@ -20,10 +22,6 @@
         },
         getEditor: function () {
             return this.editor;
-        },       
-        fired_childSelected: function () {
-        },
-        fired_childRealeased: function () {
         }
     };
     HomeIdea = Idea.extend(HomeIdeaTemplate);

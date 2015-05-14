@@ -1,39 +1,113 @@
-/*global app,Class,$*/
+/*global app,Class,$,ChildIdea*/
 (function () {
     "use strict";
     var IdeaTemplate = {
         // constructor
-        init: function (id, content) {
-            this.id = parseInt(id);
-            this.level = 0;
+        init: function (id) {
+            this.id = parseInt(id, 10);
             this.children = [];
             this.parent = null;
+            this.content = "";
+        },
+        /* Its methods */
+        getParent: function () {
+            return this.parent;
+        },
+        setContent: function (content) {
             this.content = content;
         },
-        addChild: function (child, previousItem) {
-            var position = null;
-            if (previousItem) {
-                position = previousItem.getParent().getChildIndex(previousItem) + 1;
-                if (position === 0) {
-                    position = previousItem.getParent().getNumberOfChildren();
-                }
-            } else {
-                position = 0;
+        getContent: function () {
+            return this.content;
+        },
+        getEditor: function () {
+            return this.getHome().getEditor();
+        },
+        getLine: function () {
+            return this.line;
+        },
+        getPosition: function () {
+            return this.getParent().getPositionOfChild(this);
+        },
+        getJSON: function () {
+            var data = {
+                "id": this.id,
+                "content": this.getContent(),
+                "children": {}
+            },
+                position = null,
+                child = null;
+            for (position = 0; position < this.children.length; position = position + 1) {
+                child = this.children[position];
+                data.children[child.id] = child.getJSON();
             }
-            this.children.insert(position, child);
+            return data;
+        },
+        remove: function () {
+            var position, child;
+            for (position = 0; position < this.children.length; position = position + 1) {
+                child = this.children[position];
+                child.remove();
+                child = null;
+            }
+            if (this.getParent()) {
+                this.getParent().removeChild(this);
+            }
+            this.getLine().remove();
+            this.line = null;
+        },
+        update: function () {
+            this.updateLine();
+        },
+        updateLine: function () {
+            if (this.getLine()) {
+                this.getLine().update();
+            }
+        },
+        /* Parent Methods */
+        createBrother: function (childInfo) {
+            var home = this.getHome(),
+                parent = this.getParent(),
+                position = childInfo.position,
+                idea = new ChildIdea(childInfo, home),
+                ideaBefore = null;
+            if (this.isParent()) {
+                ideaBefore = this.getLastPossibleChild();
+            } else {
+                ideaBefore = parent.getChildAtPosition(position - 1);
+            }
+            if (!ideaBefore) {
+                ideaBefore = this;
+            }
+            parent.addChildAtPosition(idea, position);
+            idea.setLine(ideaBefore.getLine());
+            return idea;
         },
         removeChild: function (child) {
-            var index = this.children.indexOf(child);
-            if (index > -1) {
-                this.children.splice(index, 1);
+            var position = this.getPositionOfChild(child);
+            if (position > -1) {
+                this.children.splice(position, 1);
             }
-            this.updateLevel();
-            this.updateHTML();
+            this.updateLine();
         },
-        getChildByIndex: function (id) {
-            var i, child, result;
-            for (i = 0; i < this.children.length; i = i + 1) {
-                child = this.children[i];
+        addChild: function (child) {
+            this.addChildAtPosition(child, 0);
+        },
+        addChildAtPosition: function (child, position) {
+            this.children.insert(position, child);
+            this.updateLine();
+            if (child.getParent()) {
+                child.getParent().removeChild(child);
+            }
+            child.setParent(this);
+            child.updateLevel();
+        },
+        getChildAtPosition: function (position) {
+            return this.children[position];
+        },
+        getChildById: function (id) {
+            var position, child, result;
+            for (position = 0; position < this.children.length; position = position + 1) {
+                child = this.children[position];
                 if (child.id === id) {
                     return child;
                 }
@@ -44,20 +118,20 @@
             }
             return null;
         },
-        getChildIndex: function (currentIdea) {
-            var j, idea;
-            for (j = 0; j < this.children.length; j = j + 1) {
-                idea = this.children[j];
+        getPositionOfChild: function (currentIdea) {
+            var position, idea;
+            for (position = 0; position < this.children.length; position = position + 1) {
+                idea = this.children[position];
                 if (idea.id === currentIdea.id) {
-                    return j;
+                    return position;
                 }
             }
-            return -1;
+            return null;
         },
-        getIndexOfLastIdeaFromChildren: function () {
+        getLastPossibleChild: function () {
             if (this.isParent()) {
                 var lastChild = this.getLastChild();
-                return lastChild.getIndexOfLastIdeaFromChildren();
+                return lastChild.getLastPossibleChild();
             }
             return this;
         },
@@ -67,22 +141,22 @@
         getLastChild: function () {
             return this.children[this.children.length - 1];
         },
-        getPreviousChild: function (currentIdea) {
-            var i, idea;
-            for (i = this.children.length - 1; i > 0; i = i - 1) {
-                idea = this.children[i];
+        getChildBefore: function (currentIdea) {
+            var position, idea;
+            for (position = this.children.length - 1; position > 0; position = position - 1) {
+                idea = this.children[position];
                 if (idea.id === currentIdea.id) {
-                    return this.children[i - 1];
+                    return this.children[position - 1];
                 }
             }
             return null;
         },
-        getNextChild: function (currentIdea) {
-            var i, idea;
-            for (i = 0; i < this.children.length - 1; i = i + 1) {
-                idea = this.children[i];
+        getChildAfter: function (currentIdea) {
+            var position, idea;
+            for (position = 0; position < this.children.length - 1; position = position + 1) {
+                idea = this.children[position];
                 if (idea.id === currentIdea.id) {
-                    return this.children[i + 1];
+                    return this.children[position + 1];
                 }
             }
             return null;
@@ -93,56 +167,15 @@
         getNumberOfChildren: function () {
             return this.children.length;
         },
-        hasParent: function () {
-            return (!this.getParent());
+        fired_childSelected: function () {
+            // empty
         },
-        getParent: function () {
-            return this.parent;
+        fired_childRealeased: function () {
+            // empty
         },
-        setContent: function (content) {
-            this.content = content;
-        },
-        getContent: function () {
-            return this.content;
-        },
-        insert: function (previousIdea) {
-            this.insertHTMLElement(previousIdea);
-            this.getJQueryElements();
-            this.activateListeners();
-        },
-        getJSON: function () {
-            var data = {
-                "id": this.id,
-                "content": this.getContent(),
-                "children": {}
-            },
-                index = null,
-                child = null;
-            for (index = 0; index < this.children.length; index = index + 1) {
-                child = this.children[index];
-                data.children[child.id] = child.getJSON();
-            }
-            return data;
-        },        
-        remove: function () {
-            var i, child;
-            for(i=0; i< this.children.length; i++ ){
-                child = this.children[i];
-                child.remove();
-                child = null;
-            }
-            if(this.textarea) {
-                this.textarea.off();
-                this.textarea.remove();
-            }
-            this.element.remove();
-        },
-        isHome: function () {},
-        updateHTML: function () {},
-        updateLevel: function () {},
-        getHTML: function () {},
-        select: function () {},
-        deselect: function () {}
+        updateLevel: function () {
+            // empty
+        }
     };
     Idea = Class.extend(IdeaTemplate);
 }($));

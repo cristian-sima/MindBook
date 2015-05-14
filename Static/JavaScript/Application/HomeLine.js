@@ -22,6 +22,9 @@
         insertHTMLElement: function (container) {
             var HTML = this.getContent();
             $(container).html(HTML);
+        },
+        getPreviousLine: function () {
+            // empty
         }
     };
     HomeLine = Line.extend(HomeLineTemplate);

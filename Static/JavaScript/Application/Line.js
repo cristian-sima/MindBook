@@ -14,21 +14,10 @@
             this.activateListeners();
             this.update();
         },
-        getHTML: function () {
-            // overwriteen             
-        },
-        insertElement: function () {
-            // overwriteen 
-        },
-        activateListeners: function () {
-            // overwriteen             
-        },
-        getElements: function () {
-        },
         insertHTMLElement: function (container) {
             var HTML = this.getContent();
             $(container).html(HTML);
-        },        
+        },
         updateLevel: function () {
             var i, child;
             this.level = 0;
@@ -43,12 +32,22 @@
         getIdea: function () {
             return this.idea;
         },
-        update: function () {
-            
-        },
+        update: function () {},
         remove: function () {
             this.element.off();
-            this.element.remove();       
+            this.element.remove();
+        },
+        getHTML: function () {
+            // overwriteen             
+        },
+        insertElement: function () {
+            // overwriteen 
+        },
+        activateListeners: function () {
+            // overwriteen             
+        },
+        getElements: function () {
+            // empty
         }
     };
     Line = Class.extend(LineTemplate);

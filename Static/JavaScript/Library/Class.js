@@ -19,6 +19,8 @@
      this.HomeLine = function () {};
      this.ChildLine = function () {};
      
+     this.Editor = function () {};
+     
      this.Data = function () {};
      this.App = function () {};
      // Create a new Class that inherits from this class

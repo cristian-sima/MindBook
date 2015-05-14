@@ -14,20 +14,20 @@
         getHTML: function () {
             var id = this.idea.id,
                 content = this.idea.getContent(),
-                nrOfChildren = this.idea.getNumberOfChildren();
+                nrOfChildren = this.idea.getNumberOfChildren(),
+                toReturn = "";
 
             function getTextarea() {
                 return "<textarea spellcheck='false' class='idea-textarea' id='textarea' data-id='" + id + "' >" + content + "</textarea>";
             }
 
             function getID() {
-                return "<div class='idea-id' style='display:none' id='id'>" + id + " </div>";
+                return "<div class='idea-id' style='' id='id'>" + id + " </div>";
             }
 
             function getNumberOfChildren() {
                 return "<div class='numberOfChildren' id='childrennr'>" + nrOfChildren + "&nbsp;</div>";
             }
-            var toReturn = "";
             toReturn += "<div id='element-" + id + "' class='idea-div'> ";
             toReturn += "<div class='warning' id='warning'>" + '<img src="Static/Images/warning.png" alt="Atentie" title="">' + "</div>";
             toReturn += "<div class='content' id='content'>";
@@ -51,14 +51,13 @@
             var idea = this.idea,
                 editor = idea.getEditor();
             this.textarea.on("keydown", function (event) {
-                var keyCode = event.keyCode || event.which,
-                    previousIdea;
+                var keyCode = event.keyCode || event.which;
                 if (app.data.isSpecialKey(keyCode)) {
                     event.preventDefault();
                 }
                 switch (keyCode) {
                     case app.data.keys.ENTER.code:
-                        idea.fired_enterKeyPressed();
+                        editor.fired_enterKeyPressed(idea);
                         break;
                     case app.data.keys.TAB.code:
                         if (event.shiftKey) {
@@ -129,7 +128,6 @@
                 level = this.idea.getLevel(),
                 margin = levelWidth * level,
                 numberOfChildren = this.idea.getNumberOfChildren();
-            
             // update the level
             this.element.children("#content").css({
                 marginLeft: margin + "px"
@@ -139,12 +137,12 @@
         },
         updateWarning: function () {
             var content = this.idea.getContent();
-            if (content.length === 0) {
+            if (this.getIdea().isParent() && content.length === 0) {
                 this.showWarning("Randul este parinte si nu contine nimic");
             } else {
                 this.hideWarning();
             }
-        },        
+        },
         showWarning: function (message) {
             var atentie = this.element.children("#warning");
             atentie.html('<img src="Static/Images/warning.png" alt="Atentie" title="' + message + '">');
@@ -152,6 +150,9 @@
         hideWarning: function () {
             var atentie = this.element.children("#warning");
             atentie.html('');
+        },
+        getPreviousLine: function () {
+            return this.getIdea().getParent().getLine();
         }
     };
     ChildLine = Line.extend(ChildLineTemplate);
