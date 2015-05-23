@@ -226,3 +226,23 @@ header #search:-moz-placeholder {
 
 
 /* Visual List */
+
+#visual .name {
+    border: 1px solid #f1f1f1;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+#visual .name:hover {
+    background: #9999ff;
+    cursor:pointer;
+}
+
+#visual li {
+    margin-bottom: 14px;
+    list-style-type: none;
+}
+
+#visual ul {
+    padding-left: 25px;
+}

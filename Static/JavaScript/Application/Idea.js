@@ -3,11 +3,11 @@
     "use strict";
     var IdeaTemplate = {
         // constructor
-        init: function (id) {
+        init: function (id, content) {
             this.id = parseInt(id, 10);
             this.children = [];
             this.parent = null;
-            this.content = "";
+            this.content = content;
         },
         /* Its methods */
         getParent: function () {

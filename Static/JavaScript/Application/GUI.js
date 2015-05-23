@@ -9,7 +9,6 @@ GUI.prototype = {
     init: function () {
     },
     start: function () {
-        this.menu.selectOption(app.startingContent);
     },
     showLoading: function () {
         NProgress.start();
@@ -23,6 +22,6 @@ GUI.prototype = {
         }
         this.currentContent = $("#" + id);
         this.currentContent.show();
-        app.selectContent(id);
+        this.menu.selectOption(id);
     }
 };

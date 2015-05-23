@@ -20,8 +20,7 @@
         load: function (data) {
             this.home = parseInt(data.home, 10);
             this.counter = parseInt(data.counter, 10);
-            //  this.start();
-            this.gui.start();
+            this.selectContent(this.startingContent);
         },
         loadData: function () {
             this.data = new Data();
@@ -32,21 +31,25 @@
         fired_applicationIsConnected: function () {
             this.start();
         },
-        selectContent: function (id) {
-            switch (id) {
-                case "list":
-                    this.selectList();
+        selectContent: function (content, idea) {
+            this.gui.selectContent(content);
+            switch (content) {
+                case "visual":
+                    this.selectDefaultVisual();
                     break;
                 case "editor":
-                    this.selectEditor(app.home);
+                    this.selectEditor(idea);
                     break;
             }
         },
-        selectList: function () {
+        selectDefaultVisual: function () {
             if (this.editor) {
                 this.editor.close();
                 delete this.editor;
             }
+            app.gateway.getIdea(this.home, function (data) {
+                app.visual = new Visual("visual", data);
+            });
         },
         selectEditor: function (id) {
             if (!id) {

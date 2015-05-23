@@ -1,10 +1,4 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
+/*global app*/
 function Menu(gui) {
     this.element = $("#menu");
     this.gui = gui;
@@ -21,7 +15,7 @@ Menu.prototype = {
         });
     },
     fired_changeContent: function (option) {
-        this.selectOption(option);
+        app.selectContent(option);
     },
     selectOption: function (option) {
         if(this.option) {
@@ -29,6 +23,5 @@ Menu.prototype = {
         }
         this.option = option;
         this.element.find("#option-" + this.option).addClass("selected");
-        this.gui.selectContent(option);
     }
 };
