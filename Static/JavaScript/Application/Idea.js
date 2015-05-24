@@ -82,6 +82,24 @@
             idea.setLine(ideaBefore.getLine());
             return idea;
         },
+        createChild: function (childInfo) {
+            var home = this.getHome(),
+                parent = this,
+                position = childInfo.position,
+                idea = new ChildIdea(childInfo, home),
+                ideaBefore = null;
+            if (this.getNumberOfChildren === 0) {
+                ideaBefore = this;
+            } else {
+                ideaBefore = this.getLastPossibleChild();
+            }
+            if (!ideaBefore) {
+                ideaBefore = this;
+            }
+            parent.addChildAtPosition(idea, position);
+            idea.setLine(ideaBefore.getLine());
+            return idea;
+        },
         removeChild: function (child) {
             var position = this.getPositionOfChild(child);
             if (position > -1) {

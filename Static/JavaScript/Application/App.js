@@ -102,7 +102,7 @@
             return temp;
         },
         createEditor: function (id, elementHTML) {
-            app.gateway.getIdea(id, function (data) {
+            app.gateway.getEntireIdea(id, function (data) {
                 data = app.prepareData(data);
                 app.editor = new Editor(data, elementHTML);
             });
