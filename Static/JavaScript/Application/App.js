@@ -48,6 +48,7 @@
                 delete this.editor;
             }
             app.gateway.getEntireIdea(this.home, function (data) {
+                data = app.prepareData(data);
                 app.visual = new Visual("visual", data);
             });
         },
@@ -57,7 +58,7 @@
             }
             this.editor = this.createEditor(id, $("#app"));
         },
-        extractData: function (data) {
+        prepareData: function (data) {
             var temp = {
                 id: parseInt(data.id, 10),
                 parent: null,
@@ -98,10 +99,11 @@
                 parent.children[child.id] = child;
                 child.parent = parent;
             }
-            this.home = temp;
+            return temp;
         },
         createEditor: function (id, elementHTML) {
             app.gateway.getIdea(id, function (data) {
+                data = app.prepareData(data);
                 app.editor = new Editor(data, elementHTML);
             });
         }
