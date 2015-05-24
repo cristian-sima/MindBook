@@ -10,8 +10,7 @@
             
             data.content = "";
             data.children = {};
-            
-            
+                        
             
             this.createHomeIdea({
                 id: data.id,
@@ -19,11 +18,11 @@
             });
             firstIdea = this.createFirstChildIdea({
                 id: this.counter,
-                content: "",
-                children: {}
+                content: ""
             });
-            console.log(firstIdea);
             this.setCurrentIdea(firstIdea);
+            
+            this.incrementCounter();
         }
     };
     DefaultEditor = Editor.extend(DefaultEditorTemplate);
