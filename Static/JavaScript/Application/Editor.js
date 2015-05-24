@@ -1,14 +1,15 @@
 /*global app, Editor, HomeIdea, ChildIdea*/
 (function () {
-    'use strict';
-    Editor = function Editor(data, container) {
-        this.container = container;
-        this.counter = app.counter;
-        this.currentIdea = null;
-        this.init(data);
-    };
-    Editor.prototype = {
-        init: function (data) {
+    "use strict";
+    var EditorTemplate = {
+        // constructor
+        init: function (data, container) {
+            this.container = container;
+            this.counter = app.counter;
+            this.currentIdea = null;
+            this.initEditor(data);
+        },
+        initEditor: function (data) {
             var childId = null,
                 child = null,
                 firstIdea = null,
@@ -174,4 +175,5 @@
             this.setCurrentIdea(newIdea);
         }
     };
+    Editor = Class.extend(EditorTemplate);
 }());

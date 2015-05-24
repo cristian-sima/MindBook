@@ -20,6 +20,8 @@
      this.ChildLine = function () {};
      
      this.Editor = function () {};
+     this.StandardEditor = function () {};
+     this.DefaultEditor = function () {};
      
      this.Data = function () {};
      this.App = function () {};

@@ -33,7 +33,11 @@
         },
         selectContent: function (content, idea) {
             this.gui.selectContent(content);
+            this.closeCurrentSection();
             switch (content) {
+                case "default":
+                    this.selectDefaultEditor();
+                    break;
                 case "visual":
                     this.selectDefaultVisual();
                     break;
@@ -43,10 +47,6 @@
             }
         },
         selectDefaultVisual: function () {
-            if (this.editor) {
-                this.editor.close();
-                delete this.editor;
-            }
             app.gateway.getEntireIdea(this.home, function (data) {
                 data = app.prepareData(data);
                 app.visual = new Visual("visual", data);
@@ -57,6 +57,25 @@
                 id = this.home;
             }
             this.editor = this.createEditor(id, $("#app"));
+        },
+        selectDefaultEditor: function (id) {
+            this.editor = this.createEditor(id, $("#app"), "default");
+        },
+        createEditor: function (id, elementHTML, type) {
+            app.gateway.getEntireIdea(id, function (data) {
+                data = app.prepareData(data);
+                if (type === "default") {
+                    app.editor = new StandardEditor(data, elementHTML);
+                } else {
+                    app.editor = new DefaultEditor(data, elementHTML);
+                }
+            });
+        },
+        closeCurrentSection: function () {
+            if (this.editor) {
+                this.editor.close();
+                delete this.editor;
+            }
         },
         prepareData: function (data) {
             var temp = {
@@ -100,12 +119,6 @@
                 child.parent = parent;
             }
             return temp;
-        },
-        createEditor: function (id, elementHTML) {
-            app.gateway.getEntireIdea(id, function (data) {
-                data = app.prepareData(data);
-                app.editor = new Editor(data, elementHTML);
-            });
         }
     };
 }($));
