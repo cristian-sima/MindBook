@@ -3,55 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-function Visual(id, rawData) {
+function Visual(id, data) {
     this.id = id;
     this.element = $("#" + this.id);
-    this.extractData(rawData);
+    this.home = data;
     this.init();
 };
-Visual.prototype = {
-    extractData: function (data) {
-        var temp = {
-            id: parseInt(data.id),
-            parent: null,
-            content: data.content
-        };
-        temp.children = {};
-
-        function findParentOfChild(current, id) {
-            var child, i;
-            if (current.id === id) {
-                return current;
-            }
-            for (i in current.children) {
-                child = current.children[i];
-                var found = findParentOfChild(child, id);
-                if (found) {
-                    return found;
-                }
-            }
-            return null;
-        }
-        var currentParentArray = temp,
-            i = 0,
-            child = null;
-        for (i = 0; i < data.children.length; i = i + 1) {
-            c = data.children[i];
-            var child = {
-                id: parseInt(c.id),
-                content: c.content,
-                children: {}
-            };
-            parent = findParentOfChild(temp, parseInt(c.parent));
-            parent.children[child.id] = child;
-            child.parent = parent;
-        }
-        this.home = temp;
-    },
+Visual.prototype = {    
     init: function () {
         this.element.html(this.showIdea(this.home));
         this.activateListeners();
-        console.log(this.home)
     },
     showIdea: function (idea) {
         var toReturn = "",
