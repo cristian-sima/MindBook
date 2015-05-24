@@ -9,32 +9,7 @@
             this.currentIdea = null;
             this.initEditor(data);
         },
-        initEditor: function (data) {
-            var childId = null,
-                child = null,
-                firstIdea = null,
-                firstChild = null;
-            this.createHomeIdea({
-                id: data.id,
-                content: data.content
-            });
-            if (Object.size(data.children) !== 0) {
-                // get the first one
-                firstChild = data.children[Object.keys(data.children)[0]];
-                firstIdea = this.loadFirstIdea(firstChild);
-                delete(data.children[firstIdea.id]);
-                // load children
-                this.loadIdeas(this.home, data.children);
-                // punem restul de copii 
-            } else {
-                firstIdea = this.loadFirstIdea({
-                    id: this.counter,
-                    content: "",
-                    children: {}
-                });
-            }
-            this.setCurrentIdea(firstIdea);
-        },
+        initEditor: function (data) {},
         loadFirstIdea: function (firstChild) {
             var childIdea = this.createFirstChildIdea({
                 id: firstChild.id,
@@ -164,8 +139,10 @@
             return this.container;
         },
         close: function () {
-            this.home.remove();
-            this.home = null;
+            if (this.home) {
+                this.home.remove();
+                this.home = null;
+            }
         },
         fired_enterKeyPressed: function (idea) {
             var newIdea = this.createEmptyIdea(idea, idea.getPosition() + 1);
