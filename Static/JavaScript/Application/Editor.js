@@ -19,7 +19,6 @@
                 content: data.content
             });
             if (Object.size(data.children) !== 0) {
-                console.log('are')
                 // get the first one
                 firstChild = data.children[Object.keys(data.children)[0]];
                 firstIdea = this.loadFirstIdea(firstChild);
@@ -42,7 +41,6 @@
                 content: firstChild.content
             });
             // load its children
-            console.log(firstChild);
             this.loadIdeas(childIdea, firstChild.children);
             return childIdea;
         },
@@ -53,7 +51,6 @@
             for (childId in children) {
                 if (children.hasOwnProperty(childId)) {
                     child = children[childId];
-                    console.log(child);
                     childIdea = this.createChildIdea(parentIdea, child);
                     this.loadIdeas(childIdea, child.children);
                 }
