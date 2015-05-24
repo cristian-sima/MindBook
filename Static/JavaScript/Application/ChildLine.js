@@ -58,7 +58,8 @@
                 }
                 switch (keyCode) {
                     case app.data.keys.ENTER.code:
-                        editor.fired_enterKeyPressed(idea);
+                        editor.fired_enterKeyPressed(idea);                        
+                        idea.updateOnServer();
                         break;
                     case app.data.keys.TAB.code:
                         if (event.shiftKey) {
@@ -68,6 +69,7 @@
                             // -----> (TAB)
                             idea.fired_tabKeyPressed();
                         }
+                        idea.updateOnServer();
                         break;
                     case app.data.keys.BACKSPACE.code:
                         editor.removeIdea(idea, event);
@@ -80,10 +82,14 @@
                         break;
                 }
             });
-            this.textarea.on("keyup", function () {
-                var content = idea.getLine().textarea.val();
-                idea.setContent(content);
-                idea.updateLine();
+            this.textarea.on("keyup", function (event) {
+                var content = idea.getLine().textarea.val(),
+                    keyCode = event.keyCode || event.which;;
+                    idea.setContent(content);
+                    idea.updateLine();
+                if (app.data.isModyfingKey(keyCode)) {
+                    idea.updateOnServer();
+                }
             });
         },
         activateMouseListeners: function () {
@@ -146,7 +152,7 @@
         },
         showProblem: function (message) {
             var problem = this.element.children("#problem");
-            problem.html('<img src="Static/Images/problem.png" alt="Atentie" title="' + message + '">');            
+            problem.html('<img src="Static/Images/problem.png" alt="Atentie" title="' + message + '">');
         },
         hideProblem: function () {
             var problem = this.element.children("#problem");

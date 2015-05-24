@@ -193,6 +193,9 @@
         },
         updateLevel: function () {
             // empty
+        },
+        updateOnServer: function () {            
+            this.getEditor().updateIdeaOnServer(this.id, this.getContent(), this.getParent().id, this);
         }
     };
     Idea = Class.extend(IdeaTemplate);

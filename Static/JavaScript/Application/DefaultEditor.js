@@ -8,7 +8,7 @@
         initEditor: function (data) {
             var firstIdea = null;
             
-            data.content = "";
+            data.content = "Live your beliefs and you can turn the world around";
             data.children = {};
                         
             
@@ -18,7 +18,7 @@
             });
             firstIdea = this.createNewFirstChildIdea();
             
-            this.incrementCounter();
+            this.setCurrentIdea(firstIdea);
         }
     };
     DefaultEditor = Editor.extend(DefaultEditorTemplate);

@@ -22,12 +22,6 @@
         case "init":
             echo $book->getInitData();
             break;
-        case "createIdea":
-            $parent = Request::extract("parent");
-            $content = Request::extract("content");
-            $id = Request::extract("id");
-            echo $book->createIdea($parent, $content, $id);
-            break;
         case "getIdea":
             $id = Request::extract("id");
             $childIdea = new ChildIdea($id);
@@ -43,9 +37,38 @@
         case "findIdeas":
             $term = Request::extract("term");
             echo $book->findIdeas($term);
-            break;   
+            break;
+        case "createIdea":
+            break;
+        case "changeIdeaContent":
+            break;
+        case "updateIdea":
+            $id = Request::extract("id");
+            $ideaExists = $book->checkIdeaExists($id);
+            $newContent = Request::extract("content");
+            $parent = Request::extract("parent");
+           
+            
+            if($ideaExists) {
+                // UPDATE IT
+                $childIdea = new ChildIdea($id);
+                $childIdea->setContent($newContent);     
+                $result = $childIdea->setParent($parent);
+                
+            } else {
+                $result = $book->createIdea($parent, $newContent, $id);           
+            }        
+            echo $result;
+            
+            break;
+            
+        /* to delete */
+        case "clear":
+            $book->clearAll();
+            echo '<meta http-equiv="refresh" content="0; url=../" />';
+            break;
         default :
-            echo "Provide action";
+            echo "Provide action!";
             break;
         
     }

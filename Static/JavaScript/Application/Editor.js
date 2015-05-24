@@ -5,7 +5,6 @@
         // constructor
         init: function (data, container) {
             this.container = container;
-            this.counter = app.counter;
             this.currentIdea = null;
             this.initEditor(data);
         },
@@ -36,10 +35,9 @@
         },
         createNewFirstChildIdea: function () {
             var idea = this.createFirstChildIdea({
-                id: this.counter,
+                id: this.getCounter(),
                 content: ""
             });
-            this.createIdeaOnServer(this.counter, "", this.home.id, idea);
             this.incrementCounter();
             return idea;
         },
@@ -62,21 +60,20 @@
         },
         createEmptyIdea: function (parentIdea, position) {
             var newIdea = parentIdea.createBrother({
-                id: this.counter,
+                id: this.getCounter(),
                 parent: parentIdea,
                 position: position,
                 content: ""
             });
-            app.gateway.createIdea({
-                id: this.counter,
-                parent: parentIdea.id,
-                content: ""
-            }, function (status) {});
+            
+            // 
+            
+            
             this.incrementCounter();
             return newIdea;
         },
         incrementCounter: function () {
-            this.counter = this.counter + 1;
+            app.incrementCounter();
         },
         setCurrentIdea: function (idea) {
             var oldIdea = this.currentIdea;
@@ -172,11 +169,32 @@
                         i.getLine().hideProblem();
                     }
                 };
-            }());
+            }(idea));
             app.gateway.createIdea({
                 id: id,
                 parent: parent,
                 content: content
+            }, functie);
+        },
+        getCounter: function () {
+            return app.getCounter();
+        },
+        updateIdeaOnServer: function (id, newContent, parent, idea) {
+            this.incrementCounter();
+            var functie = (function () {
+                var i = idea;
+                return function (status) {
+                    if (status !== true) {
+                        i.getLine().showProblem("Continutul nu a putut fi modificat");
+                    } else {
+                        i.getLine().hideProblem();
+                    }
+                };
+            }(idea));
+            app.gateway.updateIdea({
+                id: id,
+                content: newContent,
+                parent: parent
             }, functie);
         }
     };

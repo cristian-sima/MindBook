@@ -57,19 +57,19 @@ class Idea {
 
             return $toReturn;
         }
-        
+
         function getSQL($regex) {
             return "SELECT id, path, content, parent
             FROM idea
-            WHERE path REGEXP '". $regex . "'
+            WHERE path REGEXP '" . $regex . "'
             ORDER BY parent ASC ";
         }
 
         $regex = getRegex($level, $this->path, $this->id);
         $sql = getSQL($regex);
-        
-        
-        
+
+
+
         // echo "Regex: <b>/" . $regex . "/gm</b><br />";
         // echo "SQL:<pre> " . $sql . "</pre><br />";
 
@@ -77,16 +77,16 @@ class Idea {
 
         $sth->execute();
 
-        
+
         foreach ($sth->fetchAll() as $row) {
             $id = $row["id"];
             $parent = $row["parent"];
             $content = $row["content"];
-            
+
             $child = array("id" => $id,
-                            "parent" => $parent,
-                            "content" => $content);
-            
+                "parent" => $parent,
+                "content" => $content);
+
             array_push($this->children, $child);
         }
     }
@@ -98,7 +98,7 @@ class Idea {
     public function getChildren() {
         $this->getChildrenAtLevel(0);
     }
-    
+
     public function getParent() {
         return $this->parent;
     }
@@ -114,7 +114,61 @@ class Idea {
     public function getPath() {
         return $this->path;
     }
+
+    public function setContent($newContent) {
+        $stmt = Database::$db->prepare('UPDATE idea
+        SET content = :content       
+        WHERE id = :id ');
+        $stmt->bindParam(':id', $this->id);
+        $stmt->bindParam(':content', $newContent);
+        $stmt->execute();
+
+        $this->content = $newContent;
+        return "true";
+    }
     
+    public function setParent($newParent) {
+        
+        $parent = new ChildIdea($newParent);
+        $path = $parent->getPath() . "@" . $parent->getId();
+        
+        $stmt = Database::$db->prepare('UPDATE idea
+        SET parent = :parent, path = :path       
+        WHERE id = :id ');
+        $stmt->bindParam(':id', $this->id);
+        $stmt->bindParam(':parent', $newParent);
+        $stmt->bindParam(':path', $path);
+        $stmt->execute();
+
+        $this->content = $newParent;
+        return "true";
+    }
+    
+    
+    public function remove() {
+        // move the children to the grandparent
+        
+        $stmt = Database::$db->prepare('UPDATE idea
+        SET parent = :parent, path = :path       
+        WHERE parent = :id ');
+        $stmt->bindParam(':id', $this->id);
+        $stmt->bindParam(':parent', $this->getParent());
+        $stmt->bindParam(':path', $this->getPath());
+        $stmt->execute();
+        
+        // delete idea
+        $stmt2 = Database::$db->prepare('DELETE from idea
+        WHERE parent = :id ');
+        $stmt2->bindParam(':id', $this->id);
+        $stmt2->bindParam(':parent', $this->getParent());
+        $stmt2->execute();
+        
+        
+
+        $this->content = $newParent;
+        return "true";
+    }
+
     public function __toString() {
 
         $array = array("id" => $this->id,

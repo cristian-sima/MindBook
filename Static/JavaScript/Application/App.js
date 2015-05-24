@@ -6,6 +6,7 @@
         this.gateway = new Gateway();
         this.home = null;
         this.startingContent = "default";
+        this.counter = null;
         this.init();
     };
     App.prototype = {
@@ -119,6 +120,12 @@
                 child.parent = parent;
             }
             return temp;
+        },
+        getCounter: function() {
+            return this.counter;
+        },
+        incrementCounter: function () {
+            this.counter = this.counter + 1;
         }
     };
 }($));

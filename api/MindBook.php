@@ -51,42 +51,43 @@ Class MindBook {
         $array["home"] = $this->getHomeIdeaID();
         return json_encode($array);
     }
-    
-    public function findIdeas ($termenCautat) {
-        
+
+    public function findIdeas($termenCautat) {
+
         $toReturn = array();
-        
+
         $sth = Database::$db->prepare('SELECT id, content, parent
             FROM idea
-            WHERE content LIKE ?');
+            WHERE content LIKE ?
+            LIMIT 0,10');
 
-        $sth->execute(array("%".$termenCautat."%"));
+        $sth->execute(array("%" . $termenCautat . "%"));
 
         foreach ($sth->fetchAll() as $row) {
             $content = $row["content"];
             $id = $row["id"];
             $parent_id = $row["parent"];
-            
-            if($parent_id !== null) {
+
+            if ($parent_id !== null) {
                 $idea = new ChildIdea($parent_id);
                 $parent = array("id" => $idea->getParent(),
-                                "content" => $idea->getContent());
+                    "content" => $idea->getContent());
             } else {
                 $parent = null;
             }
-            
-            
+
+
             array_push($toReturn, array("id" => $id, "content" => $content, 'parent' => $parent));
-        }               
+        }
         return json_encode($toReturn);
     }
-    
-    function createIdea ($parent_id, $content, $id) {
-        
+
+    function createIdea($parent_id, $content, $id) {
+
         $parent = new ChildIdea($parent_id);
-        
+
         $path = $parent->getPath() . "@" . $parent->getId();
-        
+
         $stmt = Database::$db->prepare("INSERT INTO idea (id, path, content, parent) VALUES (:id, :path, :content, :parent)");
         $stmt->bindParam(':id', $id);
         $stmt->bindParam(':path', $path);
@@ -95,4 +96,29 @@ Class MindBook {
         $stmt->execute();
         return "true";
     }
+
+    public function checkIdeaExists($id) {
+        $sth = Database::$db->prepare('SELECT id
+            FROM idea
+            WHERE id = ?
+            LIMIT 0,1');
+
+        $sth->execute(array($id));
+
+        foreach ($sth->fetchAll() as $row) {
+            return true;
+        }
+        return false;
+    }
+    
+    public function clearAll() {
+        
+        // delete idea
+        $stmt2 = Database::$db->prepare('DELETE from idea
+        WHERE id > 1 ');
+        $stmt2->execute();
+        
+        
+    }
+
 }
