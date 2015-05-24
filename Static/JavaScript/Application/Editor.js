@@ -54,9 +54,9 @@
         createEmptyIdea: function (parentIdea, position) {
             var newIdea = parentIdea.createBrother({
                 id: this.counter,
-                content: "",
                 parent: parentIdea,
-                position: position
+                position: position,
+                content: ""
             });
             this.incrementCounter();
             return newIdea;

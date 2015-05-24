@@ -27,6 +27,7 @@
 
 #visual li div {
     padding-left: 1em;
+    padding-top: 15px;
     position: relative;
 }
 
@@ -35,7 +36,7 @@
     position: absolute;
     top: 0;
     left: -2px;
-    bottom: 50%;
+    bottom: 70%;
     width: 0.75em;
     border: 2px solid #000;
     border-top: 0 none transparent;

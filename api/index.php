@@ -38,6 +38,10 @@
             $childIdea->getAllChildren();
             echo $childIdea;
             break;
+        case "findIdeas":
+            $term = Request::extract("term");
+            echo $book->findIdeas($term);
+            break;   
         default :
             echo "Provide action";
             break;

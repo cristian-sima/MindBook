@@ -224,3 +224,11 @@ header #search:-moz-placeholder {
     font-size: 15px;
 }
 
+
+
+/* Search */
+
+.highlightWord {
+    color: orange;
+    font-weight: bold;
+}
