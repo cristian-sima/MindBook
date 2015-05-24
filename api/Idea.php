@@ -112,9 +112,9 @@ class Idea {
     }
 
     public function getPath() {
-        return $this->content;
+        return $this->path;
     }
-
+    
     public function __toString() {
 
         $array = array("id" => $this->id,

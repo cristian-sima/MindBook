@@ -25,7 +25,9 @@
         case "createIdea":
             $parent = Request::extract("parent");
             $content = Request::extract("content");
-            echo $book->createIdea($parent, $content);
+            $id = Request::extract("id");
+            echo $book->createIdea($parent, $content, $id);
+            break;
         case "getIdea":
             $id = Request::extract("id");
             $childIdea = new ChildIdea($id);

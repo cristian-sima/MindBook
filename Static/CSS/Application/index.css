@@ -229,15 +229,20 @@ header #search:-moz-placeholder {
 /* Search */
 
 .highlightWord {
-    color: orange;
+    color: #29d;
     font-weight: bold;
 }
 
 .ui-menu .ui-menu-item {
     font-size: 12px;
+    width:204px;
 }
 
 .ui-menu-item {
     overflow: hidden;
-    width:222px
+    width:222px;
+}
+
+.ui-menu .ui-menu-item .parent {
+    color: rgb(223, 223, 223);
 }

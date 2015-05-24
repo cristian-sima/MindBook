@@ -52,15 +52,6 @@ Class MindBook {
         return json_encode($array);
     }
     
-    public function createIdea($content, $parent) {
-        $array = array("status" => true);
-        $stmt = Database::$db->prepare("INSERT INTO idea (content, parent) VALUES (:content, :parent)");
-        $stmt->bindParam(':content', $content);
-        $stmt->bindParam(':parent', $parent);
-        $stmt->execute();
-        return json_encode($array);
-    }
-    
     public function findIdeas ($termenCautat) {
         
         $toReturn = array();
@@ -88,5 +79,20 @@ Class MindBook {
             array_push($toReturn, array("id" => $id, "content" => $content, 'parent' => $parent));
         }               
         return json_encode($toReturn);
+    }
+    
+    function createIdea ($parent_id, $content, $id) {
+        
+        $parent = new ChildIdea($parent_id);
+        
+        $path = $parent->getPath() . "@" . $parent->getId();
+        
+        $stmt = Database::$db->prepare("INSERT INTO idea (id, path, content, parent) VALUES (:id, :path, :content, :parent)");
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':path', $path);
+        $stmt->bindParam(':content', $content);
+        $stmt->bindParam(':parent', $parent_id);
+        $stmt->execute();
+        return true;
     }
 }

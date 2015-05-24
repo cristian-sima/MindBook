@@ -22,7 +22,7 @@ Search.prototype = {
 
             function getParentText(parent) {
                 if (parent) {
-                    return parent.content + "-->";
+                    return "<div class='parent' >" +  parent.content + "</div>" + "<div style='display:inline-block;width:20px;position:relative'><img style='positon:absolute;top:0px;' src='Static/Images/link.png' aling='absmiddle' /></div>" + " ";
                 }
                 return "";
             }
