@@ -5,7 +5,7 @@
         this.gui = new GUI();
         this.gateway = new Gateway();
         this.home = null;
-        this.startingContent = "editor";
+        this.startingContent = "default";
         this.init();
     };
     App.prototype = {
@@ -56,18 +56,18 @@
             if (!id) {
                 id = this.home;
             }
-            this.editor = this.createEditor(id, $("#app"));
+            this.editor = this.createEditor(id, $("#app"), "standard");
         },
-        selectDefaultEditor: function (id) {
-            this.editor = this.createEditor(id, $("#app"), "default");
+        selectDefaultEditor: function () {
+            this.editor = this.createEditor(this.home, $("#default"), "default");
         },
         createEditor: function (id, elementHTML, type) {
             app.gateway.getEntireIdea(id, function (data) {
                 data = app.prepareData(data);
                 if (type === "default") {
-                    app.editor = new StandardEditor(data, elementHTML);
-                } else {
                     app.editor = new DefaultEditor(data, elementHTML);
+                } else {
+                    app.editor = new StandardEditor(data, elementHTML);
                 }
             });
         },

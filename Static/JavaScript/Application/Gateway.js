@@ -36,7 +36,8 @@ Gateway.prototype = {
         this.sendAjaxRequest("", {
             "action": "createIdea",
             "parent": idea.parent,
-            "content": idea.content
+            "content": idea.content,
+            "id": idea.id
         }, callback);
     },
     sendAjaxRequest: function (url, data, callback) {
