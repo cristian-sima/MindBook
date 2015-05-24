@@ -240,6 +240,7 @@ header #search:-moz-placeholder {
 
 #visual li {
     margin-bottom: 14px;
+      margin-top: 15px;
     list-style-type: none;
 }
 

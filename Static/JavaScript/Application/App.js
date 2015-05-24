@@ -47,7 +47,7 @@
                 this.editor.close();
                 delete this.editor;
             }
-            app.gateway.getIdea(this.home, function (data) {
+            app.gateway.getEntireIdea(this.home, function (data) {
                 app.visual = new Visual("visual", data);
             });
         },

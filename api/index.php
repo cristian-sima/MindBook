@@ -1,8 +1,9 @@
 <?php
 
-    require "Idea.php";
-    require "MindBook.php";
-    require "Request.php";
+    require_once "Idea.php";
+    require_once "ChildIdea.php";
+    require_once "MindBook.php";
+    require_once "Request.php";
     
     Database::connect();
     $book = new MindBook();
@@ -15,15 +16,6 @@
         case "getHomeIdeaID":            
             echo $book->getHomeIdeaID();
             break;
-        case "getIdea":
-            $id = Request::extract("id");
-            echo $book->getIdea($id);
-            break;
-            break;
-        case "getAllChildrenOfIdea":
-            $id = Request::extract("id");
-            echo $book->getAllChildrenOfIdea($id);
-            break;
         case "getCounterIndex":
             echo $book->getCounterIndex();
             break;
@@ -34,8 +26,20 @@
             $parent = Request::extract("parent");
             $content = Request::extract("content");
             echo $book->createIdea($parent, $content);
+        case "getIdea":
+            $id = Request::extract("id");
+            $childIdea = new ChildIdea($id);
+            $childIdea->getChildren();
+            echo $childIdea;
+            break;
+        case "getEntireIdea":
+            $id = Request::extract("id");
+            $childIdea = new ChildIdea($id);
+            $childIdea->getAllChildren();
+            echo $childIdea;
+            break;
         default :
-            echo "It is working";
+            echo "Provide action";
             break;
         
     }

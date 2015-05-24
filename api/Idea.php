@@ -6,41 +6,99 @@ class Idea {
     private $parent;
     private $content;
     private $children = array();
+    private $path;
 
     public function Idea($id) {
         $this->id = $id;
         $this->loadContent();
-        $this->loadChildren();
     }
 
     private function loadContent() {
-        $sth = Database::$db->prepare('SELECT id, content, parent
+        $sth = Database::$db->prepare('SELECT path, content, parent
             FROM idea
             WHERE id = ?');
 
         $sth->execute(array($this->id));
 
         foreach ($sth->fetchAll() as $row) {
-            $this->id = $row["id"];
-            $this->parent = $row["parent"];
             $this->content = $row["content"];
+            $this->parent = $row["parent"];
+            $this->path = $row["path"];
         }
     }
 
-    private function loadChildren() {
-        $sth = Database::$db->prepare('SELECT id, content
+    public function getChildrenAtLevel($level) {
+
+        function getRegex($level, $path, $id) {
+
+            function getPrefix($p, $id) {
+                return $p . "@" . $id;
+                //return str_replace("@", "@", $path);
+            }
+
+            function getQuantifier($level) {
+                // extract all
+                if ($level === "ALL") {
+                    return "0,";
+                }
+                return $level;
+            }
+
+            function insertValues($quantifier, $prefix, $digit) {
+                return "^(" . $prefix . ")(@(" . $digit . "+)){" . $quantifier . "}$";
+            }
+
+            $quantifier = getQuantifier($level);
+            $prefix = getPrefix($path, $id);
+            $digit = "[[:digit:]]";
+
+
+            $toReturn = insertValues($quantifier, $prefix, $digit);
+
+            return $toReturn;
+        }
+        
+        function getSQL($regex) {
+            return "SELECT id, path, content, parent
             FROM idea
-            WHERE parent = ?');
+            WHERE path REGEXP '". $regex . "'
+            ORDER BY parent ASC ";
+        }
 
-        $sth->execute(array($this->id));
+        $regex = getRegex($level, $this->path, $this->id);
+        $sql = getSQL($regex);
+        
+        
+        
+        // echo "Regex: <b>/" . $regex . "/gm</b><br />";
+        // echo "SQL:<pre> " . $sql . "</pre><br />";
 
+        $sth = Database::$db->prepare($sql);
+
+        $sth->execute();
+
+        
         foreach ($sth->fetchAll() as $row) {
-            $id = $row['id'];
-            $content = $row['content'];
-            $this->children[$id] = array("id" => $id, "content" => $content);
+            $id = $row["id"];
+            $parent = $row["parent"];
+            $content = $row["content"];
+            
+            $child = array("id" => $id,
+                            "parent" => $parent,
+                            "content" => $content);
+            
+            array_push($this->children, $child);
         }
     }
 
+    public function getAllChildren() {
+        $this->getChildrenAtLevel("ALL");
+    }
+
+    public function getChildren() {
+        $this->getChildrenAtLevel(0);
+    }
+    
     public function getParent() {
         return $this->parent;
     }
@@ -53,12 +111,16 @@ class Idea {
         return $this->content;
     }
 
+    public function getPath() {
+        return $this->content;
+    }
+
     public function __toString() {
-        
+
         $array = array("id" => $this->id,
-        "parent" => $this->parent,
-        "content" => $this->content,
-        "children" => $this->children);
+            "parent" => $this->parent,
+            "content" => $this->content,
+            "children" => $this->children);
 
         return json_encode($array, JSON_PRETTY_PRINT);
     }

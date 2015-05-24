@@ -27,6 +27,12 @@ Gateway.prototype = {
             "id": id
         }, callback);
     },
+    getEntireIdea: function (id, callback) {
+        this.sendAjaxRequest("", {            
+            "action" : "getEntireIdea",
+            "id": id
+        }, callback);
+    },
     createIdea: function (idea, callback) {
         this.sendAjaxRequest("", {
             "action" : "createIdea",
