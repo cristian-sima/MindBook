@@ -34,6 +34,15 @@
         createHomeIdea: function (info) {
             this.home = new HomeIdea(info.id, info.content, this);
         },
+        createNewFirstChildIdea: function () {
+            var idea = this.createFirstChildIdea({
+                id: this.counter,
+                content: ""
+            });
+            this.createIdeaOnServer(this.counter, "", this.home.id, idea);
+            this.incrementCounter();
+            return idea;
+        },
         createFirstChildIdea: function (info) {
             var parent = this.home,
                 position = 0,
@@ -58,6 +67,11 @@
                 position: position,
                 content: ""
             });
+            app.gateway.createIdea({
+                id: this.counter,
+                parent: parentIdea.id,
+                content: ""
+            }, function (status) {});
             this.incrementCounter();
             return newIdea;
         },
@@ -147,6 +161,23 @@
         fired_enterKeyPressed: function (idea) {
             var newIdea = this.createEmptyIdea(idea, idea.getPosition() + 1);
             this.setCurrentIdea(newIdea);
+        },
+        createIdeaOnServer: function (id, content, parent, idea) {
+            var functie = (function () {
+                var i = idea;
+                return function (status) {
+                    if (status !== true) {
+                        i.getLine().showProblem("Ideea nu a fost adaugata.");
+                    } else {
+                        i.getLine().hideProblem();
+                    }
+                };
+            }());
+            app.gateway.createIdea({
+                id: id,
+                parent: parent,
+                content: content
+            }, functie);
         }
     };
     Editor = Class.extend(EditorTemplate);

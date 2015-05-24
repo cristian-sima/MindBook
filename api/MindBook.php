@@ -93,6 +93,6 @@ Class MindBook {
         $stmt->bindParam(':content', $content);
         $stmt->bindParam(':parent', $parent_id);
         $stmt->execute();
-        return true;
+        return "true";
     }
 }

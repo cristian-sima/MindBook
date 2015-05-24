@@ -16,11 +16,7 @@
                 id: data.id,
                 content: data.content
             });
-            firstIdea = this.createFirstChildIdea({
-                id: this.counter,
-                content: ""
-            });
-            this.setCurrentIdea(firstIdea);
+            firstIdea = this.createNewFirstChildIdea();
             
             this.incrementCounter();
         }

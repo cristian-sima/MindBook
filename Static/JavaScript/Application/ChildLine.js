@@ -29,7 +29,8 @@
                 return "<div class='numberOfChildren' style='display:none' id='childrennr'>" + nrOfChildren + "&nbsp;</div>";
             }
             toReturn += "<div id='element-" + id + "' class='idea-div'> ";
-            toReturn += "<div class='warning' id='warning'>" + '<img src="Static/Images/warning.png" alt="Atentie" title="">' + "</div>";
+            toReturn += "<div class='warning' id='warning'></div>";
+            toReturn += "<div class='problem' id='problem'></div>";
             toReturn += "<div class='content' id='content'>";
             toReturn += getID();
             toReturn += getNumberOfChildren();
@@ -142,6 +143,14 @@
             } else {
                 this.hideWarning();
             }
+        },
+        showProblem: function (message) {
+            var problem = this.element.children("#problem");
+            problem.html('<img src="Static/Images/problem.png" alt="Atentie" title="' + message + '">');            
+        },
+        hideProblem: function () {
+            var problem = this.element.children("#problem");
+            problem.html('');
         },
         showWarning: function (message) {
             var atentie = this.element.children("#warning");

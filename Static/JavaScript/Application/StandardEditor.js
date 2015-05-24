@@ -23,11 +23,7 @@
                 this.loadIdeas(this.home, data.children);
                 // punem restul de copii 
             } else {
-                firstIdea = this.createFirstChildIdea({
-                    id: this.counter,
-                    content: ""
-                });                
-                this.incrementCounter();
+                firstIdea = this.createNewFirstChildIdea();                
             }
             this.setCurrentIdea(firstIdea);
         }

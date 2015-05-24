@@ -10,7 +10,6 @@ and open the template in the editor.
 
 body {
     width: 100%;
-    overflow:hidden;
 }
 
 
@@ -203,7 +202,7 @@ header #search:-moz-placeholder {
     display: inline;
 }
 
-.warning {
+.warning, .problem {
     width: 30px;  
     margin-left: 5px;
     display: inline-block;
