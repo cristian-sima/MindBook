@@ -26,7 +26,7 @@
             }
 
             function getNumberOfChildren() {
-                return "<div class='numberOfChildren' id='childrennr'>" + nrOfChildren + "&nbsp;</div>";
+                return "<div class='numberOfChildren' style='display:none' id='childrennr'>" + nrOfChildren + "&nbsp;</div>";
             }
             toReturn += "<div id='element-" + id + "' class='idea-div'> ";
             toReturn += "<div class='warning' id='warning'>" + '<img src="Static/Images/warning.png" alt="Atentie" title="">' + "</div>";

@@ -9,15 +9,54 @@
     };
     Editor.prototype = {
         init: function (data) {
+            var childId = null,
+                child = null,
+                firstIdea = null,
+                firstChild = null;
             this.createHomeIdea({
                 id: data.id,
                 content: data.content
             });
+            if (Object.size(data.children) !== 0) {
+                console.log('are')
+                // get the first one
+                firstChild = data.children[Object.keys(data.children)[0]];
+                firstIdea = this.loadFirstIdea(firstChild);
+                delete(data.children[firstIdea.id]);
+                // load children
+                this.loadIdeas(this.home, data.children);
+                // punem restul de copii 
+            } else {
+                firstIdea = this.loadFirstIdea({
+                    id: this.counter,
+                    content: "",
+                    children: {}
+                });
+            }
+            this.setCurrentIdea(firstIdea);
+        },
+        loadFirstIdea: function (firstChild) {
             var childIdea = this.createFirstChildIdea({
-                id: 2,
-                content: ""
+                id: firstChild.id,
+                content: firstChild.content
             });
-            this.setCurrentIdea(childIdea);
+            // load its children
+            console.log(firstChild);
+            this.loadIdeas(childIdea, firstChild.children);
+            return childIdea;
+        },
+        loadIdeas: function (parentIdea, children) {
+            var childId = null,
+                child = null,
+                childIdea;
+            for (childId in children) {
+                if (children.hasOwnProperty(childId)) {
+                    child = children[childId];
+                    console.log(child);
+                    childIdea = this.createChildIdea(parentIdea, child);
+                    this.loadIdeas(childIdea, child.children);
+                }
+            }
         },
         createHomeIdea: function (info) {
             this.home = new HomeIdea(info.id, info.content, this);
@@ -30,11 +69,20 @@
             idea.setLine(parent.getLine());
             return idea;
         },
-        createEmptyIdea: function (parent, position) {
-            var newIdea = parent.createBrother({
+        createChildIdea: function (parent, info) {
+            var newIdea = parent.createChild({
+                id: info.id,
+                content: info.content,
+                parent: parent,
+                position: parent.getNumberOfChildren() + 1
+            });
+            return newIdea;
+        },
+        createEmptyIdea: function (parentIdea, position) {
+            var newIdea = parentIdea.createBrother({
                 id: this.counter,
                 content: "",
-                parent: parent,
+                parent: parentIdea,
                 position: position
             });
             this.incrementCounter();
@@ -124,10 +172,6 @@
         fired_enterKeyPressed: function (idea) {
             var newIdea = this.createEmptyIdea(idea, idea.getPosition() + 1);
             this.setCurrentIdea(newIdea);
-        },
-        createChildIdea: function (info) {
-            var newIdea = new ChildIdea(info, this.home);
-            return newIdea;
         }
     };
 }());

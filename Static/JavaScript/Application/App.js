@@ -19,7 +19,7 @@
         },
         load: function (data) {
             this.home = parseInt(data.home, 10);
-            this.counter = parseInt(data.counter, 10);
+            this.counter = parseInt(data.counter, 10) + 1;
             this.selectContent(this.startingContent);
         },
         loadData: function () {
