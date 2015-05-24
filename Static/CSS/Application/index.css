@@ -232,3 +232,12 @@ header #search:-moz-placeholder {
     color: orange;
     font-weight: bold;
 }
+
+.ui-menu .ui-menu-item {
+    font-size: 12px;
+}
+
+.ui-menu-item {
+    overflow: hidden;
+    width:222px
+}

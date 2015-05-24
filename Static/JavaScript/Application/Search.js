@@ -59,15 +59,18 @@ Search.prototype = {
             select: function (event, ui) {
                 var idea = ui.item.id;
                 app.selectContent("editor", idea);
-                return false;
-            },
-            focus: function (event, ui) {
                 $(this).val(instance.getTerm());
                 return false;
-            },
-        }).autocomplete("instance")._renderItem = function (ul, item) {
+            }
+        });
+        this.element.autocomplete("instance")._renderItem = function (ul, item) {
             return $("<li data-idea='" + item.id + "' >").append(getHTMLForItem(item)).appendTo(ul);
         };
+        this.element.focus(function () {
+            $(this).val(instance.getTerm());
+            console.log('focus')
+            $(this).autocomplete("search");
+        });
     },
     getTerm: function () {
         return this.term;
