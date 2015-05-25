@@ -3,7 +3,7 @@
     "use strict";
     var StandardEditorTemplate = {
         init: function (data, container) {
-            this._super(data, container);
+            this._super(data, container, "Standard");
         },
         initEditor: function (data) {
             var childId = null,

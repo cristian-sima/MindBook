@@ -3,12 +3,12 @@
     "use strict";
     var DefaultEditorTemplate = {
         init: function (data, container) {
-            this._super(data, container);
+            this._super(data, container, "Default");
         },
         initEditor: function (data) {
             var firstIdea = null;
             
-            data.content = "Live your beliefs and you can turn the world around";
+            data.content = "";
             data.children = {};
                                     
             this.createHomeIdea({

@@ -1,4 +1,4 @@
-/*global app, Editor, HomeIdea, ChildIdea*/
+/*global app, Editor, HomeIdea, ChildIdea, Class*/
 (function () {
     "use strict";
     var EditorTemplate = {
@@ -32,7 +32,7 @@
             }
         },
         createHomeIdea: function (info) {
-            this.home = new HomeIdea(info.id, info.content, info.id, this, info.parent);
+            this.home = new HomeIdea(info, this);
         },
         createNewFirstChildIdea: function () {
             var idea = this.createFirstChildIdea({
@@ -205,6 +205,12 @@
                 };
             }(idea));
             app.gateway.updateIdea(info, functie);
+        },
+        isStandard: function () {
+            return this.type === "Standard";
+        },
+        isDefault: function () {
+            return this.type === "Default";
         }
     };
     Editor = Class.extend(EditorTemplate);

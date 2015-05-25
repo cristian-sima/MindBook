@@ -2,11 +2,16 @@
 (function () {
     "use strict";
     var HomeIdeaTemplate = {
-        init: function (id, content, serverId, editor, parent) {
+        init: function (info, editor) {
+            var id = info.id,
+                content = info.content,
+                serverId = info.id, 
+                parent = info.parent;
+            
             this.editor = editor;
             this._super(id, content, serverId);
+            this.parentId = parent;
             this.createLineElement();
-            this.parent = parent;
         },
         isHome: function () {
             return true;
@@ -26,6 +31,12 @@
         },
         updateOnServer: function () {
             // empty
+        },
+        getParentId: function () {
+            return this.parentId;
+        },
+        isTheHomeRoot: function () {
+            return (!this.getParentId());
         }
     };
     HomeIdea = Idea.extend(HomeIdeaTemplate);

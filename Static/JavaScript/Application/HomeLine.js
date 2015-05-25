@@ -12,25 +12,35 @@
         },
         getHTML: function () {
             var id = this.idea.id,
-                content = this.idea.getContent(),
+                idea = this.getIdea(),
+                content = idea.getContent(),
+                showOptions = idea.isTheHomeRoot(),
                 toReturn = '';
 
-            function getOptions(id, parent) {
+            function getOptions(id) {
                 if (parent) {
-                    return '<img class="option-editor" src="Static/Images/Menu/list.svg" "Visual" id="Show Visual" data-id="' + id + '" >';
+                    return '<img class="option-editor" src="Static/Images/Menu/list.svg" "Visual" id="option-show-visual" data-id="' + id + '" >';
                 }
                 return "";
             }
-            console.log(this.getIdea());
             toReturn += "<div id='element-" + id + "' class='idea-div idea-home'>";
             toReturn += content;
-            toReturn += getOptions(id, this.getIdea().hasParent());
+            console.log(showOptions);
+            console.log(idea.getParentId());
+            //if (!showOptions) {
+                toReturn += getOptions(id);
+            //}
             toReturn += " </div>";
             return toReturn;
         },
+        activateListeners: function () {
+            this.element.find("#option-show-visual").click(function(){
+               var id = $(this).data("id"); 
+               app.selectContent("visual", id);
+            });
+        },
         getElements: function () {
-            var id = this.idea.id;
-            this.element = $("#element-" + id);
+            this._super();
         },
         insertHTMLElement: function (container) {
             var HTML = this.getContent();

@@ -152,6 +152,9 @@
         },
         isCorrelatedToServer: function () {
             return this.getServerIdea().isCorrelated();
+        },
+        getParent: function () {
+            return this.parent;
         }
     };
     ChildIdea = Idea.extend(ChildIdeaTemplate);

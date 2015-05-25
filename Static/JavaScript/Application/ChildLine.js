@@ -45,8 +45,7 @@
             this.activateMouseListeners();
         },
         getElements: function () {
-            var id = this.idea.id;
-            this.element = $("#element-" + id);
+            this._super();
             this.textarea = this.getElement().children("#content").children("#textarea");
         },
         activateKeyListenes: function () {

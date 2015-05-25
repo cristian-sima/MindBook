@@ -46,8 +46,9 @@
         activateListeners: function () {
             // overwriteen             
         },
-        getElements: function () {
-            // empty
+        getElements: function () {           
+            var id = this.idea.id;
+            this.element = $("#element-" + id);
         }
     };
     Line = Class.extend(LineTemplate);

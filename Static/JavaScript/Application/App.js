@@ -40,15 +40,18 @@
                     this.selectDefaultEditor();
                     break;
                 case "visual":
-                    this.selectDefaultVisual();
+                    this.selectDefaultVisual(idea);
                     break;
                 case "editor":
                     this.selectEditor(idea);
                     break;
             }
         },
-        selectDefaultVisual: function () {
-            app.gateway.getEntireIdea(this.home, function (data) {
+        selectDefaultVisual: function (id) {
+            if (!id) {
+                id = this.home;
+            }
+            app.gateway.getEntireIdea(id, function (data) {
                 data = app.prepareData(data);
                 app.visual = new Visual("visual", data);
             });
@@ -81,7 +84,7 @@
         prepareData: function (data) {
             var temp = {
                 id: parseInt(data.id, 10),
-                parent: null,
+                parent: parseInt(data.parent, 10),
                 content: data.content
             },
                 i = 0,
