@@ -27,6 +27,7 @@
                     child = children[childId];
                     childIdea = this.createChildIdea(parentIdea, child);
                     this.loadIdeas(childIdea, child.children);
+                    console.log('Incarc copilul ' + child.id + " in " + parentIdea.id);
                 }
             }
         },

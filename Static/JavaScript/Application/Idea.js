@@ -194,8 +194,8 @@
         updateLevel: function () {
             // empty
         },
-        updateOnServer: function () {            
-            this.getEditor().updateIdeaOnServer(this.id, this.getContent(), this.getParent().id, this);
+        getId: function () {
+            return this.id;
         }
     };
     Idea = Class.extend(IdeaTemplate);

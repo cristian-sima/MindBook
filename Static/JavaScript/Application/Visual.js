@@ -18,7 +18,7 @@ Visual.prototype = {
         var toReturn = "",
             id = null,
             child = null;
-        toReturn += "<div class='idea' ><span class='name' data-id='" + idea.id + "' >" + idea.content + "</span><ul>";
+        toReturn += "<div class='idea' ><div class='name' data-id='" + idea.id + "' >" + idea.content + "</div><ul>";
         for (id in idea.children) {
             child = idea.children[id];
             toReturn += "<li>";

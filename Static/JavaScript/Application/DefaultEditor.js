@@ -10,8 +10,7 @@
             
             data.content = "Live your beliefs and you can turn the world around";
             data.children = {};
-                        
-            
+                                    
             this.createHomeIdea({
                 id: data.id,
                 content: data.content

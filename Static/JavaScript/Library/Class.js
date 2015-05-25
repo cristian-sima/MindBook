@@ -10,19 +10,16 @@
          }) ? /\b_super\b/ : /.*/;
      // The base Class implementation (does nothing)
      this.Class = function () {};
-     
      this.Idea = function () {};
      this.HomeIdea = function () {};
-     this.ChildIdea = function () {};     
-     
+     this.ChildIdea = function () {};
+     this.ServerIdea = function () {};
      this.Line = function () {};
      this.HomeLine = function () {};
      this.ChildLine = function () {};
-     
      this.Editor = function () {};
      this.StandardEditor = function () {};
      this.DefaultEditor = function () {};
-     
      this.Data = function () {};
      this.App = function () {};
      // Create a new Class that inherits from this class

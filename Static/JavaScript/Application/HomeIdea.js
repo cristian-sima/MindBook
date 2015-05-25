@@ -22,6 +22,9 @@
         },
         getEditor: function () {
             return this.editor;
+        },
+        updateOnServer: function () {
+            // empty
         }
     };
     HomeIdea = Idea.extend(HomeIdeaTemplate);

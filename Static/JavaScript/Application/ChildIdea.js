@@ -145,6 +145,9 @@
         fired_shiftTabKeyPressed: function () {
             this.reduceLevel();
             this.updateLine();
+        },
+        updateOnServer: function () {            
+            this.serverIdea.update();
         }
     };
     ChildIdea = Idea.extend(ChildIdeaTemplate);
