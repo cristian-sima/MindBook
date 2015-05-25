@@ -12,7 +12,8 @@
                 firstChild = null;
             this.createHomeIdea({
                 id: data.id,
-                content: data.content
+                content: data.content,
+                parent: data.parent
             });
             if (Object.size(data.children) !== 0) {
                 // get the first one

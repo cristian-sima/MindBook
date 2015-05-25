@@ -13,7 +13,8 @@
                                     
             this.createHomeIdea({
                 id: data.id,
-                content: data.content
+                content: data.content,
+                parent: null
             });
             firstIdea = this.createNewFirstChildIdea();
             

@@ -28,12 +28,11 @@
                     child = children[childId];
                     childIdea = this.createChildIdea(parentIdea, child);
                     this.loadIdeas(childIdea, child.children);
-                    console.log('Incarc copilul ' + child.id + " in " + parentIdea.id);
                 }
             }
         },
         createHomeIdea: function (info) {
-            this.home = new HomeIdea(info.id, info.content, info.id, this);
+            this.home = new HomeIdea(info.id, info.content, info.id, this, info.parent);
         },
         createNewFirstChildIdea: function () {
             var idea = this.createFirstChildIdea({

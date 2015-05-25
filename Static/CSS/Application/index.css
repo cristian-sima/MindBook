@@ -8,8 +8,8 @@ and open the template in the editor.
     Author     : Cristian
 */
 
-body {
-    width: 100%;
+body, html{
+    width: 700px;
 }
 
 #application {
@@ -247,4 +247,11 @@ header #search:-moz-placeholder {
 
 .ui-menu .ui-menu-item .parent {
     color: rgb(223, 223, 223);
+}
+
+
+.option-editor {
+    width: 20px;
+    height: 20px;
+    margin-left: 20px;
 }

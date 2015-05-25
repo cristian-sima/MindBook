@@ -184,6 +184,9 @@
         isParent: function () {
             return (this.getNumberOfChildren() !== 0);
         },
+        hasParent: function () {
+            return (this.parent !== null);
+        },
         hasChildren: function () {
             return this.isParent();
         },

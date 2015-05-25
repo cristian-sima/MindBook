@@ -2,10 +2,11 @@
 (function () {
     "use strict";
     var HomeIdeaTemplate = {
-        init: function (id, content, serverId, editor) {
+        init: function (id, content, serverId, editor, parent) {
             this.editor = editor;
             this._super(id, content, serverId);
             this.createLineElement();
+            this.parent = parent;
         },
         isHome: function () {
             return true;

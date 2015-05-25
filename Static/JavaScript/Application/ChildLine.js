@@ -188,12 +188,10 @@
         updateCorrelation: function () {
             var idea = this.getIdea();
             if (idea.isCorrelatedToServer()) {
-                console.log('green for: ' + idea.getContent())
                 this.textarea.css({
                     color: "rgb(87, 237, 87)"
                 });
             } else {
-                console.log('black for: ' + idea.getContent())
                 this.textarea.css({
                     color: "black"
                 });
