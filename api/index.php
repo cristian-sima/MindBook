@@ -44,47 +44,60 @@ switch (Request::extract("action")) {
         break;
     case "updateIdea":
 
-        $report = array("isCorrelated" => false);
+        $report = array();
 
         $id = Request::extract("id");
         $newContent = Request::extract("content");
         $parentID = Request::extract("parent");
+        $isCorrelated = Request::extract("isCorrelated");
 
         $currentIdExists = $book->checkIdeaExistsById($id);
+
+
         $similarIdeaExits = $book->checkIdeaExists($parentID, $newContent);
 
-        if ($similarIdeaExits) {
-            if ($currentIdExists) {
-                // change the children to the new one
-                // delete it
-                // mark it as the corresponding
-                $oldIdea = new ChildIdea($id);
+        if ($similarIdeaExits === "true") {
 
-                $correspondingIdea = $book->findIdeaByContentAndParent($parentID, $newContent);
+            $corr_id = $book->findIdeaIdByContentAndParent($parentID, $newContent);
 
-                $oldIdea->changeParentOfChildren($correspondingIdea->getId(), $correspondingIdea->getPath());
+            $correspondingIdea = new ChildIdea($corr_id);
 
-                $oldIdea->delete();
+
+            if ($corr_id == $id) {
+                $report["status"] = "nothing";
+            } else {
+
+
+                if ($currentIdExists === "true") {
+                    // change the children to the new one
+                    // delete it
+                    // mark it as the corresponding
+                    $oldIdea = new ChildIdea($id);
+
+
+                    $oldIdea->changeParentOfChildren($correspondingIdea->getId(), $correspondingIdea->getPath());
+
+                    $oldIdea->remove();
+                }
+
+                $report["status"] = "correspondence";
+                $report["id"] = $correspondingIdea->getId();
             }
-
-            $report["status"] = "correspondence";
-            $report["id"] = $correspondingIdea->getId();
-
             // change parent of the children to the new one 
         } else {
             // the id is not
-            if ($currentIdExists) {
+            if ($currentIdExists === "false") {
                 $result = $book->createIdea($parentID, $newContent, $id);
-                $report["status"] = "created";
+                $report["status"] = "create";
             } else {
-                $report["status"] = "updated";
+                $report["status"] = "update";
                 $oldIdea = new ChildIdea($id);
-                
+
                 // UPDATE IT
                 $oldIdea->setContent($newContent);
-                $oldIdea->setParent($parent);
+                $oldIdea->setParent($parentID);
             }
-                $report["id"] = $id;
+            $report["id"] = $id;
         }
 
         echo json_encode($report);

@@ -149,6 +149,9 @@
         },
         updateOnServer: function () {            
             this.serverIdea.update();
+        },
+        isCorrelatedToServer: function () {
+            return this.getServerIdea().isCorrelated();
         }
     };
     ChildIdea = Idea.extend(ChildIdeaTemplate);

@@ -3,25 +3,28 @@
     "use strict";
     ServerIdea = function ServerIdea(localIdea) {
         this.localIdea = localIdea;
-        this.id = null;
+        this.serverId = null;
         this.correlatedId = null;
     };
     ServerIdea.prototype = {
         isOnServer: function () {
-            return (this.id !== null);
+            return (this.serverId !== null);
         },
-        setId: function (id) {
-            this.id = id;
+        setId: function (serverId) {
+            this.serverId = serverId;
         },
         getCorrelatedId: function () {
             return this.correlatedId;
         },
-        setCorrelatedId: function (id) {
-            
+        isCorrelated: function () {
+            return (this.correlatedId !== null);
+        },
+        setCorrelatedId: function (correlatedId) {
+            this.correlatedId = correlatedId;
         },
         getId: function () {
-            if (this.id) {
-                return this.id;
+            if (this.serverId) {
+                return this.serverId;
             }
             return this.getLocalIdea().getId();
         },
@@ -30,13 +33,18 @@
         },
         update: function () {
             var idea = this.getLocalIdea(),
-                serverId = this.getId(),
+                localId = idea.getId(),
                 localParent = idea.getParent(),
                 editor = idea.getEditor(),
                 content = idea.getContent(),
                 serverParentId = localParent.getServerIdea().getId();
             if (this.canIdeaBeUpdated()) {
-                editor.updateIdeaOnServer(serverId, content, serverParentId, idea);
+                editor.updateIdeaOnServer({
+                    id: localId,
+                    content: content,
+                    parent: serverParentId,
+                    isCorrelated: this.isCorrelated()
+                }, idea);
             }
         },
         canIdeaBeUpdated: function () {

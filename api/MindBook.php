@@ -98,49 +98,54 @@ Class MindBook {
     }
 
     public function checkIdeaExistsById($id) {
+        $sth = Database::$db->prepare('SELECT id, content
+            FROM idea
+            WHERE id = :id
+            LIMIT 0,1');
+
+        $sth->bindParam(':id', $id);
+
+        $sth->execute();
+
+        foreach ($sth->fetchAll() as $row) {
+            return "true";
+        }
+        return "false";
+    }
+
+    public function findIdeaIdByContentAndParent($parent, $content) {
         $sth = Database::$db->prepare('SELECT id
             FROM idea
-            WHERE id = ?
+            WHERE parent = :parent AND
+                  content = :content
             LIMIT 0,1');
 
-        $sth->execute(array($id));
+        $sth->bindParam(':parent', $parent);
+        $sth->bindParam(':content', $content);
+
+        $sth->execute();
 
         foreach ($sth->fetchAll() as $row) {
-            return true;
+            return $row['id'];
         }
-        return false;
+        return null;
     }
-    
-    public function findIdeaByContentAndParent($parent, $content) {
-         $sth = Database::$db->prepare('SELECT id
-            FROM idea
-            WHERE parent = ? ,
-                  content = ?
-            LIMIT 0,1');
 
-        $sth->execute(array($parent, $content));
+    public function checkIdeaExists($parent, $content) {
 
-        foreach ($sth->fetchAll() as $row) {
-            return new Idea($row["id"]);
+        $id = $this->findIdeaIdByContentAndParent($parent, $content);
+        if ($id !== null) {
+            return "true";
         }
-        return false;
+        return "false";
     }
-    
-     public function checkIdeaExists($parent, $content) {
-         if($this->findIdeaByContentAndParent($parent, $content) !== null) {
-             return true;
-         }
-         return false;
-    }
-    
+
     public function clearAll() {
-        
+
         // delete idea
         $stmt2 = Database::$db->prepare('DELETE from idea
         WHERE id > 1 ');
         $stmt2->execute();
-        
-        
     }
 
 }

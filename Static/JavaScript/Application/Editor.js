@@ -183,7 +183,7 @@
         getCounter: function () {
             return app.getCounter();
         },
-        updateIdeaOnServer: function (serverId, newContent, serverParentId, idea) {
+        updateIdeaOnServer: function (info, idea) {
             this.incrementCounter();
             var functie = (function () {
                 var i = idea;
@@ -191,23 +191,21 @@
                     if (i) {
                         var serverIdea = i.getServerIdea();
                         switch (report.status) {
-                            case "correlation":
-                                serverIdea.setId(report.id);
-                                serverIdea.setCorrelatedId(report.id);
+                            case "correspondence":
+                                serverIdea.setId(parseInt(report.id, 10));
+                                serverIdea.setCorrelatedId(parseInt(report.id, 10));
                                 break;
-                            case "creation":
-                                serverIdea.setId(report.id);
+                            case "create":
+                            case "update":
+                                serverIdea.setId(parseInt(report.id, 10));
                                 serverIdea.setCorrelatedId(null);
                                 break;
                         }
+                        i.updateLine();
                     }
                 };
             }(idea));
-            app.gateway.updateIdea({
-                id: serverId,
-                content: newContent,
-                parent: serverParentId
-            }, functie);
+            app.gateway.updateIdea(info, functie);
         }
     };
     Editor = Class.extend(EditorTemplate);

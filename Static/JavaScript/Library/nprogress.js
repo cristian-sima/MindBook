@@ -63,7 +63,11 @@
             // Set positionUsing if it hasn't already been set
             if (Settings.positionUsing === '') Settings.positionUsing = NProgress.getPositioningCSS();
             // Add transition
-            css(bar, barPositionCSS(n, speed, ease));
+            // 
+            // HERE !!!!!!!
+            // 
+            // 
+            // css(bar, barPositionCSS(n, speed, ease));
             if (n === 1) {
                 // Fade out
                 css(progress, {

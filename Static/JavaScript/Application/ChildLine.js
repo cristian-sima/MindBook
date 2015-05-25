@@ -52,7 +52,6 @@
         activateKeyListenes: function () {
             var idea = this.idea,
                 editor = idea.getEditor();
-            
             this.textarea.on("keydown", function (event) {
                 var keyCode = event.keyCode || event.which;
                 if (app.data.isSpecialKey(keyCode)) {
@@ -60,7 +59,7 @@
                 }
                 switch (keyCode) {
                     case app.data.keys.ENTER.code:
-                        editor.fired_enterKeyPressed(idea);                        
+                        editor.fired_enterKeyPressed(idea);
                         idea.getLine().updateIdea();
                         break;
                     case app.data.keys.TAB.code:
@@ -87,8 +86,8 @@
             this.textarea.on("keyup", function (event) {
                 var content = idea.getLine().textarea.val(),
                     keyCode = event.keyCode || event.which;;
-                    idea.setContent(content);
-                    idea.updateLine();
+                idea.setContent(content);
+                idea.updateLine();
                 if (app.data.isModyfingKey(keyCode)) {
                     idea.getLine().delayUpdate();
                 }
@@ -97,7 +96,7 @@
         delayUpdate: function () {
             var instance = this;
             this.stopUpdateDelay();
-            this.delayUpdateIdea = setTimeout(function() {
+            this.delayUpdateIdea = setTimeout(function () {
                 instance.updateIdea();
             }, 600);
         },
@@ -105,8 +104,8 @@
             this.stopUpdateDelay();
             this.getIdea().updateOnServer();
         },
-        stopUpdateDelay: function () {          
-            clearTimeout(this.delayUpdateIdea);  
+        stopUpdateDelay: function () {
+            clearTimeout(this.delayUpdateIdea);
         },
         activateMouseListeners: function () {
             var idea = this.getIdea(),
@@ -145,6 +144,7 @@
         update: function () {
             this.updateHTML();
             this.updateWarning();
+            this.updateCorrelation();
         },
         updateHTML: function () {
             var levelWidth = 30,
@@ -184,6 +184,20 @@
         },
         getPreviousLine: function () {
             return this.getIdea().getParent().getLine();
+        },
+        updateCorrelation: function () {
+            var idea = this.getIdea();
+            if (idea.isCorrelatedToServer()) {
+                console.log('green for: ' + idea.getContent())
+                this.textarea.css({
+                    color: "rgb(87, 237, 87)"
+                });
+            } else {
+                console.log('black for: ' + idea.getContent())
+                this.textarea.css({
+                    color: "black"
+                });
+            }
         },
         remove: function () {
             this._super();

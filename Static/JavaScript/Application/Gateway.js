@@ -2,9 +2,11 @@
 
 function Gateway() {
     this.connection = null;
-};
+}
+;
 Gateway.prototype = {
-    init: function () {},
+    init: function () {
+    },
     start: function () {
         this.getInitData(function (data) {
             app.load(data);
@@ -46,13 +48,14 @@ Gateway.prototype = {
             "content": idea.content,
             "id": idea.id
         }, callback);
-    },    
+    },
     updateIdea: function (idea, callback) {
         this.sendAjaxRequest("", {
             "action": "updateIdea",
             "content": idea.content,
             "id": idea.id,
-            parent: idea.parent
+            parent: idea.parent,
+            isCorrelated: "" + idea.isCorrelated
         }, callback, true);
     },
     removeIdea: function (idea, callback) {
@@ -62,16 +65,16 @@ Gateway.prototype = {
         }, callback, true, callback);
     },
     sendAjaxRequest: function (url, data, callback, notShowLoading, errorCallback) {
-        if(!notShowLoading) {
-            app.gui.showLoading();
-        }
+
+        app.gui.showLoading();
+
         var fired_requestDone = (function () {
             var c = callback,
-            show = notShowLoading;
+                show = notShowLoading;
             return function (data) {
-                 if(!show) {
-                     app.gui.hideLoading();
-                 }
+
+                app.gui.hideLoading();
+
                 c(jQuery.parseJSON(data));
             };
         })();
