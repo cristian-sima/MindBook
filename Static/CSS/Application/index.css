@@ -246,14 +246,35 @@ header #search:-moz-placeholder {
     width:222px;
 }
 
-.ui-menu .ui-menu-item .parent {
-    color: rgb(223, 223, 223);
-}
+
 
 
 .option-editor {
     width: 20px;
     height: 20px;
-    margin-left: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
     cursor:pointer;
+}
+
+
+.parent {
+    color: rgb(223, 223, 223);
+}
+
+.idea-home .editor-parent {
+    font-size: 14px;
+}
+
+.idea-home .editor-parent:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.idea-home .options {
+    display: none;
+}
+
+.idea-home:hover~.idea-home .options {
+    display: block
 }

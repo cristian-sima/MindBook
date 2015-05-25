@@ -13,30 +13,49 @@
         getHTML: function () {
             var id = this.idea.id,
                 idea = this.getIdea(),
+                editor = idea.getEditor(),
                 content = idea.getContent(),
-                showOptions = idea.isTheHomeRoot(),
                 toReturn = '';
 
-            function getOptions(id) {
-                if (parent) {
+            function getOptions() {
+                var toReturn = "";
+                
+                toReturn += "<div class='options'>";
+                toReturn += getVisual();
+                toReturn += "</div>";
+                
+                return toReturn;
+            }
+            
+            
+            function getVisual() {
+                if (editor.isStandard()) {
                     return '<img class="option-editor" src="Static/Images/Menu/list.svg" "Visual" id="option-show-visual" data-id="' + id + '" >';
                 }
                 return "";
             }
+
+            function getParent() {
+                if(!idea.isTheHomeRoot()) {
+                    return '<span class="parent editor-parent" id="option-parent" data-id="' + idea.getParentId() + '">Parent</span><br /><div style="display:inline-block;width:20px;position:relative"><img style="positon:absolute;top:0px;" src="Static/Images/link.png" aling="absmiddle"></div>';
+                }
+                return '';
+            }
             toReturn += "<div id='element-" + id + "' class='idea-div idea-home'>";
+            toReturn += getParent();
             toReturn += content;
-            console.log(showOptions);
-            console.log(idea.getParentId());
-            //if (!showOptions) {
-                toReturn += getOptions(id);
-            //}
+            toReturn += getOptions();
             toReturn += " </div>";
             return toReturn;
         },
         activateListeners: function () {
-            this.element.find("#option-show-visual").click(function(){
-               var id = $(this).data("id"); 
-               app.selectContent("visual", id);
+            this.element.find("#option-show-visual").click(function () {
+                var id = $(this).data("id");
+                app.selectContent("visual", id);
+            });
+            this.element.find("#option-parent").click(function () {
+                var id = $(this).data("id");
+                app.selectContent("editor", id);
             });
         },
         getElements: function () {

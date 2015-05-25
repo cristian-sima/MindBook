@@ -3,8 +3,9 @@
     "use strict";
     var EditorTemplate = {
         // constructor
-        init: function (data, container) {
+        init: function (data, container, type) {
             this.container = container;
+            this.type = type;
             this.currentIdea = null;
             this.initEditor(data);
         },
