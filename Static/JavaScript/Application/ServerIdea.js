@@ -4,6 +4,7 @@
     ServerIdea = function ServerIdea(localIdea) {
         this.localIdea = localIdea;
         this.id = null;
+        this.correlatedId = null;
     };
     ServerIdea.prototype = {
         isOnServer: function () {
@@ -12,11 +13,14 @@
         setId: function (id) {
             this.id = id;
         },
-        getId: function () {
-            return this.id;
+        getCorrelatedId: function () {
+            return this.correlatedId;
         },
-        getUpdateId: function () {
-            if(this.id) {
+        setCorrelatedId: function (id) {
+            
+        },
+        getId: function () {
+            if (this.id) {
                 return this.id;
             }
             return this.getLocalIdea().getId();
@@ -26,13 +30,13 @@
         },
         update: function () {
             var idea = this.getLocalIdea(),
+                serverId = this.getId(),
+                localParent = idea.getParent(),
                 editor = idea.getEditor(),
                 content = idea.getContent(),
-                parent = idea.getParent().getId(),
-                id = this.getUpdateId();
+                serverParentId = localParent.getServerIdea().getId();
             if (this.canIdeaBeUpdated()) {
-                this.id = this.getLocalIdea().getId();
-                editor.updateIdeaOnServer(id, content, parent, idea);
+                editor.updateIdeaOnServer(serverId, content, serverParentId, idea);
             }
         },
         canIdeaBeUpdated: function () {

@@ -207,6 +207,9 @@
         },
         updateOnServer: function () {
             // empty
+        },
+        isCorelated: function () {
+            // to do
         }
     };
     Idea = Class.extend(IdeaTemplate);

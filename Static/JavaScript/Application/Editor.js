@@ -130,9 +130,7 @@
                 event.preventDefault();
                 app.gateway.removeIdea({
                     id: idea.id
-                }, function(data){
-                    
-                });
+                }, function (data) {});
                 idea.removeIdeaAndSaveChildren();
                 idea = null;
             }
@@ -185,17 +183,30 @@
         getCounter: function () {
             return app.getCounter();
         },
-        updateIdeaOnServer: function (id, newContent, parent, idea) {
+        updateIdeaOnServer: function (serverId, newContent, serverParentId, idea) {
             this.incrementCounter();
             var functie = (function () {
                 var i = idea;
-                return function (status) {
+                return function (report) {
+                    if (i) {
+                        var serverIdea = i.getServerIdea();
+                        switch (report.status) {
+                            case "correlation":
+                                serverIdea.setId(report.id);
+                                serverIdea.setCorrelatedId(report.id);
+                                break;
+                            case "creation":
+                                serverIdea.setId(report.id);
+                                serverIdea.setCorrelatedId(null);
+                                break;
+                        }
+                    }
                 };
             }(idea));
             app.gateway.updateIdea({
-                id: id,
+                id: serverId,
                 content: newContent,
-                parent: parent
+                parent: serverParentId
             }, functie);
         }
     };

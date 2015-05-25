@@ -148,13 +148,7 @@ class Idea {
     public function remove() {
         // move the children to the grandparent
         
-        $stmt = Database::$db->prepare('UPDATE idea
-        SET parent = :parent, path = :path       
-        WHERE parent = :id ');
-        $stmt->bindParam(':parent', $this->getParent());
-        $stmt->bindParam(':path', $this->getPath());
-        $stmt->bindParam(':id', $this->id);
-        $stmt->execute();
+        $this->changeParentOfChildren($this->getParent(), $this->getPath());
         
         // delete idea
         $stmt2 = Database::$db->prepare('DELETE from idea
@@ -163,6 +157,18 @@ class Idea {
         $stmt2->execute();
         
         return "true";
+    }
+    
+    public function changeParentOfChildren($newParentId, $path) {
+        
+        $stmt = Database::$db->prepare('UPDATE idea
+        SET parent = :parent, path = :path       
+        WHERE parent = :id ');
+        $stmt->bindParam(':parent', $newParentId);
+        $stmt->bindParam(':path', $path);
+        $stmt->bindParam(':id', $this->id);
+        $stmt->execute();
+        
     }
 
     public function __toString() {

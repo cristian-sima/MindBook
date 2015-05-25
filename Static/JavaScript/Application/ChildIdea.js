@@ -138,6 +138,7 @@
                 position = null;
             if (previousIdea) {
                 position = previousIdea.getNumberOfChildren();
+                previousIdea.getLine().updateIdea();
                 previousIdea.addChildAtPosition(this, position);
             }
             this.updateLine();

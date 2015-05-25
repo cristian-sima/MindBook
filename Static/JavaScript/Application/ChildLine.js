@@ -70,7 +70,6 @@
                         } else {
                             // -----> (TAB)
                             idea.fired_tabKeyPressed();
-                            idea.getParent().updateOnServer();
                         }
                         idea.getLine().updateIdea();
                         break;

@@ -97,7 +97,7 @@ Class MindBook {
         return "true";
     }
 
-    public function checkIdeaExists($id) {
+    public function checkIdeaExistsById($id) {
         $sth = Database::$db->prepare('SELECT id
             FROM idea
             WHERE id = ?
@@ -109,6 +109,28 @@ Class MindBook {
             return true;
         }
         return false;
+    }
+    
+    public function findIdeaByContentAndParent($parent, $content) {
+         $sth = Database::$db->prepare('SELECT id
+            FROM idea
+            WHERE parent = ? ,
+                  content = ?
+            LIMIT 0,1');
+
+        $sth->execute(array($parent, $content));
+
+        foreach ($sth->fetchAll() as $row) {
+            return new Idea($row["id"]);
+        }
+        return false;
+    }
+    
+     public function checkIdeaExists($parent, $content) {
+         if($this->findIdeaByContentAndParent($parent, $content) !== null) {
+             return true;
+         }
+         return false;
     }
     
     public function clearAll() {
