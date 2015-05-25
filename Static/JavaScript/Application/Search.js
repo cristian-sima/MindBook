@@ -22,7 +22,7 @@ Search.prototype = {
 
             function getParentText(parent) {
                 if (parent) {
-                    return "<div class='parent' >" +  parent.content + "</div>" + "<div style='display:inline-block;width:20px;position:relative'><img style='positon:absolute;top:0px;' src='Static/Images/link.png' aling='absmiddle' /></div>" + " ";
+                    return "<div class='parent' >" + parent.content + "</div>" + "<div style='display:inline-block;width:20px;position:relative'><img style='positon:absolute;top:0px;' src='Static/Images/link.png' aling='absmiddle' /></div>" + " ";
                 }
                 return "";
             }
@@ -51,7 +51,7 @@ Search.prototype = {
                     response(instance.cache[term]);
                     return;
                 }
-                $.getJSON("api/?action=findIdeas", request, function (data, status, xhr) {
+                app.gateway.findIdeasByContent(term, function (data) {
                     instance.cache[term] = data;
                     response(data);
                 });

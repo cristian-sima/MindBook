@@ -56,7 +56,13 @@ Gateway.prototype = {
             "id": idea.id,
             parent: idea.parent,
             isCorrelated: "" + idea.isCorrelated
-        }, callback, true);
+        }, callback);
+    },
+    findIdeasByContent: function (term, callback) {
+        this.sendAjaxRequest("", {
+            "action": "findIdeas",
+            "term": term
+        }, callback);
     },
     removeIdea: function (idea, callback) {
         this.sendAjaxRequest("", {
@@ -64,7 +70,7 @@ Gateway.prototype = {
             "id": idea.id
         }, callback, true, callback);
     },
-    sendAjaxRequest: function (url, data, callback, notShowLoading, errorCallback) {
+    sendAjaxRequest: function (url, data, callback, notShowLoading) {
 
         app.gui.showLoading();
 
@@ -81,8 +87,7 @@ Gateway.prototype = {
         $.ajax({
             url: "api/" + url,
             data: data,
-            success: fired_requestDone,
-            error: errorCallback
+            success: fired_requestDone
         });
     }
 };

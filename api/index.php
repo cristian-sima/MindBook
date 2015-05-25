@@ -62,7 +62,7 @@ switch (Request::extract("action")) {
 
             $correspondingIdea = new ChildIdea($corr_id);
 
-
+            // it is the same
             if ($corr_id == $id) {
                 $report["status"] = "nothing";
             } else {
@@ -106,7 +106,7 @@ switch (Request::extract("action")) {
 
     case "removeIdea":
         $id = Request::extract("id");
-        $ideaExists = $book->checkIdeaExists($id);
+        $ideaExists = $book->checkIdeaExistsById($id);
 
         if ($ideaExists) {
             $idea = new ChildIdea($id);
