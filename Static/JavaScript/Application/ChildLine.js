@@ -6,6 +6,7 @@
         init: function (idea, previousLine) {
             this._super(idea, previousLine);
             this.highlightTimeout = null;
+            this.delayUpdateIdea = null;
         },
         insertElement: function (previousLine) {
             var HTML = this.getHTML();
@@ -51,6 +52,7 @@
         activateKeyListenes: function () {
             var idea = this.idea,
                 editor = idea.getEditor();
+            
             this.textarea.on("keydown", function (event) {
                 var keyCode = event.keyCode || event.which;
                 if (app.data.isSpecialKey(keyCode)) {
@@ -59,7 +61,7 @@
                 switch (keyCode) {
                     case app.data.keys.ENTER.code:
                         editor.fired_enterKeyPressed(idea);                        
-                        idea.updateOnServer();
+                        idea.getLine().updateIdea();
                         break;
                     case app.data.keys.TAB.code:
                         if (event.shiftKey) {
@@ -69,7 +71,7 @@
                             // -----> (TAB)
                             idea.fired_tabKeyPressed();
                         }
-                        idea.updateOnServer();
+                        idea.getLine().updateIdea();
                         break;
                     case app.data.keys.BACKSPACE.code:
                         editor.removeIdea(idea, event);
@@ -88,9 +90,23 @@
                     idea.setContent(content);
                     idea.updateLine();
                 if (app.data.isModyfingKey(keyCode)) {
-                    idea.updateOnServer();
+                    idea.getLine().delayUpdate();
                 }
             });
+        },
+        delayUpdate: function () {
+            var instance = this;
+            this.stopUpdateDelay();
+            this.delayUpdateIdea = setTimeout(function() {
+                instance.updateIdea();
+            }, 600);
+        },
+        updateIdea: function () {
+            this.stopUpdateDelay();
+            this.getIdea().updateOnServer();
+        },
+        stopUpdateDelay: function () {          
+            clearTimeout(this.delayUpdateIdea);  
         },
         activateMouseListeners: function () {
             var idea = this.getIdea(),
@@ -168,6 +184,11 @@
         },
         getPreviousLine: function () {
             return this.getIdea().getParent().getLine();
+        },
+        remove: function () {
+            if(this.delayUpdateIdea) {
+                this.updateIdea();
+            }
         }
     };
     ChildLine = Line.extend(ChildLineTemplate);
