@@ -6,7 +6,7 @@
         this.id = null;
     };
     ServerIdea.prototype = {
-        isIdeaOnServer: function () {
+        isOnServer: function () {
             return (this.id !== null);
         },
         setId: function (id) {
@@ -15,8 +15,11 @@
         getId: function () {
             return this.id;
         },
-        getLocalId: function () {
-            return this.localIdea.id;
+        getUpdateId: function () {
+            if(this.id) {
+                return this.id;
+            }
+            return this.getLocalIdea().getId();
         },
         getLocalIdea: function () {
             return this.localIdea;
@@ -26,8 +29,25 @@
                 editor = idea.getEditor(),
                 content = idea.getContent(),
                 parent = idea.getParent().getId(),
-                id = this.getId();
-            editor.updateIdeaOnServer(id, content, parent, idea);
+                id = this.getUpdateId();
+            if (this.canIdeaBeUpdated()) {
+                this.id = this.getLocalIdea().getId();
+                editor.updateIdeaOnServer(id, content, parent, idea);
+            }
+        },
+        canIdeaBeUpdated: function () {
+            var idea = this.getLocalIdea(),
+                content = idea.getContent();
+            if (content.length !== 0) {
+                return true;
+            }
+            if (this.isOnServer()) {
+                return true;
+            }
+            if (idea.hasChildren()) {
+                return true;
+            }
+            return false;
         }
     };
 }());

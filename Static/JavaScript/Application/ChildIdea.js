@@ -4,7 +4,7 @@
     var ChildIdeaTemplate = {
         init: function (info, home) {
             this.home = home;
-            this._super(info.id, info.content);
+            this._super(info.id, info.content, info.server);
         },
         setParent: function (newParent) {
             if (this.getParent()) {

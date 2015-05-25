@@ -12,7 +12,8 @@
         loadFirstIdea: function (firstChild) {
             var childIdea = this.createFirstChildIdea({
                 id: firstChild.id,
-                content: firstChild.content
+                content: firstChild.content,
+                server: firstChild.id
             });
             // load its children
             this.loadIdeas(childIdea, firstChild.children);
@@ -32,12 +33,13 @@
             }
         },
         createHomeIdea: function (info) {
-            this.home = new HomeIdea(info.id, info.content, this);
+            this.home = new HomeIdea(info.id, info.content, info.id, this);
         },
         createNewFirstChildIdea: function () {
             var idea = this.createFirstChildIdea({
                 id: this.getCounter(),
-                content: ""
+                content: "",
+                server: null
             });
             this.incrementCounter();
             return idea;
@@ -55,7 +57,8 @@
                 id: info.id,
                 content: info.content,
                 parent: parent,
-                position: parent.getNumberOfChildren() + 1
+                position: parent.getNumberOfChildren() + 1,
+                server: info.id
             });
             return newIdea;
         },
@@ -64,12 +67,9 @@
                 id: this.getCounter(),
                 parent: parentIdea,
                 position: position,
-                content: ""
+                content: "",
+                server: null
             });
-            
-            // 
-            
-            
             this.incrementCounter();
             return newIdea;
         },

@@ -1,13 +1,15 @@
-/*global app,Class,$,ChildIdea*/
+/*global app,Class,$,ChildIdea,ServerIdea*/
 (function () {
     "use strict";
     var IdeaTemplate = {
         // constructor
-        init: function (id, content) {
+        init: function (id, content, serverId) {
             this.id = parseInt(id, 10);
             this.children = [];
             this.parent = null;
             this.content = content;
+            this.serverIdea = new ServerIdea(this);
+            this.serverIdea.setId(serverId);
         },
         /* Its methods */
         getParent: function () {
@@ -182,6 +184,9 @@
         isParent: function () {
             return (this.getNumberOfChildren() !== 0);
         },
+        hasChildren: function () {
+            return this.isParent();
+        },
         getNumberOfChildren: function () {
             return this.children.length;
         },
@@ -196,6 +201,12 @@
         },
         getId: function () {
             return this.id;
+        },
+        getServerIdea: function () {
+            return this.serverIdea;
+        },
+        updateOnServer: function () {
+            // empty
         }
     };
     Idea = Class.extend(IdeaTemplate);
