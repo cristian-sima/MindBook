@@ -127,6 +127,11 @@
         removeIdea: function (idea, event) {
             if (this.canIdeaBeRemoved(idea)) {
                 event.preventDefault();
+                app.gateway.removeIdea({
+                    id: idea.id
+                }, function(data){
+                    
+                });
                 idea.removeIdeaAndSaveChildren();
                 idea = null;
             }
@@ -184,11 +189,6 @@
             var functie = (function () {
                 var i = idea;
                 return function (status) {
-                    if (status !== true) {
-                        i.getLine().showProblem("Continutul nu a putut fi modificat");
-                    } else {
-                        i.getLine().hideProblem();
-                    }
                 };
             }(idea));
             app.gateway.updateIdea({

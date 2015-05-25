@@ -186,9 +186,8 @@
             return this.getIdea().getParent().getLine();
         },
         remove: function () {
-            if(this.delayUpdateIdea) {
-                this.updateIdea();
-            }
+            this._super();
+            this.stopUpdateDelay();
         }
     };
     ChildLine = Line.extend(ChildLineTemplate);

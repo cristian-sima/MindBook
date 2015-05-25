@@ -151,21 +151,17 @@ class Idea {
         $stmt = Database::$db->prepare('UPDATE idea
         SET parent = :parent, path = :path       
         WHERE parent = :id ');
-        $stmt->bindParam(':id', $this->id);
         $stmt->bindParam(':parent', $this->getParent());
         $stmt->bindParam(':path', $this->getPath());
+        $stmt->bindParam(':id', $this->id);
         $stmt->execute();
         
         // delete idea
         $stmt2 = Database::$db->prepare('DELETE from idea
-        WHERE parent = :id ');
+        WHERE id = :id ');
         $stmt2->bindParam(':id', $this->id);
-        $stmt2->bindParam(':parent', $this->getParent());
         $stmt2->execute();
         
-        
-
-        $this->content = $newParent;
         return "true";
     }
 

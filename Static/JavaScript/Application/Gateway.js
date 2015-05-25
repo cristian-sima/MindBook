@@ -55,7 +55,13 @@ Gateway.prototype = {
             parent: idea.parent
         }, callback, true);
     },
-    sendAjaxRequest: function (url, data, callback, notShowLoading) {
+    removeIdea: function (idea, callback) {
+        this.sendAjaxRequest("", {
+            "action": "removeIdea",
+            "id": idea.id
+        }, callback, true, callback);
+    },
+    sendAjaxRequest: function (url, data, callback, notShowLoading, errorCallback) {
         if(!notShowLoading) {
             app.gui.showLoading();
         }
@@ -72,7 +78,8 @@ Gateway.prototype = {
         $.ajax({
             url: "api/" + url,
             data: data,
-            success: fired_requestDone
+            success: fired_requestDone,
+            error: errorCallback
         });
     }
 };

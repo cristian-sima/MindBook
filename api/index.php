@@ -62,6 +62,17 @@
             
             break;
             
+        case "removeIdea":
+            $id = Request::extract("id");
+            $ideaExists = $book->checkIdeaExists($id);        
+            
+            if($ideaExists) {
+                $idea = new ChildIdea($id);
+                echo $idea->remove();
+            } else {
+                echo 'false';
+            }
+            break;
         /* to delete */
         case "clear":
             $book->clearAll();
