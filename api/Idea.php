@@ -1,5 +1,7 @@
 <?php
 
+require_once "Security.php";
+
 class Idea {
 
     private $id;
@@ -83,9 +85,13 @@ class Idea {
             $parent = $row["parent"];
             $content = $row["content"];
 
+            
+            $safeContent = Security::XSS($content);
+        
+            
             $child = array("id" => $id,
                 "parent" => $parent,
-                "content" => $content);
+                "content" => $safeContent);
 
             array_push($this->children, $child);
         }
@@ -173,9 +179,11 @@ class Idea {
 
     public function __toString() {
 
+        $safeContent = Security::XSS($this->getContent());
+        
         $array = array("id" => $this->id,
             "parent" => $this->parent,
-            "content" => $this->content,
+            "content" => $safeContent,
             "children" => $this->children);
 
         return json_encode($array, JSON_PRETTY_PRINT);

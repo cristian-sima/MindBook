@@ -12,6 +12,9 @@ body {
     width: 100%;
 }
 
+#application {
+    width: 700px;
+}
 
 /* Header */
 

@@ -3,6 +3,7 @@
 function Search() {
     this.element = $("#search");
     this.cache = {};
+    this.cacheActivated = false;
     this.term = "";
     this.init();
 }
@@ -47,12 +48,14 @@ Search.prototype = {
             source: function (request, response) {
                 var term = request.term;
                 instance.setTerm(term);
-                if (term in instance.cache) {
+                if (instance.cacheActivated && term in instance.cache) {
                     response(instance.cache[term]);
                     return;
                 }
                 app.gateway.findIdeasByContent(term, function (data) {
-                    instance.cache[term] = data;
+                    if (instance.cacheActivated) {
+                        instance.cache[term] = data;
+                    }
                     response(data);
                 });
             },

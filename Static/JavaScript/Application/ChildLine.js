@@ -98,7 +98,7 @@
             this.stopUpdateDelay();
             this.delayUpdateIdea = setTimeout(function () {
                 instance.updateIdea();
-            }, 600);
+            }, 500);
         },
         updateIdea: function () {
             this.stopUpdateDelay();

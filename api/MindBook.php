@@ -1,6 +1,6 @@
 <?php
 
-require "Database.php";
+require_once "Database.php";
 
 Class MindBook {
 
@@ -67,17 +67,19 @@ Class MindBook {
             $content = $row["content"];
             $id = $row["id"];
             $parent_id = $row["parent"];
+            
+            $safeContent = Security::XSS($content);
 
             if ($parent_id !== null) {
                 $idea = new ChildIdea($parent_id);
                 $parent = array("id" => $idea->getParent(),
-                    "content" => $idea->getContent());
+                    "content" => Security::XSS($idea->getContent()));
             } else {
                 $parent = null;
             }
 
 
-            array_push($toReturn, array("id" => $id, "content" => $content, 'parent' => $parent));
+            array_push($toReturn, array("id" => $id, "content" => $safeContent, 'parent' => $parent));
         }
         return json_encode($toReturn);
     }

@@ -17,85 +17,90 @@ and open the template in the editor.
         <link rel="shortcut icon" href="Static/Images/favicon.ico" />
     </head>
     <body>
-        <div id="menu">
-            <ul>
-                <li data-option="default" id="option-default">
-                    <a><img src="Static/Images/Menu/default.svg" alt="Default" /></a>
-                </li>
-                <li data-option="visual" id="option-visual">
-                    <a><img src="Static/Images/Menu/list.svg" alt="Visual" /></a>
-                </li>
-                <li  data-option="editor" id="option-editor" style="display:none">                    
-                    <a><img src="Static/Images/Menu/editor.svg" alt="Editor" /></a>
-                </li>
-            </ul>
+        <div id="application"> 
+            <div id="menu">
+                <ul>
+                    <li data-option="default" id="option-default">
+                        <a><img src="Static/Images/Menu/default.svg" alt="Default" /></a>
+                    </li>
+                    <li data-option="visual" id="option-visual">
+                        <a><img src="Static/Images/Menu/list.svg" alt="Visual" /></a>
+                    </li>
+                    <li  data-option="editor" id="option-editor" style="display:none">                    
+                        <a><img src="Static/Images/Menu/editor.svg" alt="Editor" /></a>
+                    </li>
+                    <li  data-option="list" id="option-list" style="display:none">                    
+                        <a><img src="Static/Images/Menu/list.svg" alt="List" /></a>
+                    </li>
+                </ul>
+            </div>
+            <header>
+                <span id='logo'>Mind Book</span>
+                &nbsp;
+                <a href='api?action=clear'>Clear All</a>
+                <input id='search' type='text' placeholder="Search everything"/>
+            </header>
+            <div id="main-content" >
+                <div id="visual"></div>
+                <div id="default"></div>
+                <div id="editor">
+                    <table >
+                        <tbody>
+                            <tr>
+                                <td id="left-div">
+                                    <div id="app"></div>
+                                </td>
+                                <td id="right-div">
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>            
+            </div>
+
+
+            <!-- JavaScript Files -->
+
+
+            <script type="text/javascript" src="Static/JavaScript/Library/JQuery.js"></script>
+            <script type="text/javascript" src="Static/JavaScript/Library/autosize.js"></script>
+            <script type="text/javascript" src="Static/JavaScript/Library/jquery-ui.min.js"></script>
+            <script type="text/javascript" src="Static/JavaScript/Library/nprogress.js"></script>
+            <script type="text/javascript" src="Static/JavaScript/Library/Others.js"></script>
+            <script type="text/javascript" src="Static/JavaScript/Library/Class.js"></script>
+            <script type="text/javascript" src="Static/JavaScript/Application/Data.js"></script>
+
+            <script type="text/javascript" src="Static/JavaScript/Application/Idea.js"></script>
+            <script type="text/javascript" src="Static/JavaScript/Application/HomeIdea.js"></script>
+            <script type="text/javascript" src="Static/JavaScript/Application/ChildIdea.js"></script>
+            <script type="text/javascript" src="Static/JavaScript/Application/ServerIdea.js"></script>
+
+            <script type="text/javascript" src="Static/JavaScript/Application/Line.js"></script>
+            <script type="text/javascript" src="Static/JavaScript/Application/HomeLine.js"></script>
+            <script type="text/javascript" src="Static/JavaScript/Application/ChildLine.js"></script>
+
+
+            <script type="text/javascript" src="Static/JavaScript/Application/Editor.js"></script>
+            <script type="text/javascript" src="Static/JavaScript/Application/StandardEditor.js"></script>
+            <script type="text/javascript" src="Static/JavaScript/Application/DefaultEditor.js"></script>
+
+            <script type="text/javascript" src="Static/JavaScript/Application/Search.js"></script>
+            <script type="text/javascript" src="Static/JavaScript/Application/GUI.js"></script>
+            <script type="text/javascript" src="Static/JavaScript/Application/Gateway.js"></script>
+            <script type="text/javascript" src="Static/JavaScript/Application/Menu.js"></script>
+
+            <script type="text/javascript" src="Static/JavaScript/Application/Visual.js"></script>
+
+
+
+            <script type="text/javascript" src="Static/JavaScript/Application/App.js"></script>  
+            <script type="text/javascript" src="Static/JavaScript/Application/init.js"></script>
+
+
+            <!-- 
+            
+            -->
         </div>
-        <header>
-            <span id='logo'>Mind Book</span>
-            &nbsp;
-            <a href='api?action=clear'>Clear All</a>
-            <input id='search' type='text' placeholder="Search everything"/>
-        </header>
-        <div id="main-content" >
-            <div id="visual"></div>
-            <div id="default"></div>
-            <div id="editor">
-                <table >
-                    <tbody>
-                        <tr>
-                            <td id="left-div">
-                                <div id="app"></div>
-                            </td>
-                            <td id="right-div">
-
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>            
-        </div>
-
-
-        <!-- JavaScript Files -->
-
-
-        <script type="text/javascript" src="Static/JavaScript/Library/JQuery.js"></script>
-        <script type="text/javascript" src="Static/JavaScript/Library/autosize.js"></script>
-        <script type="text/javascript" src="Static/JavaScript/Library/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="Static/JavaScript/Library/nprogress.js"></script>
-        <script type="text/javascript" src="Static/JavaScript/Library/Others.js"></script>
-        <script type="text/javascript" src="Static/JavaScript/Library/Class.js"></script>
-        <script type="text/javascript" src="Static/JavaScript/Application/Data.js"></script>
-
-        <script type="text/javascript" src="Static/JavaScript/Application/Idea.js"></script>
-        <script type="text/javascript" src="Static/JavaScript/Application/HomeIdea.js"></script>
-        <script type="text/javascript" src="Static/JavaScript/Application/ChildIdea.js"></script>
-        <script type="text/javascript" src="Static/JavaScript/Application/ServerIdea.js"></script>
-        
-        <script type="text/javascript" src="Static/JavaScript/Application/Line.js"></script>
-        <script type="text/javascript" src="Static/JavaScript/Application/HomeLine.js"></script>
-        <script type="text/javascript" src="Static/JavaScript/Application/ChildLine.js"></script>
-              
-
-        <script type="text/javascript" src="Static/JavaScript/Application/Editor.js"></script>
-        <script type="text/javascript" src="Static/JavaScript/Application/StandardEditor.js"></script>
-        <script type="text/javascript" src="Static/JavaScript/Application/DefaultEditor.js"></script>
-        
-        <script type="text/javascript" src="Static/JavaScript/Application/Search.js"></script>
-        <script type="text/javascript" src="Static/JavaScript/Application/GUI.js"></script>
-        <script type="text/javascript" src="Static/JavaScript/Application/Gateway.js"></script>
-        <script type="text/javascript" src="Static/JavaScript/Application/Menu.js"></script>
-        
-        <script type="text/javascript" src="Static/JavaScript/Application/Visual.js"></script>
-
-
-
-        <script type="text/javascript" src="Static/JavaScript/Application/App.js"></script>  
-        <script type="text/javascript" src="Static/JavaScript/Application/init.js"></script>
-
-
-        <!-- 
-        
-        -->
     </body>
 </html>
