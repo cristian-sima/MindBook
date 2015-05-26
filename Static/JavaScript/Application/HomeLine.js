@@ -17,6 +17,14 @@
                 content = idea.getContent(),
                 toReturn = '';
 
+
+            function getParent() {
+                if(!idea.isTheHomeRoot()) {
+                    return '<span class="parent editor-parent" id="option-parent" data-id="' + idea.getParentId() + '">Parent</span><br /><div style="display:inline-block;width:20px;position:relative"><img style="positon:absolute;top:0px;" src="Static/Images/link.png" aling="absmiddle"></div>';
+                }
+                return '';
+            }
+            
             function getOptions() {
                 var toReturn = "";
                 
@@ -25,8 +33,7 @@
                 toReturn += "</div>";
                 
                 return toReturn;
-            }
-            
+            }            
             
             function getVisual() {
                 if (editor.isStandard()) {
@@ -34,13 +41,7 @@
                 }
                 return "";
             }
-
-            function getParent() {
-                if(!idea.isTheHomeRoot()) {
-                    return '<span class="parent editor-parent" id="option-parent" data-id="' + idea.getParentId() + '">Parent</span><br /><div style="display:inline-block;width:20px;position:relative"><img style="positon:absolute;top:0px;" src="Static/Images/link.png" aling="absmiddle"></div>';
-                }
-                return '';
-            }
+            
             toReturn += "<div id='element-" + id + "' class='idea-div idea-home'>";
             toReturn += getParent();
             toReturn += content;
