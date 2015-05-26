@@ -45,6 +45,7 @@ Search.prototype = {
         }
         this.element.autocomplete({
             minLength: 2,
+            autoFocus: true,
             source: function (request, response) {
                 var term = request.term;
                 instance.setTerm(term);
@@ -71,7 +72,6 @@ Search.prototype = {
         };
         this.element.focus(function () {
             $(this).val(instance.getTerm());
-            console.log('focus')
             $(this).autocomplete("search");
         });
     },

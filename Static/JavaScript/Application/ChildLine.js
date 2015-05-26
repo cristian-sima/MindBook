@@ -23,7 +23,7 @@
             }
 
             function getID() {
-                return "<div class='idea-id' style='' id='id'>" + id + " </div>";
+                return "<div class='idea-id' style='display:none' id='id'>" + id + " </div>";
             }
 
             function getNumberOfChildren() {
