@@ -15,6 +15,7 @@
                 content: data.content,
                 parent: data.parent
             });
+            
             if (Object.size(data.children) !== 0) {
                 // get the first one
                 firstChild = data.children[Object.keys(data.children)[0]];

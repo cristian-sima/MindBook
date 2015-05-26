@@ -31,7 +31,7 @@
             }
             toReturn += "<div id='element-" + id + "' class='idea-div'> ";
             toReturn += "<div class='warning' id='warning'></div>";
-            toReturn += "<div class='problem' id='problem'></div>";
+            // toReturn += "<div class='problem' id='problem'></div>";
             toReturn += "<div class='content' id='content'>";
             toReturn += getID();
             toReturn += getNumberOfChildren();
@@ -146,7 +146,7 @@
             this.updateCorrelation();
         },
         updateHTML: function () {
-            var levelWidth = 30,
+            var levelWidth = 15,
                 level = this.idea.getLevel(),
                 margin = levelWidth * level,
                 numberOfChildren = this.idea.getNumberOfChildren();
