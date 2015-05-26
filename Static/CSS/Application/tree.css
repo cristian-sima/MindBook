@@ -2,15 +2,18 @@
 /* Visual List */
 
 #visual .name {
-    border: 1px solid #f1f1f1;
+    border: 1px solid #F2EFEF;
     padding: 5px;
     display: inline-block;
     border-radius: 4px;
+    padding-bottom: 0px;
+    padding-top: 0px;
 }
 
 #visual .name:hover {
-    cursor:pointer;
-    background: #9999ff;
+    cursor:pointer;  
+    background: #F4FCFF;
+    border: 1px solid #A9DEF5;
 }
 
 

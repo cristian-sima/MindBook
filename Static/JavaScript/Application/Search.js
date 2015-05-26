@@ -16,16 +16,17 @@ Search.prototype = {
 
         function getHTMLForItem(item) {
             function highlightSearchedTerm(text, word) {
-                var rgxp = new RegExp(word, 'gi');
-                var repl = '<span class="highlightWord">' + word + '</span>';
+                var rgxp = new RegExp(word, 'gi'),
+                    repl = '<span class="highlightWord">' + word + '</span>';
                 return text.replace(rgxp, repl);
             }
 
-            function getParentText(parent) {
-                if (parent) {
-                    return "<div class='parent' >" + parent.content + "</div>" + "<div style='display:inline-block;width:20px;position:relative'><img style='positon:absolute;top:0px;' src='Static/Images/link.png' aling='absmiddle' /></div>" + " ";
+            function getParentText(parentIdea) {
+                var parent = "Home";
+                if (parentIdea) {
+                    parent = parentIdea.content;
                 }
-                return "";
+                return "<div class='parent' >" + parent + "</div>" + "<div style='display:inline-block;width:20px;position:relative'><img style='positon:absolute;top:0px;' src='Static/Images/link.png' aling='absmiddle' /></div>" + " ";
             }
             return getParentText(item.parent) + highlightSearchedTerm(item.content, instance.getTerm());
         }
