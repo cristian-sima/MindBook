@@ -233,7 +233,7 @@ header #search:-moz-placeholder {
 
 .highlightWord {
     color: #29d;
-    font-weight: bold;
+    font-weight: italic;
 }
 
 .ui-menu .ui-menu-item {
@@ -245,6 +245,13 @@ header #search:-moz-placeholder {
     overflow: hidden;
     width:222px;
 }
+
+.ui-widget-content {
+    background: #fff;
+}
+
+
+/* End Search */
 
 
 .idea-home {
