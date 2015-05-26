@@ -15,10 +15,22 @@ Search.prototype = {
         var instance = this;
 
         function getHTMLForItem(item) {
-            function highlightSearchedTerm(text, word) {
-                var rgxp = new RegExp(word, 'gi'),
-                    repl = '<span class="highlightWord">' + word + '</span>';
-                return text.replace(rgxp, repl);
+            function highlightSearchedTerm(data, search) {
+                function preg_quote(str) {
+                    // http://kevin.vanzonneveld.net
+                    // +   original by: booeyOH
+                    // +   improved by: Ates Goral (http://magnetiq.com)
+                    // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+                    // +   bugfixed by: Onno Marsman
+                    // *     example 1: preg_quote("$40");
+                    // *     returns 1: '\$40'
+                    // *     example 2: preg_quote("*RRRING* Hello?");
+                    // *     returns 2: '\*RRRING\* Hello\?'
+                    // *     example 3: preg_quote("\\.+*?[^]$(){}=!<>|:");
+                    // *     returns 3: '\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:'
+                    return (str + '').replace(/([\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:])/g, "\\$1");
+                }
+                return data.replace(new RegExp("(" + preg_quote(search) + ")", 'gi'), "<span class='highlightWord'>$1</span>");
             }
 
             function getParentText(parentIdea) {
@@ -29,20 +41,6 @@ Search.prototype = {
                 return "<div class='parent' >" + parent + "</div>" + "<div style='display:inline-block;width:20px;position:relative'><img style='positon:absolute;top:0px;' src='Static/Images/link.png' aling='absmiddle' /></div>" + " ";
             }
             return getParentText(item.parent) + highlightSearchedTerm(item.content, instance.getTerm());
-        }
-
-        function prepareResults(rezultate, termenCautat) {
-            var iterator = null,
-                result = null,
-                toReturn = [];
-            for (iterator in rezultate) {
-                if (rezultate.hasOwnProperty(iterator)) {
-                    result = rezultate[iterator];
-                    result.content = highlightSearchedTerm(termenCautat, result.content);
-                    toReturn.push("<div data-id='" + result.id + "' class='results'>" + result.content + "</div>");
-                }
-            }
-            return toReturn;
         }
         this.element.autocomplete({
             minLength: 2,
