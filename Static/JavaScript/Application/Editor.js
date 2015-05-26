@@ -21,15 +21,13 @@
             return childIdea;
         },
         loadIdeas: function (parentIdea, children) {
-            var childId = null,
+            var iterator = null,
                 child = null,
                 childIdea;
-            for (childId in children) {
-                if (children.hasOwnProperty(childId)) {
-                    child = children[childId];
-                    childIdea = this.createChildIdea(parentIdea, child);
-                    this.loadIdeas(childIdea, child.children);
-                }
+            for (iterator = 0; iterator < children.length; iterator = iterator + 1) {
+                child = children[iterator];
+                childIdea = this.createChildIdea(parentIdea, child);
+                this.loadIdeas(childIdea, child.children);
             }
         },
         createHomeIdea: function (info) {

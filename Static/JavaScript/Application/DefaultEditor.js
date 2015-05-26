@@ -7,17 +7,14 @@
         },
         initEditor: function (data) {
             var firstIdea = null;
-            
             data.content = "";
             data.children = {};
-                                    
             this.createHomeIdea({
                 id: data.id,
                 content: data.content,
                 parent: null
             });
             firstIdea = this.createNewFirstChildIdea();
-            
             this.setCurrentIdea(firstIdea);
         }
     };

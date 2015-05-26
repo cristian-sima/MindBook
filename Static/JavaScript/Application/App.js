@@ -80,6 +80,9 @@
                 this.editor.close();
                 delete this.editor;
             }
+            if(this.visual) {
+                this.visual.close();
+            }
         },
         prepareData: function (data) {
             var temp = {
@@ -91,7 +94,7 @@
                 child = null,
                 c = null,
                 parent = null;
-            temp.children = {};
+            temp.children = [];
 
             function findParentOfChild(current, id) {
                 var current_child = null,
@@ -100,13 +103,11 @@
                 if (current.id === id) {
                     return current;
                 }
-                for (iterator in current.children) {
-                    if (current.children.hasOwnProperty(iterator)) {
-                        current_child = current.children[iterator];
-                        found = findParentOfChild(current_child, id);
-                        if (found) {
-                            return found;
-                        }
+                for (iterator = 0; iterator < current.children.length; iterator = iterator + 1) {
+                    current_child = current.children[iterator];
+                    found = findParentOfChild(current_child, id);
+                    if (found) {
+                        return found;
                     }
                 }
                 return null;
@@ -116,15 +117,21 @@
                 child = {
                     id: parseInt(c.id, 10),
                     content: c.content,
-                    children: {}
+                    children: []
                 };
                 parent = findParentOfChild(temp, parseInt(c.parent, 10));
-                parent.children[child.id] = child;
+                if (!parent) {
+                    console.log("Nu am gasit parinte pentru " + c.id + ". Trebuia sa fie parintele " + c.parent);
+                    console.log("Toate datele:  ");
+                    console.log(data);
+                    throw "Problem with pre-processing !";
+                }
+                parent.children.push(child);
                 child.parent = parent;
             }
             return temp;
         },
-        getCounter: function() {
+        getCounter: function () {
             return this.counter;
         },
         incrementCounter: function () {

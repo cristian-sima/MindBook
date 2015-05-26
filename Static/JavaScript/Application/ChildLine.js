@@ -146,8 +146,8 @@
             this.updateCorrelation();
         },
         updateHTML: function () {
-            var levelWidth = 15,
-                level = this.idea.getLevel(),
+            var levelWidth = 20,
+                level = parseInt(this.idea.getLevel(), 10) - 1,
                 margin = levelWidth * level,
                 numberOfChildren = this.idea.getNumberOfChildren();
             // update the level

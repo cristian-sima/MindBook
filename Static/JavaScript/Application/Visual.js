@@ -9,18 +9,18 @@ function Visual(id, data) {
     this.home = data;
     this.init();
 };
-Visual.prototype = {    
+Visual.prototype = {
     init: function () {
         this.element.html(this.showIdea(this.home));
         this.activateListeners();
     },
     showIdea: function (idea) {
         var toReturn = "",
-            id = null,
+            iterator = null,
             child = null;
         toReturn += "<div class='idea' ><span class='name' data-id='" + idea.id + "' >" + idea.content + "</span><ul>";
-        for (id in idea.children) {
-            child = idea.children[id];
+        for (iterator = 0; iterator < idea.children.length; iterator = iterator + 1) {
+            child = idea.children[iterator];
             toReturn += "<li>";
             toReturn += this.showIdea(child);
             toReturn += "</li>";
@@ -41,5 +41,9 @@ Visual.prototype = {
     },
     fired_ideaClicked: function (id) {
         app.selectContent("editor", id);
+    },
+    close: function () {
+        this.element.html("Please wait...");
+        this.element.off();        
     }
 };

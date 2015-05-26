@@ -6,26 +6,24 @@
             this._super(data, container, "Standard");
         },
         initEditor: function (data) {
-            var childId = null,
-                child = null,
-                firstIdea = null,
+            var firstIdea = null,
                 firstChild = null;
             this.createHomeIdea({
                 id: data.id,
                 content: data.content,
                 parent: data.parent
             });
-            
-            if (Object.size(data.children) !== 0) {
+            if (data.children.length !== 0) {
                 // get the first one
-                firstChild = data.children[Object.keys(data.children)[0]];
+                firstChild = data.children[0];
                 firstIdea = this.loadFirstIdea(firstChild);
-                delete(data.children[firstIdea.id]);
+                // remove the first one
+                data.children.splice(0, 1);
                 // load children
                 this.loadIdeas(this.home, data.children);
                 // punem restul de copii 
             } else {
-                firstIdea = this.createNewFirstChildIdea();                
+                firstIdea = this.createNewFirstChildIdea();
             }
             this.setCurrentIdea(firstIdea);
         }

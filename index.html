@@ -18,6 +18,9 @@ and open the template in the editor.
     </head>
     <body>
         <div id="application"> 
+            <div id="search-tab">                
+                <input id='search' type='text' placeholder="Search everything"/>
+            </div>
             <div id="menu">
                 <ul>
                     <li data-option="default" id="option-default">
@@ -38,10 +41,9 @@ and open the template in the editor.
                 <span id='logo'>Mind Book</span>
                 &nbsp;
                 <a href='api?action=clear'>Clear All</a>
-                <input id='search' type='text' placeholder="Search everything"/>
             </header>
             <div id="main-content" >
-                <div id="visual"></div>
+                <div id="visual">Please wait...</div>
                 <div id="default"></div>
                 <div id="editor">
                     <table >
