@@ -61,7 +61,15 @@
                 }
                 switch (keyCode) {
                     case app.data.keys.ENTER.code:
-                        editor.fired_enterKeyPressed(idea);
+                        if (event.shiftKey) {
+                            var position = idea.getLine().getTextarea().prop("selectionStart"),
+                                newText = idea.getContent().insertAt(position, "\n");
+                            idea.getLine().textarea.val(newText);
+                            idea.getLine().select(position + 1, position + 1);
+                            idea.updateLine();
+                        } else {
+                            editor.fired_enterKeyPressed(idea);
+                        }
                         idea.update();
                         break;
                     case app.data.keys.TAB.code:
@@ -75,10 +83,50 @@
                         editor.removeIdea(idea, event);
                         break;
                     case app.data.keys["ARROW-UP"].code:
-                        editor.moveUp();
+                        var line = idea.getLine(),
+                            textarea = line.textarea,
+                            position = textarea.prop("selectionStart"),
+                            content = idea.getContent(),
+                            p = content.substr(0, $(textarea)[0].selectionStart).split("\n"),
+                            line = null,
+                            col = null,
+                            newPosition= null;
+                        // line is the number of lines
+                        line = p.length;
+                        // col is the length of the last line
+                        col = p[p.length - 1].length;
+                        console.log('l: ' + line + "col " + col)
+                        if (line === 1) {
+                            editor.moveUp();
+                        } else {
+                            newPosition = position - col  -1;
+                            console.log('new position: ' + newPosition)
+                            idea.getLine().select(newPosition, newPosition);
+                        }
                         break;
                     case app.data.keys["ARROW-DOWN"].code:
-                        editor.moveDown();
+                        var line = idea.getLine(),
+                            textarea = line.textarea,
+                            position = textarea.prop("selectionStart"),
+                            content = idea.getContent(),
+                            p = content.substr(0, $(textarea)[0].selectionStart).split("\n"),
+                            line = null,
+                            col = null,
+                            matches = content.match(/\n/g),
+                            breaks = matches ? matches.length : 0,
+                            newPosition= null;
+                        // line is the number of lines
+                        line = p.length;
+                        // col is the length of the last line
+                        col = p[p.length - 1].length;
+                        console.log('l: ' + line + "col " + col)
+                        if ((line) === breaks) {
+                            editor.moveDown();
+                        } else {
+                            newPosition = position + col + 1;
+                            console.log('new position: ' + newPosition)
+                            idea.getLine().select(newPosition, newPosition);
+                        }
                         break;
                 }
             });
@@ -112,11 +160,11 @@
             var idea = this.getIdea(),
                 editor = idea.getEditor();
             this.textarea.on("click", function () {
-                editor.setCurrentIdea(idea, idea.getLine().getTextarea().prop("selectionStart"));
+                editor.setCurrentIdea(idea, idea.getLine().getTextarea().prop("selectionStart"), idea.getLine().getTextarea().prop("selectionEnd"));
             });
         },
-        select: function (cursorPosition) {
-            setCaretToPos(this.textarea[0], cursorPosition);
+        select: function (cursorPosition, cursorPositionEnds) {
+            setCaretToPos(this.textarea[0], cursorPosition, cursorPositionEnds);
         },
         deselect: function () {
             this.getIdea().getParent().fired_childRealeased();
@@ -145,6 +193,7 @@
             this.updateHTML();
             this.updateWarning();
             this.updateCorrelation();
+            this.updateTextarea();
         },
         updateHTML: function () {
             var levelWidth = 20,
@@ -196,6 +245,16 @@
                     color: "black"
                 });
             }
+        },
+        updateTextarea: function () {
+            var idea = this.getIdea(),
+                content = idea.getContent(),
+                matches = content.match(/\n/g),
+                breaks = matches ? matches.length : 0,
+                height = (breaks + 1) * 15;
+            this.textarea.css({
+                'height': height + "px"
+            });
         },
         remove: function () {
             this._super();

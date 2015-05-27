@@ -26,8 +26,7 @@
             } else {
                 firstIdea = this.createNewFirstChildIdea();
             }
-            this.setCurrentIdea(firstIdea);
-            console.log(this)
+            this.setCurrentIdea(firstIdea, "END");
         }
     };
     StandardEditor = Editor.extend(StandardEditorTemplate);

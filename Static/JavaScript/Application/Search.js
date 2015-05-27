@@ -1,4 +1,4 @@
-/*global NProgress, app*/
+/*global NProgress, app,Data*/
 
 function Search() {
     this.element = $("#search");
@@ -14,24 +14,9 @@ Search.prototype = {
     activateListeners: function () {
         var instance = this;
 
-        function getHTMLForItem(item) {
-            function highlightSearchedTerm(data, search) {
-                function preg_quote(str) {
-                    // http://kevin.vanzonneveld.net
-                    // +   original by: booeyOH
-                    // +   improved by: Ates Goral (http://magnetiq.com)
-                    // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-                    // +   bugfixed by: Onno Marsman
-                    // *     example 1: preg_quote("$40");
-                    // *     returns 1: '\$40'
-                    // *     example 2: preg_quote("*RRRING* Hello?");
-                    // *     returns 2: '\*RRRING\* Hello\?'
-                    // *     example 3: preg_quote("\\.+*?[^]$(){}=!<>|:");
-                    // *     returns 3: '\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:'
-                    return (str + '').replace(/([\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:])/g, "\\$1");
-                }
-                return data.replace(new RegExp("(" + preg_quote(search) + ")", 'gi'), "<span class='highlightWord'>$1</span>");
-            }
+        function getHTMLForItem(item) {    
+            var highlighted = replaceSearchedTerm(item.content, instance.getTerm(), "<span class='highlightWord'>$1</span>"),
+                content = Data.htmlView(highlighted);
 
             function getParentText(parentIdea) {
                 var parent = "Home";
@@ -40,7 +25,7 @@ Search.prototype = {
                 }
                 return "<div class='parent' >" + parent + "</div>" + "<div style='display:inline-block;width:20px;position:relative'><img style='positon:absolute;top:0px;' src='Static/Images/link.png' aling='absmiddle' /></div>" + " ";
             }
-            return getParentText(item.parent) + highlightSearchedTerm(item.content, instance.getTerm());
+            return getParentText(item.parent) + content;
         }
         this.element.autocomplete({
             minLength: 2,
@@ -61,7 +46,7 @@ Search.prototype = {
             },
             select: function (event, ui) {
                 var idea = ui.item.id;
-                app.gui.section.select("editor", idea);
+                app.gui.section.select("standard", idea);
                 $(this).val(instance.getTerm());
                 return false;
             }

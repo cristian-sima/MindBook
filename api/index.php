@@ -50,90 +50,9 @@ switch (Request::extract("action")) {
         $newContent = Request::extract("content");
         $parentID = Request::extract("parent");
         $requestId = Request::extract("requestId");
-
-        $currentIdExists = $book->checkIdeaExistsById($id);
-
-
-        $similarIdeaExits = $book->checkIdeaExists($parentID, $newContent);
-
-        if ($similarIdeaExits === "true") {
-
-            $corr_id = $book->findIdeaIdByContentAndParent($parentID, $newContent);
-
-            $correspondingIdea = new ChildIdea($corr_id);
-
-            // it is the same
-            if ($correspondingIdea->getId() == $id) {
-
-                // CHECK THE PARENT
-                if ($correspondingIdea->getParent() != $parentID) {
-                    // UPDATE IT
-                    $correspondingIdea->setContent($newContent);
-                    $correspondingIdea->setParent($parentID);
-                    $report["status"] = "update";
-                    $report["id"] = $id;
-                } else {
-                    $report["status"] = "no_change";
-                }
-            } else {
-
-
-                if ($currentIdExists === "true") {
-                    // change the children to the new one
-                    // delete it
-                    // mark it as the corresponding
-                    $oldIdea = new ChildIdea($id);
-
-
-                    $oldIdea->changeParentOfChildren($correspondingIdea->getId(), $correspondingIdea->getPath());
-
-                    $oldIdea->remove();
-                }
-
-                $report["status"] = "correspondence";
-                $report["id"] = $correspondingIdea->getId();
-            }
-            // change parent of the children to the new one 
-        } else {
-            // the id is not
-            if ($currentIdExists === "false") {
-                $newId = $book->createIdea($parentID, $newContent, $id);
-                $idea = new ChildIdea($id);
-                
-                $parent = $idea->getId();
-                $path = $idea->getPath() . "@" . $parent;
-
-                // take back its children
                 $childrenJSON = Request::extract("children");
-                $children = explode(',', $childrenJSON);
 
-                // in case it was associated 
-                foreach ($children as $id) { //forea
-                    $stmt = Database::$db->prepare('UPDATE idea
-                        SET parent = :parent, path = :path       
-                        WHERE id = :id ');
-                    $stmt->bindParam(':parent', $parent);
-                    $stmt->bindParam(':path', $path);
-                    $stmt->bindParam(':id', $id);
-                    $stmt->execute();
-                    $report["children_change"] = "true";
-                }
-
-                $report["status"] = "create";
-            } else {
-                $report["status"] = "update";
-                $oldIdea = new ChildIdea($id);
-
-                // UPDATE IT
-                $oldIdea->setContent($newContent);
-                $oldIdea->setParent($parentID);
-            }
-            $report["id"] = $id;
-        }
-
-        $report["requestId"] = $requestId;
-        
-        echo json_encode($report);
+        $book->updateIdea($id, $newContent, $parentID, $requestId, $childrenJSON);
 
         break;
 

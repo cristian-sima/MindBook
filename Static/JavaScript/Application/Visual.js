@@ -23,8 +23,9 @@ Visual.prototype = {
     showIdea: function (idea) {
         var toReturn = "",
             iterator = null,
-            child = null;
-        toReturn += "<div class='idea' ><span class='name' data-id='" + idea.id + "' >" + idea.content + "</span><ul>";
+            child = null,
+            content = Data.htmlView(idea.content);
+        toReturn += "<div class='idea' ><span class='name' data-id='" + idea.id + "' >" + content + "</span><ul>";
         for (iterator = 0; iterator < idea.children.length; iterator = iterator + 1) {
             child = idea.children[iterator];
             toReturn += "<li>";

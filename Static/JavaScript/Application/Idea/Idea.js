@@ -111,7 +111,6 @@
         },
         addChild: function (child) {
             this.addChildAtPosition(child, 0);
-            this.getServerIdea().addIdea();
         },
         addChildAtPosition: function (child, position) {
             this.children.insert(position, child);
@@ -121,6 +120,9 @@
             }
             child.setParent(this);
             child.updateLevel();
+            if (!this.isHome()) {
+                this.serverIdea.forceUpdate();
+            }
         },
         getChildAtPosition: function (position) {
             return this.children[position];
@@ -220,7 +222,7 @@
                 position = null;
             for (position = 0; position < this.children.length; position = position + 1) {
                 childId.push(this.children[position].getId());
-            } 
+            }
             return childId;
         }
     };

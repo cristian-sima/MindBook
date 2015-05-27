@@ -1,4 +1,4 @@
-/*global app,Class,Line,$,HomeLine*/
+/*global app,Class,Line,$,HomeLine,Data*/
 (function () {
     "use strict";
     var HomeLineTemplate = {
@@ -25,6 +25,10 @@
                 return '';
             }
             
+            function getContent () {
+                return Data.htmlView(content);
+            }
+          
             function getOptions() {
                 var toReturn = "";
                 
@@ -44,7 +48,7 @@
             
             toReturn += "<div id='element-" + id + "' class='idea-div idea-home'>";
             toReturn += getParent();
-            toReturn += content;
+            toReturn += getContent();
             toReturn += getOptions();
             toReturn += " </div>";
             return toReturn;
@@ -52,11 +56,11 @@
         activateListeners: function () {
             this.element.find("#option-show-visual").click(function () {
                 var id = $(this).data("id");
-                app.selectContent("visual", id);
+                app.gui.section.select("visual", id);
             });
             this.element.find("#option-parent").click(function () {
                 var id = $(this).data("id");
-                app.selectContent("editor", id);
+                app.gui.section.select("standard", id);
             });
         },
         getElements: function () {

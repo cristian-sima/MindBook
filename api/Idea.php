@@ -64,7 +64,7 @@ class Idea {
             return "SELECT id, path, content, parent
             FROM idea
             WHERE path REGEXP '" . $regex . "'
-            ORDER BY parent ASC ";
+            ORDER BY path ASC ";
         }
 
         $regex = getRegex($level, $this->path, $this->id);

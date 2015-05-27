@@ -83,7 +83,7 @@
         incrementCounter: function () {
             app.incrementCounter();
         },
-        setCurrentIdea: function (idea, cursorPosition) {
+        setCurrentIdea: function (idea, cursorPosition, cursorPositionEnds) {
             var oldIdea = this.currentIdea,
                 line = null,
                 textarea = null;
@@ -96,10 +96,13 @@
                 if (!cursorPosition) {
                     cursorPosition = textarea.prop("selectionStart");
                 }
+                if(!cursorPositionEnds) {
+                    cursorPositionEnds = cursorPosition;
+                }
                 oldIdea.deselect();
             }
             this.currentIdea = idea;
-            this.currentIdea.select(cursorPosition);
+            this.currentIdea.select(cursorPosition, cursorPositionEnds);
         },
         getIdeaByIndex: function (id) {
             return this.home.getChildByIndex(id);

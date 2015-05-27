@@ -164,7 +164,7 @@ header #search:-moz-placeholder {
     -webkit-animation-delay: 2s; /* Chrome, Safari, Opera */
     animation-delay: 2s;
     padding: 3px;
-    min-width: 400px;
+    min-width: 1000px;
     font-size: 13px;
     display: inline;
     border: 1px solid #FFFFFF;

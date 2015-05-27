@@ -13,11 +13,6 @@
         /**
          * It checks if the idea is on the server. If not, it addes it
          */
-        addIdea: function () {
-            if(this.isOnServer()) {
-                this.update();
-            }
-        },
         setId: function (serverId) {
             this.serverId = serverId;
         },
@@ -40,21 +35,36 @@
             return this.localIdea;
         },
         update: function () {
+            if (this.canIdeaBeUpdated()) {
+                this.sync();
+            }
+        },
+        forceUpdate: function () {
+            if (!this.isOnServer()) {
+                this.sync();
+            }
+        },
+        sync: function () {
+            var idea = this.getLocalIdea(),
+                editor = idea.getEditor(),
+                data = this.getSyncData();
+            editor.updateIdeaOnServer(data, idea);
+        },
+        getSyncData: function () {
             var idea = this.getLocalIdea(),
                 localId = idea.getId(),
                 localParent = idea.getParent(),
-                editor = idea.getEditor(),
                 content = idea.getContent(),
                 serverParentId = localParent.getServerIdea().getId(),
-                childrenIDsArray = idea.getChildren();
-            if (this.canIdeaBeUpdated()) {
-                editor.updateIdeaOnServer({
-                    id: localId,
-                    content: content,
-                    parent: serverParentId,
-                    children: childrenIDsArray.toString()
-                }, idea);
-            }
+                childrenIDsArray = idea.getChildren(),
+                data;
+            data = {
+                id: localId,
+                content: content,
+                parent: serverParentId,
+                children: childrenIDsArray.toString()
+            };
+            return data;
         },
         canIdeaBeUpdated: function () {
             var idea = this.getLocalIdea(),

@@ -3,7 +3,7 @@
     'use strict';
     Data = function Data() {
         this.homeIdeaId = null;
-        this.counter = null;        
+        this.counter = null;
         this.incrementCounter = function () {
             this.counter = this.counter + 1;
         };
@@ -76,6 +76,9 @@
             }
             return true;
         }
+    };
+    Data.htmlView = function (content) {
+        return replaceSearchedTerm(content, "\n", "<br />");
     };
     Data.prepare = function (data) {
         var temp = {
