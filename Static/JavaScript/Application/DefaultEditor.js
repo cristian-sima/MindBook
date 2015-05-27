@@ -2,10 +2,10 @@
 (function () {
     "use strict";
     var DefaultEditorTemplate = {
-        init: function (data, container) {
-            this._super(data, container, "Default");
+        init: function (id, container) {
+            this._super(id, container, "Default");
         },
-        initEditor: function (data) {
+        loadData: function (data) {
             var firstIdea = null;
             data.content = "";
             data.children = {};

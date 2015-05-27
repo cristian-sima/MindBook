@@ -2,10 +2,11 @@
 (function () {
     "use strict";
     var StandardEditorTemplate = {
-        init: function (data, container) {
-            this._super(data, container, "Standard");
+        init: function (id, container) {
+            this._super(id, container, "Standard");
         },
-        initEditor: function (data) {
+        loadData: function (data) {
+            
             var firstIdea = null,
                 firstChild = null;
             this.createHomeIdea({
@@ -26,6 +27,7 @@
                 firstIdea = this.createNewFirstChildIdea();
             }
             this.setCurrentIdea(firstIdea);
+            console.log(this)
         }
     };
     StandardEditor = Editor.extend(StandardEditorTemplate);

@@ -28,22 +28,6 @@ header #logo {
     font-family: fantasy;
 }
 
-header #search {
-    color: rgb(197, 197, 197);
-    border: 1px solid #F4F4F4;
-    border-radius: 2px;
-    height: 22px;
-    width: 200px;
-    background-image:url('../../Images/search.png');
-    background-repeat:no-repeat;
-    background-position-y: 1px;
-    background-position-x: 1px;
-    padding-left:20px;
-    margin-right: 60px;
-    float: right;
-    display: block;
-}
-
 
 #menu {
     position: fixed;
@@ -169,7 +153,6 @@ header #search:-moz-placeholder {
     padding: 3px;
     min-width: 400px;
     font-size: 13px;
-    height: 18px;
     display: inline;
     border: 1px solid #FFFFFF;
     resize: none;  
@@ -179,6 +162,7 @@ header #search:-moz-placeholder {
     tab-size : 4;
     padding-bottom: 0px;
     transition:all 0.2s;
+    height:18px;
 
 }
 
@@ -231,6 +215,30 @@ header #search:-moz-placeholder {
 
 /* Search */
 
+#search-tab {
+    position: fixed;
+    right:0px;
+    top: 10px;
+    z-index: 20;
+}
+
+
+#search-tab #search {
+    color: rgb(197, 197, 197);
+    border: 1px solid #F4F4F4;
+    border-radius: 2px;
+    height: 22px;
+    width: 200px;
+    background-image:url('../../Images/search.png');
+    background-repeat:no-repeat;
+    background-position-y: 1px;
+    background-position-x: 1px;
+    padding-left:20px;
+    margin-right: 60px;
+    display: block;
+}
+
+
 .highlightWord {
     color: #29d;
     font-weight: italic;
@@ -251,11 +259,24 @@ header #search:-moz-placeholder {
 }
 
 
+.ui-autocomplete {
+		max-height: 400px;
+		overflow-y: auto;
+		/* prevent horizontal scrollbar */
+		overflow-x: hidden;
+	}
+	/* IE 6 doesn't support max-height
+	 * we use height instead, but this forces the menu to always be this tall
+	 */
+	* html .ui-autocomplete {
+		height: 100px;
+	}
+
 /* End Search */
 
 
 .idea-home {
-    height: 50px;
+    min-height: 50px;
 }
 
 .option-editor {

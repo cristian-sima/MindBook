@@ -1,15 +1,21 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-function Visual(id, data) {
+/*global Data, app*/
+function Visual(id, html) {
     this.id = id;
-    this.element = $("#" + this.id);
-    this.home = data;
-    this.init();
+    this.element = $("#" + html);
+    this.getDataFromServer();
 };
 Visual.prototype = {
+    getDataFromServer: function () {
+        var visual = this;
+        app.gateway.getEntireIdea(this.id, function (data) {
+            data = Data.prepare(data);
+            visual.loadData(data);
+        });
+    },
+    loadData: function (data) {
+        this.home = data;
+        this.init();
+    },
     init: function () {
         this.element.html(this.showIdea(this.home));
         this.activateListeners();
@@ -44,6 +50,6 @@ Visual.prototype = {
     },
     close: function () {
         this.element.html("Please wait...");
-        this.element.off();        
+        this.element.off();
     }
 };

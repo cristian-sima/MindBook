@@ -1,15 +1,21 @@
-/*global app, Editor, HomeIdea, ChildIdea, Class*/
+/*global app, Editor, HomeIdea, ChildIdea, Class,Data*/
 (function () {
     "use strict";
     var EditorTemplate = {
         // constructor
-        init: function (data, container, type) {
-            this.container = container;
+        init: function (id, containerId, type) {
+            this.container = $("#" + containerId);
             this.type = type;
-            this.currentIdea = null;
-            this.initEditor(data);
+            this.getDataFromServer(id);
         },
-        initEditor: function (data) {},
+        getDataFromServer: function (id) {
+            var editor = this;
+            app.gateway.getEntireIdea(id, function (data) {
+                data = Data.prepare(data);
+                editor.loadData(data);
+            });
+        },
+        loadData: function (data) {},
         loadFirstIdea: function (firstChild) {
             var childIdea = this.createFirstChildIdea({
                 id: firstChild.id,
@@ -145,17 +151,8 @@
             }
             return false;
         },
-        getData: function () {
-            return JSON.stringify(this.home.getJSON());
-        },
         getContainer: function () {
             return this.container;
-        },
-        close: function () {
-            if (this.home) {
-                this.home.remove();
-                this.home = null;
-            }
         },
         fired_enterKeyPressed: function (idea) {
             var newIdea = this.createEmptyIdea(idea, idea.getPosition() + 1);
@@ -210,6 +207,12 @@
         },
         isDefault: function () {
             return this.type === "Default";
+        },
+        close: function () {
+            if (this.home) {
+                this.home.remove();
+                this.home = null;
+            }
         }
     };
     Editor = Class.extend(EditorTemplate);

@@ -11,36 +11,30 @@
     };
     App.prototype = {
         init: function () {
-            this.loadData();
+            this.data = new Data();
             this.gui.init();
             this.gateway.init();
-        },
-        start: function () {
-            this.gateway.start();
         },
         load: function (data) {
             this.home = parseInt(data.home, 10);
             this.counter = parseInt(data.counter, 10) + 1;
             this.selectContent(this.startingContent);
         },
-        loadData: function () {
-            this.data = new Data();
-        },
-        fired_applicationIsDisconnected: function () {
-            // TODO
-        },
         fired_applicationIsConnected: function () {
             this.start();
+        },
+        start: function () {
+            this.gateway.start();
         },
         selectContent: function (content, idea) {
             this.gui.selectContent(content);
             this.closeCurrentSection();
             switch (content) {
-                case "default":
-                    this.selectDefaultEditor();
-                    break;
                 case "visual":
                     this.selectDefaultVisual(idea);
+                    break;
+                case "default":
+                    this.selectDefaultEditor();
                     break;
                 case "editor":
                     this.selectEditor(idea);
@@ -51,85 +45,25 @@
             if (!id) {
                 id = this.home;
             }
-            app.gateway.getEntireIdea(id, function (data) {
-                data = app.prepareData(data);
-                app.visual = new Visual("visual", data);
-            });
+            this.visual = new Visual(id, "visual");
         },
         selectEditor: function (id) {
             if (!id) {
                 id = this.home;
             }
-            this.editor = this.createEditor(id, $("#app"), "standard");
+            app.editor = new StandardEditor(id, "editor");
         },
         selectDefaultEditor: function () {
-            this.editor = this.createEditor(this.home, $("#default"), "default");
-        },
-        createEditor: function (id, elementHTML, type) {
-            app.gateway.getEntireIdea(id, function (data) {
-                data = app.prepareData(data);
-                if (type === "default") {
-                    app.editor = new DefaultEditor(data, elementHTML);
-                } else {
-                    app.editor = new StandardEditor(data, elementHTML);
-                }
-            });
+            app.editor = new DefaultEditor(this.home, "default");
         },
         closeCurrentSection: function () {
             if (this.editor) {
                 this.editor.close();
                 delete this.editor;
             }
-            if(this.visual) {
+            if (this.visual) {
                 this.visual.close();
             }
-        },
-        prepareData: function (data) {
-            var temp = {
-                id: parseInt(data.id, 10),
-                parent: parseInt(data.parent, 10),
-                content: data.content
-            },
-                i = 0,
-                child = null,
-                c = null,
-                parent = null;
-            temp.children = [];
-
-            function findParentOfChild(current, id) {
-                var current_child = null,
-                    iterator = null,
-                    found = null;
-                if (current.id === id) {
-                    return current;
-                }
-                for (iterator = 0; iterator < current.children.length; iterator = iterator + 1) {
-                    current_child = current.children[iterator];
-                    found = findParentOfChild(current_child, id);
-                    if (found) {
-                        return found;
-                    }
-                }
-                return null;
-            }
-            for (i = 0; i < data.children.length; i = i + 1) {
-                c = data.children[i];
-                child = {
-                    id: parseInt(c.id, 10),
-                    content: c.content,
-                    children: []
-                };
-                parent = findParentOfChild(temp, parseInt(c.parent, 10));
-                if (!parent) {
-                    console.log("Nu am gasit parinte pentru " + c.id + ". Trebuia sa fie parintele " + c.parent);
-                    console.log("Toate datele:  ");
-                    console.log(data);
-                    throw "Problem with pre-processing !";
-                }
-                parent.children.push(child);
-                child.parent = parent;
-            }
-            return temp;
         },
         getCounter: function () {
             return this.counter;
