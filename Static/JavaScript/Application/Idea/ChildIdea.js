@@ -7,11 +7,7 @@
             this._super(info.id, info.content, info.server);
         },
         setParent: function (newParent) {
-            if (this.getParent()) {
-                this.getParent().fired_childRealeased();
-            }
             this.parent = newParent;
-            this.getParent().fired_childSelected();
         },
         setLine: function (elementBefore) {
             if (this.getLine()) {
@@ -122,6 +118,12 @@
         highLight: function () {
             this.getLine().highLight();
         },
+        isCorrelatedToServer: function () {
+            return this.getServerIdea().isCorrelated();
+        },
+        getParent: function () {
+            return this.parent;
+        },
         /* Listeners */
         fired_childSelected: function () {
             if (this.getLine()) {
@@ -138,23 +140,21 @@
                 position = null;
             if (previousIdea) {
                 position = previousIdea.getNumberOfChildren();
-                previousIdea.getLine().updateIdea();
-                previousIdea.addChildAtPosition(this, position);
+                previousIdea.addChildAtPosition(this, position);                
+                this.getLine().updateIdea();
             }
-            this.updateLine();
+            this.getParent().fired_childRealeased();
         },
         fired_shiftTabKeyPressed: function () {
-            this.reduceLevel();
-            this.updateLine();
+            var oldParent = this.getParent(),
+                grandParent = oldParent.getParent();
+            if (grandParent) {
+                this.reduceLevel();  
+                this.getLine().updateIdea();  
+            }
         },
-        updateOnServer: function () {            
+        updateOnServer: function () {
             this.serverIdea.update();
-        },
-        isCorrelatedToServer: function () {
-            return this.getServerIdea().isCorrelated();
-        },
-        getParent: function () {
-            return this.parent;
         }
     };
     ChildIdea = Idea.extend(ChildIdeaTemplate);

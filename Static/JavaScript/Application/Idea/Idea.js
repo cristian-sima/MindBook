@@ -111,6 +111,7 @@
         },
         addChild: function (child) {
             this.addChildAtPosition(child, 0);
+            this.getServerIdea().addIdea();
         },
         addChildAtPosition: function (child, position) {
             this.children.insert(position, child);

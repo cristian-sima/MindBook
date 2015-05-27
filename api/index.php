@@ -63,8 +63,19 @@ switch (Request::extract("action")) {
             $correspondingIdea = new ChildIdea($corr_id);
 
             // it is the same
-            if ($corr_id == $id) {
-                $report["status"] = "nothing";
+            if ($correspondingIdea->getId() == $id) {
+                
+                // CHECK THE PARENT
+                if($correspondingIdea->getParent() != $parentID) {                    
+                    // UPDATE IT
+                    $correspondingIdea->setContent($newContent);
+                    $correspondingIdea->setParent($parentID);
+                    $report["status"] = "update";
+                    $report["id"] = $id;
+                } else {
+                    $report["status"] = "no_change";  
+                }
+
             } else {
 
 

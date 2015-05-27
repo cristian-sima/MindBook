@@ -10,6 +10,14 @@
         isOnServer: function () {
             return (this.serverId !== null);
         },
+        /**
+         * It checks if the idea is on the server. If not, it addes it
+         */
+        addIdea: function () {
+            if(this.isOnServer()) {
+                this.update();
+            }
+        },
         setId: function (serverId) {
             this.serverId = serverId;
         },

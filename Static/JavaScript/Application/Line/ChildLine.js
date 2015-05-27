@@ -63,13 +63,10 @@
                         break;
                     case app.data.keys.TAB.code:
                         if (event.shiftKey) {
-                            // <-----
-                            idea.reduceLevel();
+                            idea.fired_shiftTabKeyPressed();
                         } else {
-                            // -----> (TAB)
                             idea.fired_tabKeyPressed();
                         }
-                        idea.getLine().updateIdea();
                         break;
                     case app.data.keys.BACKSPACE.code:
                         editor.removeIdea(idea, event);
