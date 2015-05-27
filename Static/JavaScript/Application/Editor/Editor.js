@@ -210,9 +210,7 @@
                     i.updateLine();
                     editor.requestList.splice(editor.requestList.indexOf(report.requestId), 1);
                     if (editor.callbackRequestsOver) {
-                        console.log(editor.requestList.length);
                         if (editor.requestList.length === 0) {
-                            console.log('done');
                             editor.callbackRequestsOver();
                         }
                     }

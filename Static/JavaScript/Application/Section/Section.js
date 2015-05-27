@@ -76,10 +76,10 @@
             this.currentSection = new Visual(id, "visual");
         },
         selectStandardEditor: function (id) {
-            this.currentSection = new StandardEditor(id, "editor");
+            this.currentSection = new StandardEditor(id, "standard");
         },
         selectDefaultEditor: function () {
-            this.currentSection = new DefaultEditor(this.home, "default");
+            this.currentSection = new DefaultEditor(app.getHomeIdeaId(), "default");
         },
         getStatus: function () {
             return this.status;

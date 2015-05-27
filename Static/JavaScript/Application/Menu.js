@@ -26,10 +26,10 @@ Menu.prototype = {
         }
         this.option = option;
         this.element.find("#option-" + this.option).addClass("selected");
-        if (option !== 'editor') {
-            this.element.find("#option-editor").hide();
+        if (option !== 'standard') {
+            this.element.find("#option-standard").hide();
         } else {
-            this.element.find("#option-editor").show();
+            this.element.find("#option-standard").show();
         }
     },
     disable: function () {

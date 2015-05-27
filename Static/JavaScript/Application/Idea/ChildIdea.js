@@ -48,10 +48,11 @@
                 index = null,
                 child = null,
                 realChildren = this.children.copy(),
-                position = 0;
+                position = 0,
+                editor = this.getEditor();
             if (!toBeSelected) {
                 // este prima sau nu mai sus mai sus
-                if (parent === app.editor.home) {
+                if (parent === editor.home) {
                     if (realChildren[0]) {
                         previousIdea = this.getHome();
                         toBeSelected = realChildren[0];
@@ -66,7 +67,7 @@
                     toBeSelected = toBeSelected.getLastPossibleChild();
                 }
             }
-            if (parent && previousIdea && previousIdea.id === app.editor.home.id && parent.id === app.editor.home.id) {
+            if (parent && previousIdea && previousIdea.id === editor.home.getId() && parent.id === editor.home.getId()) {
                 previousIdea = null;
             }
             for (index = 0; index < realChildren.length; index = index + 1) {
@@ -75,7 +76,7 @@
                 parent.addChildAtPosition(child, position);
                 previousIdea = child;
             }
-            app.editor.setCurrentIdea(toBeSelected);
+            editor.setCurrentIdea(toBeSelected);
             this.children = [];
             this.remove();
         },
