@@ -46,6 +46,7 @@ header #logo {
 
 
 #menu ul li {    
+    background:white;
     border-bottom: 1px solid #f1f1f1;
     transition:all 0.2s;
     border-left: 7px solid #ffffff;

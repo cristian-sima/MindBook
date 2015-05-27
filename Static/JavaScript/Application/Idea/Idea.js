@@ -214,6 +214,14 @@
         },
         isCorelated: function () {
             // to do
+        },
+        getChildren: function () {
+            var childId = [],
+                position = null;
+            for (position = 0; position < this.children.length; position = position + 1) {
+                childId.push(this.children[position].getId());
+            } 
+            return childId;
         }
     };
     Idea = Class.extend(IdeaTemplate);

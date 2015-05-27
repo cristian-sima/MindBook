@@ -4,7 +4,6 @@ require_once "Database.php";
 
 Class MindBook {
 
-    private $connection;
     private $homeIdeaID = 1;
 
     public function MindBook() {

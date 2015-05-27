@@ -49,7 +49,6 @@ switch (Request::extract("action")) {
         $id = Request::extract("id");
         $newContent = Request::extract("content");
         $parentID = Request::extract("parent");
-        $isCorrelated = Request::extract("isCorrelated");
 
         $currentIdExists = $book->checkIdeaExistsById($id);
 
@@ -64,18 +63,17 @@ switch (Request::extract("action")) {
 
             // it is the same
             if ($correspondingIdea->getId() == $id) {
-                
+
                 // CHECK THE PARENT
-                if($correspondingIdea->getParent() != $parentID) {                    
+                if ($correspondingIdea->getParent() != $parentID) {
                     // UPDATE IT
                     $correspondingIdea->setContent($newContent);
                     $correspondingIdea->setParent($parentID);
                     $report["status"] = "update";
                     $report["id"] = $id;
                 } else {
-                    $report["status"] = "no_change";  
+                    $report["status"] = "no_change";
                 }
-
             } else {
 
 
@@ -98,7 +96,28 @@ switch (Request::extract("action")) {
         } else {
             // the id is not
             if ($currentIdExists === "false") {
-                $result = $book->createIdea($parentID, $newContent, $id);
+                $newId = $book->createIdea($parentID, $newContent, $id);
+                $idea = new ChildIdea($id);
+                
+                $parent = $idea->getId();
+                $path = $idea->getPath() . "@" . $parent;
+
+                // take back its children
+                $childrenJSON = Request::extract("children");
+                $children = explode(',', $childrenJSON);
+
+                // in case it was associated 
+                foreach ($children as $id) { //forea
+                    $stmt = Database::$db->prepare('UPDATE idea
+                        SET parent = :parent, path = :path       
+                        WHERE id = :id ');
+                    $stmt->bindParam(':parent', $parent);
+                    $stmt->bindParam(':path', $path);
+                    $stmt->bindParam(':id', $id);
+                    $stmt->execute();
+                    $report["children_change"] = "true";
+                }
+
                 $report["status"] = "create";
             } else {
                 $report["status"] = "update";

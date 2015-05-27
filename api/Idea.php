@@ -85,10 +85,10 @@ class Idea {
             $parent = $row["parent"];
             $content = $row["content"];
 
-            
+
             $safeContent = Security::XSS($content);
-        
-            
+
+
             $child = array("id" => $id,
                 "parent" => $parent,
                 "content" => $safeContent);
@@ -132,12 +132,12 @@ class Idea {
         $this->content = $newContent;
         return "true";
     }
-    
+
     public function setParent($newParent) {
-        
+
         $parent = new ChildIdea($newParent);
         $path = $parent->getPath() . "@" . $parent->getId();
-        
+
         $stmt = Database::$db->prepare('UPDATE idea
         SET parent = :parent, path = :path       
         WHERE id = :id ');
@@ -149,24 +149,23 @@ class Idea {
         $this->content = $newParent;
         return "true";
     }
-    
-    
+
     public function remove() {
         // move the children to the grandparent
-        
+
         $this->changeParentOfChildren($this->getParent(), $this->getPath());
-        
+
         // delete idea
         $stmt2 = Database::$db->prepare('DELETE from idea
         WHERE id = :id ');
         $stmt2->bindParam(':id', $this->id);
         $stmt2->execute();
-        
+
         return "true";
     }
-    
+
     public function changeParentOfChildren($newParentId, $path) {
-        
+
         $stmt = Database::$db->prepare('UPDATE idea
         SET parent = :parent, path = :path       
         WHERE parent = :id ');
@@ -174,13 +173,12 @@ class Idea {
         $stmt->bindParam(':path', $path);
         $stmt->bindParam(':id', $this->id);
         $stmt->execute();
-        
     }
 
     public function __toString() {
 
         $safeContent = Security::XSS($this->getContent());
-        
+
         $array = array("id" => $this->id,
             "parent" => $this->parent,
             "content" => $safeContent,

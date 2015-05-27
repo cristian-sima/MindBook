@@ -45,13 +45,14 @@
                 localParent = idea.getParent(),
                 editor = idea.getEditor(),
                 content = idea.getContent(),
-                serverParentId = localParent.getServerIdea().getId();
+                serverParentId = localParent.getServerIdea().getId(),
+                childrenIDsArray = idea.getChildren();
             if (this.canIdeaBeUpdated()) {
                 editor.updateIdeaOnServer({
                     id: localId,
                     content: content,
                     parent: serverParentId,
-                    isCorrelated: this.isCorrelated()
+                    children: childrenIDsArray.toString()
                 }, idea);
             }
         },

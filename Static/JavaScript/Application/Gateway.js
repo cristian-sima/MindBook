@@ -51,11 +51,11 @@ Gateway.prototype = {
     },
     updateIdea: function (idea, callback) {
         this.sendAjaxRequest("", {
-            "action": "updateIdea",
-            "content": idea.content,
-            "id": idea.id,
+            action: "updateIdea",
+            content: idea.content,
+            id: idea.id,
             parent: idea.parent,
-            isCorrelated: "" + idea.isCorrelated
+            children: idea.children
         }, callback);
     },
     findIdeasByContent: function (term, callback) {
