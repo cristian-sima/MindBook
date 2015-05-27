@@ -4,72 +4,39 @@
     App = function App() {
         this.gui = new GUI();
         this.gateway = new Gateway();
-        this.home = null;
-        this.startingContent = "default";
-        this.counter = null;
-        this.init();
+        this.data = new Data();
+        this.enable = true;
     };
     App.prototype = {
-        init: function () {
-            this.data = new Data();
-            this.gui.init();
-            this.gateway.init();
-        },
-        load: function (data) {
-            this.home = parseInt(data.home, 10);
-            this.counter = parseInt(data.counter, 10) + 1;
-            this.selectContent(this.startingContent);
-        },
-        fired_applicationIsConnected: function () {
-            this.start();
-        },
         start: function () {
+            this.disableInteraction();
             this.gateway.start();
         },
-        selectContent: function (content, idea) {
-            this.gui.selectContent(content);
-            this.closeCurrentSection();
-            switch (content) {
-                case "visual":
-                    this.selectDefaultVisual(idea);
-                    break;
-                case "default":
-                    this.selectDefaultEditor();
-                    break;
-                case "editor":
-                    this.selectEditor(idea);
-                    break;
-            }
-        },
-        selectDefaultVisual: function (id) {
-            if (!id) {
-                id = this.home;
-            }
-            this.visual = new Visual(id, "visual");
-        },
-        selectEditor: function (id) {
-            if (!id) {
-                id = this.home;
-            }
-            app.editor = new StandardEditor(id, "editor");
-        },
-        selectDefaultEditor: function () {
-            app.editor = new DefaultEditor(this.home, "default");
-        },
-        closeCurrentSection: function () {
-            if (this.editor) {
-                this.editor.close();
-                delete this.editor;
-            }
-            if (this.visual) {
-                this.visual.close();
-            }
+        load: function (data) {
+            this.data.homeIdeaId = parseInt(data.home, 10);
+            this.data.counter = parseInt(data.counter, 10) + 1;
+            this.allowInteraction();
+            this.gui.start();
         },
         getCounter: function () {
-            return this.counter;
+            return this.data.getCounter();
+        },
+        getHomeIdeaId: function () {
+            return this.data.getHomeIdeaId();
         },
         incrementCounter: function () {
-            this.counter = this.counter + 1;
+            this.data.incrementCounter();
+        },
+        disableInteraction: function () {
+            this.gui.disable();
+            this.enable = false;
+        },
+        allowInteraction: function () {
+            this.gui.enable;
+            this.enable = true;
+        },
+        isEnabled: function () {
+            return this.enable;
         }
     };
 }($));

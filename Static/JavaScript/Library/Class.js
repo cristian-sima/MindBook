@@ -21,6 +21,7 @@
      this.StandardEditor = function () {};
      this.DefaultEditor = function () {};
      this.Data = function () {};
+     this.Section = function () {};
      this.App = function () {};
      // Create a new Class that inherits from this class
      Class.extend = function (prop) {

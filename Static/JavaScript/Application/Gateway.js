@@ -5,37 +5,35 @@ function Gateway() {
 }
 ;
 Gateway.prototype = {
-    init: function () {
-    },
     start: function () {
         this.getInitData(function (data) {
             app.load(data);
         });
     },
     getHomeIdeaID: function (callback) {
-        this.sendAjaxRequest("", {
+        this.sendAjaxRequest({
             "action": "getHomeIdeaID"
         }, callback);
     },
     getInitData: function (callback) {
-        this.sendAjaxRequest("", {
+        this.sendAjaxRequest({
             "action": "init"
         }, callback);
     },
     getIdea: function (id, callback) {
-        this.sendAjaxRequest("", {
+        this.sendAjaxRequest({
             "action": "getIdea",
             "id": id
         }, callback);
     },
     getEntireIdea: function (id, callback) {
-        this.sendAjaxRequest("", {
+        this.sendAjaxRequest({
             "action": "getEntireIdea",
             "id": id
         }, callback);
     },
     createIdea: function (idea, callback) {
-        this.sendAjaxRequest("", {
+        this.sendAjaxRequest({
             "action": "createIdea",
             "parent": idea.parent,
             "content": idea.content,
@@ -43,34 +41,35 @@ Gateway.prototype = {
         }, callback);
     },
     changeIdeaContent: function (idea, callback) {
-        this.sendAjaxRequest("", {
+        this.sendAjaxRequest({
             "action": "changeIdeaContent",
             "content": idea.content,
             "id": idea.id
         }, callback);
     },
-    updateIdea: function (idea, callback) {
-        this.sendAjaxRequest("", {
+    updateIdea: function (idea, callback, requestId) {
+        this.sendAjaxRequest({
             action: "updateIdea",
             content: idea.content,
             id: idea.id,
             parent: idea.parent,
-            children: idea.children
+            children: idea.children,
+            requestId: requestId
         }, callback);
     },
     findIdeasByContent: function (term, callback) {
-        this.sendAjaxRequest("", {
+        this.sendAjaxRequest({
             "action": "findIdeas",
             "term": term
         }, callback);
     },
     removeIdea: function (idea, callback) {
-        this.sendAjaxRequest("", {
+        this.sendAjaxRequest({
             "action": "removeIdea",
             "id": idea.id
         }, callback, true, callback);
     },
-    sendAjaxRequest: function (url, data, callback, notShowLoading) {
+    sendAjaxRequest: function (data, callback, notShowLoading) {
 
         app.gui.showLoading();
 
@@ -85,7 +84,7 @@ Gateway.prototype = {
             };
         })();
         $.ajax({
-            url: "api/" + url,
+            url: "api/",
             data: data,
             success: fired_requestDone
         });

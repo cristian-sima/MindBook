@@ -62,7 +62,7 @@
                 switch (keyCode) {
                     case app.data.keys.ENTER.code:
                         editor.fired_enterKeyPressed(idea);
-                        idea.getLine().updateIdea();
+                        idea.update();
                         break;
                     case app.data.keys.TAB.code:
                         if (event.shiftKey) {
@@ -83,28 +83,30 @@
                 }
             });
             this.textarea.on("keyup", function (event) {
-                var content = idea.getLine().textarea.val(),
+                var line = idea.getLine(),
+                    content = line.textarea.val(),
                     keyCode = event.keyCode || event.which;;
                 idea.setContent(content);
                 idea.updateLine();
                 if (app.data.isModyfingKey(keyCode)) {
-                    idea.getLine().delayUpdate();
+                    line.delayUpdate();
                 }
             });
         },
         delayUpdate: function () {
-            var instance = this;
-            this.stopUpdateDelay();
-            this.delayUpdateIdea = setTimeout(function () {
-                instance.updateIdea();
+            var idea = this.getIdea(),
+                editor = idea.getEditor();
+            this.removeUpdateDelay();
+            editor.addIdeaToWaitingList(idea);
+            this.updateDelay = setTimeout(function () {
+                idea.update();
             }, 500);
         },
-        updateIdea: function () {
-            this.stopUpdateDelay();
-            this.getIdea().updateOnServer();
-        },
-        stopUpdateDelay: function () {
-            clearTimeout(this.delayUpdateIdea);
+        removeUpdateDelay: function () {
+            var idea = this.getIdea(),
+                editor = idea.getEditor();
+            clearTimeout(this.updateDelay);
+            editor.removeFromWaitingList(idea);
         },
         activateMouseListeners: function () {
             var idea = this.getIdea(),
@@ -197,7 +199,7 @@
         },
         remove: function () {
             this._super();
-            this.stopUpdateDelay();
+            this.removeUpdateDelay();
         }
     };
     ChildLine = Line.extend(ChildLineTemplate);

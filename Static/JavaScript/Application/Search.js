@@ -61,7 +61,7 @@ Search.prototype = {
             },
             select: function (event, ui) {
                 var idea = ui.item.id;
-                app.selectContent("editor", idea);
+                app.gui.section.select("editor", idea);
                 $(this).val(instance.getTerm());
                 return false;
             }

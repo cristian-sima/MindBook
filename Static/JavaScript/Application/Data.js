@@ -2,6 +2,17 @@
 (function () {
     'use strict';
     Data = function Data() {
+        this.homeIdeaId = null;
+        this.counter = null;        
+        this.incrementCounter = function () {
+            this.counter = this.counter + 1;
+        };
+        this.getHomeIdeaId = function () {
+            return this.homeIdeaId;
+        };
+        this.getCounter = function () {
+            return this.counter;
+        };
         this.keys = {
             "TAB": {
                 code: 9,

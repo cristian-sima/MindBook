@@ -49,6 +49,7 @@ switch (Request::extract("action")) {
         $id = Request::extract("id");
         $newContent = Request::extract("content");
         $parentID = Request::extract("parent");
+        $requestId = Request::extract("requestId");
 
         $currentIdExists = $book->checkIdeaExistsById($id);
 
@@ -130,6 +131,8 @@ switch (Request::extract("action")) {
             $report["id"] = $id;
         }
 
+        $report["requestId"] = $requestId;
+        
         echo json_encode($report);
 
         break;

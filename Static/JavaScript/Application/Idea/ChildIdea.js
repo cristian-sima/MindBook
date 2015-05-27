@@ -158,6 +158,13 @@
                 oldParent.fired_childRealeased();
             }
         },
+        update: function () {
+            var editor = this.getEditor(),
+                line = this.getLine(),
+                serverIdea = this.getServerIdea();
+            line.removeUpdateDelay();
+            serverIdea.update();
+        },
         updateOnServer: function () {
             this.serverIdea.update();
         }

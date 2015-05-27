@@ -5,6 +5,7 @@ function Menu(gui) {
     this.gui = gui;
     this.currentContent = null;
     this.init();
+    this.enable = true;
 }
 Menu.prototype = {
     init: function () {
@@ -17,7 +18,7 @@ Menu.prototype = {
         });
     },
     fired_changeContent: function (option) {
-        app.selectContent(option);
+        app.gui.section.select(option);
     },
     selectOption: function (option) {
         if (this.option) {
@@ -30,5 +31,11 @@ Menu.prototype = {
         } else {
             this.element.find("#option-editor").show();
         }
+    },
+    disable: function () {
+        $(this.element).find(".selected").addClass("menu-disabled");
+    },
+    enable: function () {
+        $(this.element).find("ul .menu-disabled").removeClass("menu-disabled");
     }
 };

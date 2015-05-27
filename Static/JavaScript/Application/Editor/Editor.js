@@ -7,6 +7,9 @@
             this.container = $("#" + containerId);
             this.type = type;
             this.getDataFromServer(id);
+            this.waitingList = [];
+            this.requestList = [];
+            this.requestId = 1;
         },
         getDataFromServer: function (id) {
             var editor = this;
@@ -90,7 +93,7 @@
             if (oldIdea) {
                 line = oldIdea.getLine();
                 textarea = line.getTextarea();
-                if(!cursorPosition) {
+                if (!cursorPosition) {
                     cursorPosition = textarea.prop("selectionStart");
                 }
                 oldIdea.deselect();
@@ -187,27 +190,39 @@
         },
         updateIdeaOnServer: function (info, idea) {
             this.incrementCounter();
+            this.incrementRequestCounter();
             var functie = (function () {
                 var i = idea;
                 return function (report) {
-                    if (i) {
-                        var serverIdea = i.getServerIdea();
-                        switch (report.status) {
-                            case "correspondence":
-                                serverIdea.setId(parseInt(report.id, 10));
-                                serverIdea.setCorrelatedId(parseInt(report.id, 10));
-                                break;
-                            case "create":
-                            case "update":
-                                serverIdea.setId(parseInt(report.id, 10));
-                                serverIdea.setCorrelatedId(null);
-                                break;
+                    var editor = i.getEditor(),
+                        serverIdea = i.getServerIdea();
+                    switch (report.status) {
+                        case "correspondence":
+                            serverIdea.setId(parseInt(report.id, 10));
+                            serverIdea.setCorrelatedId(parseInt(report.id, 10));
+                            break;
+                        case "create":
+                        case "update":
+                            serverIdea.setId(parseInt(report.id, 10));
+                            serverIdea.setCorrelatedId(null);
+                            break;
+                    }
+                    i.updateLine();
+                    editor.requestList.splice(editor.requestList.indexOf(report.requestId), 1);
+                    if (editor.callbackRequestsOver) {
+                        console.log(editor.requestList.length);
+                        if (editor.requestList.length === 0) {
+                            console.log('done');
+                            editor.callbackRequestsOver();
                         }
-                        i.updateLine();
                     }
                 };
             }(idea));
-            app.gateway.updateIdea(info, functie);
+            app.gateway.updateIdea(info, functie, this.requestId);
+            this.requestList.push(this.requestId);
+        },
+        incrementRequestCounter: function () {
+            this.requestId = this.requestId + 1;
         },
         isStandard: function () {
             return this.type === "Standard";
@@ -216,9 +231,47 @@
             return this.type === "Default";
         },
         close: function () {
-            if (this.home) {
-                this.home.remove();
-                this.home = null;
+            if (((this.waitingList.length !== 0) || (this.requestList.length !== 0))) {
+                throw "Requests waiting";
+            } else {
+                if (this.home) {
+                    this.home.remove();
+                    this.home = null;
+                }
+            }
+        },
+        forceClose: function (callback) {
+            var iterator = null,
+                idea = null;
+            for (iterator = 0; iterator < this.waitingList.length; iterator = iterator + 1) {
+                idea = this.waitingList[iterator].idea;
+                idea.update();
+                this.waitingList.splice(iterator, 1);
+            }
+            this.setCallbackRequestsOver(callback);
+        },
+        setCallbackRequestsOver: function (callback) {
+            this.callbackRequestsOver = callback;
+        },
+        addIdeaToWaitingList: function (idea) {
+            this.waitingList.push({
+                id: idea.id,
+                idea: idea
+            });
+        },
+        findIdeaIndexInWaitingList: function (idea) {
+            var iterator = null;
+            for (iterator = 0; iterator < this.waitingList.length; iterator = iterator + 1) {
+                if (this.waitingList[iterator].id === idea.id) {
+                    return iterator;
+                }
+            }
+            return -1;
+        },
+        removeFromWaitingList: function (idea) {
+            var index = this.findIdeaIndexInWaitingList(idea);
+            if (index > -1) {
+                this.waitingList.splice(index, 1);
             }
         }
     };

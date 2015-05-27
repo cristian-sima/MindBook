@@ -22,25 +22,32 @@ Object.size = function (obj) {
     }
     return size;
 };
+
 function setSelectionRange(input, selectionStart, selectionEnd) {
-    console.log('set');
-    console.log(input)
-  if (input.setSelectionRange) {
-    input.focus();
-    input.setSelectionRange(selectionStart, selectionEnd);
-  }
-  else if (input.createTextRange) {
-    var range = input.createTextRange();
-    range.collapse(true);
-    range.moveEnd('character', selectionEnd);
-    range.moveStart('character', selectionStart);
-    range.select();
-  }
+    if (input.setSelectionRange) {
+        input.focus();
+        input.setSelectionRange(selectionStart, selectionEnd);
+    } else if (input.createTextRange) {
+        var range = input.createTextRange();
+        range.collapse(true);
+        range.moveEnd('character', selectionEnd);
+        range.moveStart('character', selectionStart);
+        range.select();
+    }
 }
 
-function setCaretToPos (input, pos) {
-  setSelectionRange(input, pos, pos);
+function setCaretToPos(input, pos) {
+        $(input).focusToEnd();
+    } else {
+        setSelectionRange(input, pos, pos);
+    }
 }
+$.fn.focusToEnd = function () {
+    return this.each(function () {
+        var v = $(this).val();
+        $(this).focus().val("").val(v);
+    });
+};
 /*
  * jQuery Highlight plugin
  *

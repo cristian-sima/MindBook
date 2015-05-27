@@ -64,6 +64,10 @@ header #logo {
     border-left: 7px solid cornflowerblue; 
 }
 
+.menu-disabled {
+    border-left: 7px solid rgb(199, 199, 199);
+}
+
 #menu ul li a img  {
     width: 48px;
     height: 48px;
@@ -98,17 +102,24 @@ header #search:-moz-placeholder {
 
 
 
-#main-content {
+#main-section {
     width: 100%;
     margin-left: 117px;
     margin-top: 21px;
 }
 
 
-#main-content > div {
+#main-section > div {
     display: none;
     width: 100%;
     transition:all 0.2s;
+}
+
+#main-section #status {
+    min-height: 20px;
+    width: 100%;
+    font-style: italic;
+    color:gray;
 }
 
 

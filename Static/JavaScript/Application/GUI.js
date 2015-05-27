@@ -3,12 +3,11 @@
 function GUI() {
     this.search = new Search(this);
     this.menu = new Menu(this);
-    this.currentContent = null;
+    this.section = new Section();
 }
 GUI.prototype = {
-    init: function () {
-    },
     start: function () {
+        this.section.start();        
     },
     showLoading: function () {
         NProgress.start();
@@ -16,12 +15,12 @@ GUI.prototype = {
     hideLoading: function () {
         NProgress.done();
     },
-    selectContent: function (id) {
-        if(this.currentContent) {
-            this.currentContent.hide();
-        }
-        this.currentContent = $("#" + id);
-        this.currentContent.show();
-        this.menu.selectOption(id);
+    enable: function () {
+        this.section.getStatus().clear();
+        this.menu.enable();
+    },
+    disable: function () {
+        this.section.getStatus().post("Please wait...");
+        this.menu.disable();
     }
 };

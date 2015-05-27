@@ -46,7 +46,7 @@ Visual.prototype = {
         this.element.find(".name").click(listener);
     },
     fired_ideaClicked: function (id) {
-        app.selectContent("editor", id);
+        app.gui.section.select("editor", id);
     },
     close: function () {
         this.element.html("Please wait...");
