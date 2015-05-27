@@ -3,35 +3,44 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  * It inserts an element at a given position
  * @param {type} index The position of the item (from 0 to array.length - 1)
  * @param {type} item The item
  */
 Array.prototype.insert = function (index, item) {
-  this.splice(index, 0, item);
+    this.splice(index, 0, item);
 };
-
 Array.prototype.copy = function () {
     return this.slice();
 };
-
-Object.size = function(obj) {
-    var size = 0, key;
+Object.size = function (obj) {
+    var size = 0,
+        key;
     for (key in obj) {
         if (obj.hasOwnProperty(key)) size++;
     }
     return size;
 };
+function setSelectionRange(input, selectionStart, selectionEnd) {
+    console.log('set');
+    console.log(input)
+  if (input.setSelectionRange) {
+    input.focus();
+    input.setSelectionRange(selectionStart, selectionEnd);
+  }
+  else if (input.createTextRange) {
+    var range = input.createTextRange();
+    range.collapse(true);
+    range.moveEnd('character', selectionEnd);
+    range.moveStart('character', selectionStart);
+    range.select();
+  }
+}
 
-$.fn.focusToEnd = function () {
-  return this.each(function () {
-    var v = $(this).val();
-    $(this).focus().val("").val(v);
-  });
-};
-
+function setCaretToPos (input, pos) {
+  setSelectionRange(input, pos, pos);
+}
 /*
  * jQuery Highlight plugin
  *
@@ -76,7 +85,6 @@ $.fn.focusToEnd = function () {
  * Licensed under MIT license.
  *
  */
-
 jQuery.extend({
     highlight: function (node, re, nodeName, className) {
         if (node.nodeType === 3) {
@@ -92,8 +100,8 @@ jQuery.extend({
                 return 1; //skip added node in parent
             }
         } else if ((node.nodeType === 1 && node.childNodes) && // only element nodes that have children
-                !/(script|style)/i.test(node.tagName) && // ignore script and style nodes
-                !(node.tagName === nodeName.toUpperCase() && node.className === className)) { // skip if already highlighted
+        !/(script|style)/i.test(node.tagName) && // ignore script and style nodes
+        !(node.tagName === nodeName.toUpperCase() && node.className === className)) { // skip if already highlighted
             for (var i = 0; i < node.childNodes.length; i++) {
                 i += jQuery.highlight(node.childNodes[i], re, nodeName, className);
             }
@@ -101,40 +109,44 @@ jQuery.extend({
         return 0;
     }
 });
-
 jQuery.fn.unhighlight = function (options) {
-    var settings = { className: 'highlight', element: 'span' };
+    var settings = {
+        className: 'highlight',
+        element: 'span'
+    };
     jQuery.extend(settings, options);
-
     return this.find(settings.element + "." + settings.className).each(function () {
         var parent = this.parentNode;
         parent.replaceChild(this.firstChild, this);
         parent.normalize();
     }).end();
 };
-
 jQuery.fn.highlight = function (words, options) {
-    var settings = { className: 'highlight', element: 'span', caseSensitive: false, wordsOnly: false };
+    var settings = {
+        className: 'highlight',
+        element: 'span',
+        caseSensitive: false,
+        wordsOnly: false
+    };
     jQuery.extend(settings, options);
-
     if (words.constructor === String) {
         words = [words];
     }
-    words = jQuery.grep(words, function(word, i){
-      return word != '';
+    words = jQuery.grep(words, function (word, i) {
+        return word != '';
     });
-    words = jQuery.map(words, function(word, i) {
-      return word.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+    words = jQuery.map(words, function (word, i) {
+        return word.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
     });
-    if (words.length == 0) { return this; };
-
+    if (words.length == 0) {
+        return this;
+    };
     var flag = settings.caseSensitive ? "" : "i";
     var pattern = "(" + words.join("|") + ")";
     if (settings.wordsOnly) {
         pattern = "\\b" + pattern + "\\b";
     }
     var re = new RegExp(pattern, flag);
-
     return this.each(function () {
         jQuery.highlight(this, re, settings.element, settings.className);
     });

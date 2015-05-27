@@ -80,16 +80,23 @@
         incrementCounter: function () {
             app.incrementCounter();
         },
-        setCurrentIdea: function (idea) {
-            var oldIdea = this.currentIdea;
+        setCurrentIdea: function (idea, cursorPosition) {
+            var oldIdea = this.currentIdea,
+                line = null,
+                textarea = null;
             if (!idea.id) {
                 throw "It is not idea";
             }
             if (oldIdea) {
+                line = oldIdea.getLine();
+                textarea = line.getTextarea();
+                if(!cursorPosition) {
+                    cursorPosition = textarea.prop("selectionStart");
+                }
                 oldIdea.deselect();
             }
             this.currentIdea = idea;
-            this.currentIdea.select();
+            this.currentIdea.select(cursorPosition);
         },
         getIdeaByIndex: function (id) {
             return this.home.getChildByIndex(id);

@@ -33,8 +33,9 @@
         getLevel: function () {
             return this.level;
         },
-        select: function () {
-            this.getLine().select();
+        select: function (cursorPosition) {
+            this.getLine().select(cursorPosition);
+            this.getParent().fired_childSelected();
         },
         deselect: function () {
             this.getLine().deselect();

@@ -48,6 +48,9 @@
             this._super();
             this.textarea = this.getElement().children("#content").children("#textarea");
         },
+        getTextarea: function () {
+            return this.textarea;
+        },
         activateKeyListenes: function () {
             var idea = this.idea,
                 editor = idea.getEditor();
@@ -107,12 +110,11 @@
             var idea = this.getIdea(),
                 editor = idea.getEditor();
             this.textarea.on("click", function () {
-                editor.setCurrentIdea(idea);
+                editor.setCurrentIdea(idea, idea.getLine().getTextarea().prop("selectionStart"));
             });
         },
-        select: function () {
-            this.textarea.focusToEnd();
-            this.getIdea().getParent().fired_childSelected();
+        select: function (cursorPosition) {
+            setCaretToPos(this.textarea[0], cursorPosition);
         },
         deselect: function () {
             this.getIdea().getParent().fired_childRealeased();
