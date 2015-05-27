@@ -176,7 +176,11 @@ header #search:-moz-placeholder {
     padding-bottom: 0px;
     transition:all 0.2s;
     height:18px;
+    margin-left: 5px;
+}
 
+.current-textarea {
+    box-shadow: rgb(136, 136, 121) 3px -7px 9px
 }
 
 .idea-textarea:focus {
@@ -206,7 +210,6 @@ header #search:-moz-placeholder {
 .warning, .problem {
     width: 30px;  
     margin-left: 5px;
-    display: inline-block;
 }
 
 .content {

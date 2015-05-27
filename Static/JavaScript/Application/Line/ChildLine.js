@@ -66,7 +66,6 @@
                                 newText = idea.getContent().insertAt(position, "\n");
                             idea.getLine().textarea.val(newText);
                             idea.getLine().select(position + 1, position + 1);
-                            idea.updateLine();
                         } else {
                             editor.fired_enterKeyPressed(idea);
                         }
@@ -95,12 +94,10 @@
                         line = p.length;
                         // col is the length of the last line
                         col = p[p.length - 1].length;
-                        console.log('l: ' + line + "col " + col)
                         if (line === 1) {
                             editor.moveUp();
                         } else {
                             newPosition = position - col  -1;
-                            console.log('new position: ' + newPosition)
                             idea.getLine().select(newPosition, newPosition);
                         }
                         break;
@@ -119,12 +116,10 @@
                         line = p.length;
                         // col is the length of the last line
                         col = p[p.length - 1].length;
-                        console.log('l: ' + line + "col " + col)
                         if ((line) === breaks) {
                             editor.moveDown();
                         } else {
                             newPosition = position + col + 1;
-                            console.log('new position: ' + newPosition)
                             idea.getLine().select(newPosition, newPosition);
                         }
                         break;
@@ -168,6 +163,8 @@
         },
         deselect: function () {
             this.getIdea().getParent().fired_childRealeased();
+            console.log('ajunge')
+            this.textarea.removeClass("current-textarea");
         },
         boldText: function () {
             this.textarea.addClass("parent-focused");
@@ -255,6 +252,11 @@
             this.textarea.css({
                 'height': height + "px"
             });
+            if(breaks > 0) {
+                this.textarea.addClass("current-textarea");
+            } else {
+                this.textarea.removeClass("current-textarea");
+            }
         },
         remove: function () {
             this._super();

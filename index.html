@@ -39,8 +39,11 @@ and open the template in the editor.
             </div>
             <header>
                 <span id='logo'>Mind Book</span>
-                &nbsp;
-                <a href='api?action=clear'>Clear All</a>
+                &nbsp;<br />
+                <form action="api/" method='post'>
+                    <input type='hidden' name='action' value='clear'/>
+                    <input type='submit' value='Clear All' />
+                </form>
             </header>
             <div id="main-section" >
                 <div id="visual">Please wait...</div>

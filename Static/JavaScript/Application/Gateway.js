@@ -86,7 +86,8 @@ Gateway.prototype = {
         $.ajax({
             url: "api/",
             data: data,
-            success: fired_requestDone
+            success: fired_requestDone,
+            type: "POST"
         });
     }
 };
