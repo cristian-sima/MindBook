@@ -136,21 +136,25 @@
             }
         },
         fired_tabKeyPressed: function () {
-            var previousIdea = this.getParent().getChildBefore(this),
+            var oldParent = this.getParent(),
+                newParent = oldParent.getChildBefore(this),
                 position = null;
-            if (previousIdea) {
-                position = previousIdea.getNumberOfChildren();
-                previousIdea.addChildAtPosition(this, position);                
+            if (newParent) {
+                position = newParent.getNumberOfChildren();
+                newParent.addChildAtPosition(this, position);                
                 this.getLine().updateIdea();
+                newParent.fired_childSelected();
+                oldParent.fired_childRealeased();
             }
-            this.getParent().fired_childRealeased();
         },
         fired_shiftTabKeyPressed: function () {
             var oldParent = this.getParent(),
-                grandParent = oldParent.getParent();
-            if (grandParent) {
+                newParent = oldParent.getParent();
+            if (newParent) {
                 this.reduceLevel();  
-                this.getLine().updateIdea();  
+                this.getLine().updateIdea();
+                newParent.fired_childSelected();
+                oldParent.fired_childRealeased();
             }
         },
         updateOnServer: function () {
