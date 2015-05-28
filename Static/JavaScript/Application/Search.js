@@ -15,20 +15,55 @@ Search.prototype = {
         var instance = this;
 
         function getHTMLForItem(item) {
-            var highlighted = replaceSearchedTerm(item.content, instance.getTerm(), "<span class='highlightWord'>$1</span>"),
-                content = Data.htmlView(highlighted);
+            var result = "";
+
+            function processContent(occurences) {
+                function getOccurenceText(number) {
+                    return (number === 1) ? '' : "<div class='numberOfOccurences '> " + occurences.number + " " + "occurences" + ":</div>";
+                }
+                var content = "",
+                    occurenceContent = "",
+                    iterator = 0,
+                    beforeOccurenceText = "<span class='beforeDots'>... </span>",
+                    afterOccurenceText = "<div class='afterDots'>... </div>",
+                    htmlData = "",
+                    oc_html = "";
+                if (occurences.number === 0) {
+                    content = occurences.content;
+                } else {
+                    content += getOccurenceText(occurences.number);
+                    for (iterator = 0; iterator < occurences.content.length; iterator = iterator + 1) {
+                        oc_html = "";
+                        occurenceContent = occurences.content[iterator];
+                        htmlData = Data.htmlView(occurenceContent.content);
+                        oc_html += beforeOccurenceText;
+                        oc_html += htmlData;
+                        oc_html += ((occurences.content.length - 1) === iterator) ? "" : afterOccurenceText;
+                        content += oc_html;
+                    }
+                }
+                content = replaceSearchedTerm(content, instance.getTerm(), "<span class='highlightWord'>$1</span>");
+                return content;
+            }
 
             function getParentText(parentIdea) {
                 var parent = "Home";
                 if (parentIdea) {
-                    parent = parentIdea.content;
+                    parent = processContent(parentIdea.content);
                 }
-                return "<div class='parent' >" + parent + "</div>" + "<div style='display:inline-block;width:20px;position:relative'><img style='positon:absolute;top:0px;' src='Static/Images/link.png' aling='absmiddle' /></div>" + " ";
+                return "<div class='search-result-parent' >" + parent + "</div>";
             }
-            return getParentText(item.parent) + content;
+
+            function getLinkImage() {
+                return "<img class='search-result-link' src='Static/Images/link.png' aling='absmiddle' />";
+            }
+            result += getParentText(item.parent);
+            result += getLinkImage();
+            result += "<div class='search-result-content'>" + processContent(item.content) + "</div>";
+            return "<div class='search-result'>" + result + "</div>";
         }
         this.element.autocomplete({
-            minLength: 2,
+            minLength: 3,
             autoFocus: true,
             source: function (request, response) {
                 var term = request.term;
@@ -41,6 +76,9 @@ Search.prototype = {
                     if (instance.cacheActivated) {
                         instance.cache[term] = data;
                     }
+                    data.sort(function (a, b) {
+                        return -b.content.number + a.content.number; // ASC -> a - b; DESC -> b - a
+                    });
                     response(data);
                 });
             },
@@ -60,13 +98,13 @@ Search.prototype = {
         });
         this.element.on("keydown", function (event) {
             var keyCode = event.keyCode || event.which;
-            if(keyCode === app.data.getKey("ESC").code) {
+            if (keyCode === app.data.getKey("ESC").code) {
                 app.gui.search.clear();
             }
         });
     },
     clear: function () {
-       this.element.val("");
+        this.element.val("");
     },
     getTerm: function () {
         return this.term;

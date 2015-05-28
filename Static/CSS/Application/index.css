@@ -210,6 +210,7 @@ header #logo {
     border-bottom: 1px solid #F4F4F4;
     font-weight: bold;
     font-size: 15px;
+    color: rgb(204, 204, 204);
 }
 
 
@@ -240,8 +241,6 @@ header #logo {
     display: block;
 }
 
-
-
 /* all */
 #search-tab #search::-webkit-input-placeholder { 
     color:rgb(226, 226, 226);
@@ -256,15 +255,31 @@ header #logo {
     color:rgb(226, 226, 226);
 }
 
-
 #search-tab #search:focus {
     color: rgb(197, 197, 197); 
     outline: none;
     border-bottom: 1px solid #A0C2F9;
 }
 
+.beforeDots, .afterDots {
+    font-size: 20px;
+    color: gray;
+    font-family: "Times New Roman", Times, serif;
+}
 
+.afterDots:after, .numberOfOccurences:after {
+    content: "";
+    display: block;
+    border-bottom: 1px solid #dfdfdf;
+    margin: 2px;
+    height: 10px;
+    width: 100%;
+}
 
+.numberOfOccurences {    
+    font-style: italic;
+    color:gray;
+}
 
 .highlightWord {
     color: #29d;
@@ -273,12 +288,34 @@ header #logo {
 
 .ui-menu .ui-menu-item {
     font-size: 12px;
-    width:204px;
+    width:204px;    
+    word-wrap: break-word;
 }
 
 .ui-menu-item {
     overflow: hidden;
     width:222px;
+}
+
+.search-result {
+    margin: 0px;
+    padding: 0px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #dfdfdf;
+}
+
+.search-result-parent {
+    display: block;
+    color: rgb(204, 204, 204);
+}
+
+.search-result-link {
+    display: block;
+}
+
+.search-result-content {
+    padding-left: 20px;
+    display: inline-block;
 }
 
 .ui-widget-content {
@@ -287,17 +324,17 @@ header #logo {
 
 
 .ui-autocomplete {
-		max-height: 400px;
-		overflow-y: auto;
-		/* prevent horizontal scrollbar */
-		overflow-x: hidden;
-	}
-	/* IE 6 doesn't support max-height
-	 * we use height instead, but this forces the menu to always be this tall
-	 */
-	* html .ui-autocomplete {
-		height: 100px;
-	}
+    max-height: 400px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+}
+/* IE 6 doesn't support max-height
+ * we use height instead, but this forces the menu to always be this tall
+ */
+* html .ui-autocomplete {
+    height: 100px;
+}
 
 /* End Search */
 
@@ -320,9 +357,6 @@ header #logo {
     top: -20px;
 }
 
-.parent {
-    color: rgb(204, 204, 204);
-}
 
 .idea-home .editor-parent {
     font-size: 14px;
