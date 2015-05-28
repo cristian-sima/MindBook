@@ -56,35 +56,77 @@ Class MindBook {
         function getOccurences($content, $term) {
 
             $occurences = array();
-            $occurences["content"] = array();
             $tempArray = array();
-            
-            $maxLength = 100;
-            $view = $maxLength / 2;
+
+            $maxLengthOfContent = 20;
+            $charactersToShow = 20;
 
             $lastPos = 0;
             $times = "ALL";
             $number = 0;
 
-            $len = strlen($content);
+            $lungimeContent = strlen($content);
+            $lungimeTermen = strlen($term);
 
-            if ($len > $maxLength) {
+            if ($lungimeContent > $maxLengthOfContent) {
                 // find the first occurence
                 while (($position = stripos($content, $term, $lastPos)) !== false) {
+
+                    $isCuttedBefore = true;
+                    $isCuttedAfter = true;
                     $occContent = "";
 
-                    $beforePosition = $position - $view;
-                    $afterPosition = $view;
+                    // before term
+                    $startBeforePosition = intval($position - $charactersToShow);
 
-                    if ($beforePosition < 0) {
-                        $beforePosition = 0;
+                    //find the end of the word before
+                    if ($startBeforePosition < 0) {
+                        $startBeforePosition = 0;
+                    }
+                    $startPositionBeforeWord = $startBeforePosition - $lungimeContent + 1;
+                    $positionEndOfPreviousWord = strripos($content, " ", $startPositionBeforeWord);
+
+                    if ($positionEndOfPreviousWord === FALSE) {
+                        $startBeforePosition = 0;
+                    } else {
+                        $startBeforePosition = $positionEndOfPreviousWord;
                     }
 
+                    if ($startBeforePosition <= 0) {
+                        $startBeforePosition = 0;
+                        $isCuttedBefore = false;
+                    }
+                    $lungimeBefore = $position - $startBeforePosition;
 
-                    $beforeText = substr($content, $beforePosition, $view);
-                    $afterText = substr($content, $position + strlen($term), $view);
 
-                    $newText = $beforeText . $term . $afterText;
+                    // after term          
+                    $startAfterPosition = $position + $lungimeTermen;
+                    $lungimeAfter = $charactersToShow;
+
+
+                    $startPositionWord = intval($startAfterPosition) + intval($lungimeAfter);
+                    if ($startPositionWord >= $lungimeContent) {
+                        // nothing
+                    } else {
+                        $positionOfWordAfter = strpos($content, " ", $startPositionWord);
+                        if ($positionOfWordAfter === FALSE) {
+                            //
+                        } else {
+                            $charactersToAdd = $positionOfWordAfter - $startPositionWord;
+                            $lungimeAfter = intval($lungimeAfter) + intval($charactersToAdd);
+                        }
+                    }
+
+                    if ($startAfterPosition + $lungimeAfter >= $lungimeContent) {
+                        $isCuttedAfter = false;
+                    }
+
+                    // process
+                    $beforeText = substr($content, $startBeforePosition, $lungimeBefore);
+                    $termText =  substr($content, $position, $lungimeTermen);
+                    $afterText = substr($content, $startAfterPosition, $lungimeAfter);
+
+                    $newText = $beforeText . $termText . $afterText;
                     $occContent .= $newText;
 
                     $number = $number + 1;
@@ -93,20 +135,23 @@ Class MindBook {
                         break;
                     }
 
-                    $lastPos = $position + strlen($term);
-               
-                    $oc = array("line" => $number,
-                        "content" => $occContent);
+                    $lastPos = $position + $lungimeTermen;
+
+                    $oc = array(
+                        "before" => $isCuttedBefore,
+                        "line" => $number,
+                        "content" => $occContent,
+                        "after" => $isCuttedAfter);
                     array_push($tempArray, $oc);
                 }
                 $occurences["content"] = $tempArray;
             } else {
-               $occurences["content"] = $content;
+                $occurences["content"] = $content;
             }
-            
-            
+
+
             $occurences["number"] = $number;
-            
+
             return $occurences;
         }
 

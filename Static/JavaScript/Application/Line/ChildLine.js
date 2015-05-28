@@ -248,7 +248,7 @@
                 content = idea.getContent(),
                 matches = content.match(/\n/g),
                 breaks = matches ? matches.length : 0,
-                height = (breaks + 1) * 15;
+                height = (breaks + 1) * 24;
             this.textarea.css({
                 'height': height + "px"
             });

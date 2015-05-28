@@ -25,24 +25,30 @@ Search.prototype = {
                     occurenceContent = "",
                     iterator = 0,
                     beforeOccurenceText = "<span class='beforeDots'>... </span>",
-                    afterOccurenceText = "<div class='afterDots'>... </div>",
+                    afterOccurenceText = "<span class='afterDots'>... </span>",
                     htmlData = "",
                     oc_html = "";
                 if (occurences.number === 0) {
                     content = occurences.content;
+                    content = replaceSearchedTerm(content, instance.getTerm(), "<span class='highlightWord'>$1</span>");
                 } else {
                     content += getOccurenceText(occurences.number);
                     for (iterator = 0; iterator < occurences.content.length; iterator = iterator + 1) {
                         oc_html = "";
                         occurenceContent = occurences.content[iterator];
+                        occurenceContent.content = replaceSearchedTerm(occurenceContent.content, instance.getTerm(), "<span class='highlightWord'>$1</span>");
                         htmlData = Data.htmlView(occurenceContent.content);
-                        oc_html += beforeOccurenceText;
+                        if (occurenceContent.before === true) {
+                            oc_html += beforeOccurenceText;
+                        }
                         oc_html += htmlData;
-                        oc_html += ((occurences.content.length - 1) === iterator) ? "" : afterOccurenceText;
+                        if (occurenceContent.after === true) {
+                            oc_html += afterOccurenceText;
+                        }
+                        oc_html += "<div class='endOfOccurence'></div>";
                         content += oc_html;
                     }
                 }
-                content = replaceSearchedTerm(content, instance.getTerm(), "<span class='highlightWord'>$1</span>");
                 return content;
             }
 

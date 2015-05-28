@@ -150,7 +150,7 @@ header #logo {
     animation-delay: 2s;
     padding: 3px;
     min-width: 1000px;
-    font-size: 13px;
+    font-size:  19px;
     display: inline;
     border: 1px solid #FFFFFF;
     resize: none;  
@@ -160,7 +160,7 @@ header #logo {
     tab-size : 4;
     padding-bottom: 0px;
     transition:all 0.2s;
-    height:18px;
+    height:27px;
     margin-left: 5px;
 }
 
@@ -178,7 +178,7 @@ header #logo {
 .info-span {
     color: rgb(226, 226, 226); 
     font-family: Georgia;
-    font-size: 15px;
+    font-size: 20px;
 }
 
 #right-cell {
@@ -262,12 +262,13 @@ header #logo {
 }
 
 .beforeDots, .afterDots {
-    font-size: 20px;
-    color: gray;
+    font-size: 22px;
+    color: rgb(228, 228, 228);
+    display: inline-block;
     font-family: "Times New Roman", Times, serif;
 }
 
-.afterDots:after, .numberOfOccurences:after {
+.endOfOccurence, .numberOfOccurences:after {
     content: "";
     display: block;
     border-bottom: 1px solid #dfdfdf;
