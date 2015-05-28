@@ -53,6 +53,67 @@ Class MindBook {
 
     public function findIdeas($termenCautat) {
 
+        function getOccurences($content, $term) {
+
+            $occurences = array();
+            $occurences["content"] = array();
+            $tempArray = array();
+            
+            $maxLength = 100;
+            $view = $maxLength / 2;
+
+            $lastPos = 0;
+            $times = "ALL";
+            $number = 0;
+
+            $len = strlen($content);
+
+            if ($len > $maxLength) {
+                // find the first occurence
+                while (($position = stripos($content, $term, $lastPos)) !== false) {
+                    $occContent = "";
+
+                    $beforePosition = $position - $view;
+                    $afterPosition = $view;
+
+                    if ($beforePosition < 0) {
+                        $beforePosition = 0;
+                    }
+
+
+                    $beforeText = substr($content, $beforePosition, $view);
+                    $afterText = substr($content, $position + strlen($term), $view);
+
+                    $newText = $beforeText . $term . $afterText;
+                    $occContent .= $newText;
+
+                    $number = $number + 1;
+
+                    if ($times !== "ALL" && $times === $number) {
+                        break;
+                    }
+
+                    $lastPos = $position + strlen($term);
+               
+                    $oc = array("line" => $number,
+                        "content" => $occContent);
+                    array_push($tempArray, $oc);
+                }
+                $occurences["content"] = $tempArray;
+            } else {
+               $occurences["content"] = $content;
+            }
+            
+            
+            $occurences["number"] = $number;
+            
+            return $occurences;
+        }
+
+        function processContent($content, $term) {
+            return getOccurences($content, $term);
+        }
+
         $toReturn = array();
 
         $sth = Database::$db->prepare('SELECT id, content, parent
@@ -67,12 +128,12 @@ Class MindBook {
             $id = $row["id"];
             $parent_id = $row["parent"];
 
-            $safeContent = Security::XSS($content);
+            $safeContent = processContent($content, $termenCautat);
 
             if ($parent_id !== null) {
                 $idea = new ChildIdea($parent_id);
                 $parent = array("id" => $idea->getParent(),
-                    "content" => Security::XSS($idea->getContent()));
+                    "content" => processContent($idea->getContent(), $termenCautat));
             } else {
                 $parent = null;
             }
