@@ -165,6 +165,7 @@
                 serverIdea = this.getServerIdea();
             line.removeUpdateDelay();
             serverIdea.update();
+            this.updateLine();
         },
         updateOnServer: function () {
             this.serverIdea.update();

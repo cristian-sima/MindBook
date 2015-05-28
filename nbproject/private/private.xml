@@ -2,22 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group name="Local">
-            <file>file:/W:/Local/MindBook/Static/JavaScript/Application/Visual.js</file>
-            <file>file:/W:/Local/MindBook/Static/JavaScript/Application/Idea.js</file>
-            <file>file:/W:/Local/MindBook/Static/JavaScript/Application/Search.js</file>
-            <file>file:/W:/Local/MindBook/Static/JavaScript/Library/Others.js</file>
-            <file>file:/W:/Local/MindBook/Static/CSS/Library/jquery-ui.min.css</file>
-            <file>file:/W:/Local/MindBook/Static/JavaScript/Application/ChildLine.js</file>
-            <file>file:/W:/Local/MindBook/Static/JavaScript/Application/StandardEditor.js</file>
-            <file>file:/W:/Local/MindBook/Static/CSS/Application/index.css</file>
-            <file>file:/W:/Local/MindBook/index.html</file>
-            <file>file:/W:/Local/MindBook/Static/JavaScript/Application/Editor.js</file>
-            <file>file:/W:/Local/MindBook/api/Database.php</file>
-            <file>file:/W:/Local/MindBook/Static/JavaScript/Application/DefaultEditor.js</file>
-            <file>file:/W:/Local/MindBook/Static/CSS/Application/tree.css</file>
-            <file>file:/W:/Local/MindBook/Static/JavaScript/Application/HomeLine.js</file>
-            <file>file:/W:/Local/MindBook/Static/JavaScript/Application/App.js</file>
-        </group>
+        <group name="Local"/>
     </open-files>
 </project-private>
