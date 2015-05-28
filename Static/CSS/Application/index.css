@@ -86,21 +86,6 @@ header #logo {
 
 
 
-/* all */
-header #search::-webkit-input-placeholder { 
-    color:rgb(226, 226, 226);
-}
-header #search::-moz-placeholder { 
-    color:rgb(226, 226, 226);
-} /* firefox 19+ */
-header #search:-ms-input-placeholder { 
-    color:rgb(226, 226, 226);
-} /* ie */
-header #search:-moz-placeholder { 
-    color:rgb(226, 226, 226);
-}
-
-
 
 #main-section {
     width: 100%;
@@ -240,19 +225,45 @@ header #search:-moz-placeholder {
 
 
 #search-tab #search {
-    color: rgb(197, 197, 197);
-    border: 1px solid #F4F4F4;
-    border-radius: 2px;
+    color:rgb(226, 226, 226);
+    border: none;
+    transition: all 0.2s;
+    border-bottom: 1px solid #F4F4F4;
     height: 22px;
     width: 200px;
     background-image:url('../../Images/search.png');
     background-repeat:no-repeat;
     background-position-y: 1px;
     background-position-x: 1px;
-    padding-left:20px;
+    padding-left:25px;
     margin-right: 60px;
     display: block;
 }
+
+
+
+/* all */
+#search-tab #search::-webkit-input-placeholder { 
+    color:rgb(226, 226, 226);
+}
+#search-tab #search::-moz-placeholder { 
+    color:rgb(226, 226, 226);
+} /* firefox 19+ */
+#search-tab #search:-ms-input-placeholder { 
+    color:rgb(226, 226, 226);
+} /* ie */
+#search-tab #search:-moz-placeholder { 
+    color:rgb(226, 226, 226);
+}
+
+
+#search-tab #search:focus {
+    color: rgb(197, 197, 197); 
+    outline: none;
+    border-bottom: 1px solid #A0C2F9;
+}
+
+
 
 
 .highlightWord {
@@ -310,7 +321,7 @@ header #search:-moz-placeholder {
 }
 
 .parent {
-    color: rgb(223, 223, 223);
+    color: rgb(204, 204, 204);
 }
 
 .idea-home .editor-parent {

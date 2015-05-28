@@ -14,7 +14,7 @@ Search.prototype = {
     activateListeners: function () {
         var instance = this;
 
-        function getHTMLForItem(item) {    
+        function getHTMLForItem(item) {
             var highlighted = replaceSearchedTerm(item.content, instance.getTerm(), "<span class='highlightWord'>$1</span>"),
                 content = Data.htmlView(highlighted);
 
@@ -58,6 +58,15 @@ Search.prototype = {
             $(this).val(instance.getTerm());
             $(this).autocomplete("search");
         });
+        this.element.on("keydown", function (event) {
+            var keyCode = event.keyCode || event.which;
+            if(keyCode === app.data.getKey("ESC").code) {
+                app.gui.search.clear();
+            }
+        });
+    },
+    clear: function () {
+       this.element.val("");
     },
     getTerm: function () {
         return this.term;

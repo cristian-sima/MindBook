@@ -50,6 +50,11 @@
                 code: 39,
                 special: false,
                 canModifyText: false
+            },
+            "ESC": {
+                code: 27,
+                special: false,
+                canModifyText: false
             }
         };
     };
@@ -75,6 +80,9 @@
                 }
             }
             return true;
+        },
+        getKey: function (name) {
+            return this.keys[name];
         }
     };
     Data.htmlView = function (content) {
