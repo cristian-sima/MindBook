@@ -53,7 +53,54 @@ Class MindBook {
 
     public function findIdeas($termenCautat) {
 
+        function findCharByType($content, $char, $start, $type) {
+            if ($type == 'before') {
+                return strripos($content, $char, $start);
+            } else {
+                // after
+                return strpos($content, $char, $start);
+            }
+        }
+
+        function findBeforeWordStops($content, $startingPosition) {
+            $allowedLimit = 30;
+
+            $nextSpacePosition = findCharByType($content, " ", $startingPosition, "before");
+
+            if ($nextSpacePosition === false ||
+                    $startingPosition - $nextSpacePosition > $allowedLimit) {
+                // find the next breaking line
+                $nextBreakingLine = findCharByType($content, "\n", $startingPosition, "before");
+                if ($nextBreakingLine === false ||
+                        $startingPosition - $nextBreakingLine > $allowedLimit) {
+                    return $startingPosition - $allowedLimit;
+                }
+                return $nextBreakingLine;
+            }
+            return $nextSpacePosition;
+        }
+
+        function findAfterWordStops($content, $startingPosition) {
+            $allowedLimit = 30;
+
+            $nextSpacePosition = findCharByType($content, " ", $startingPosition, "after");
+
+            if ($nextSpacePosition === false ||
+                    $nextSpacePosition - $startingPosition > $allowedLimit) {
+                // find the next breaking line
+                $nextBreakingLine = findCharByType($content, "\n", $startingPosition, "after");
+                if ($nextBreakingLine === false ||
+                        $nextBreakingLine - $startingPosition > $allowedLimit) {
+                    return $startingPosition + $allowedLimit;
+                }
+                return $nextBreakingLine;
+            }
+            return $nextSpacePosition;
+        }
+
         function getOccurences($content, $term) {
+
+
 
             $occurences = array();
             $tempArray = array();
@@ -84,7 +131,8 @@ Class MindBook {
                         $startBeforePosition = 0;
                     }
                     $startPositionBeforeWord = $startBeforePosition - $lungimeContent + 1;
-                    $positionEndOfPreviousWord = strripos($content, " ", $startPositionBeforeWord);
+
+                    $positionEndOfPreviousWord = findBeforeWordStops($content, $startPositionBeforeWord);
 
                     if ($positionEndOfPreviousWord === FALSE) {
                         $startBeforePosition = 0;
@@ -108,7 +156,7 @@ Class MindBook {
                     if ($startPositionWord >= $lungimeContent) {
                         // nothing
                     } else {
-                        $positionOfWordAfter = strpos($content, " ", $startPositionWord);
+                        $positionOfWordAfter = findAfterWordStops($content, $startPositionWord);
                         if ($positionOfWordAfter === FALSE) {
                             //
                         } else {
@@ -123,7 +171,7 @@ Class MindBook {
 
                     // process
                     $beforeText = substr($content, $startBeforePosition, $lungimeBefore);
-                    $termText =  substr($content, $position, $lungimeTermen);
+                    $termText = substr($content, $position, $lungimeTermen);
                     $afterText = substr($content, $startAfterPosition, $lungimeAfter);
 
                     $newText = $beforeText . $termText . $afterText;
