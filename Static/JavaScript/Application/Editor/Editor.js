@@ -122,7 +122,7 @@
                 previous = idea.getParent();
             }
             if (previous && !previous.isHome()) {
-                this.setCurrentIdea(previous);
+                this.setCurrentIdea(previous, "END");
             }
         },
         moveDown: function () {
@@ -139,7 +139,7 @@
                 } while (!nextIdea && parent);
             }
             if (nextIdea) {
-                this.setCurrentIdea(nextIdea);
+                this.setCurrentIdea(nextIdea, "START");
             }
         },
         removeIdea: function (idea, event) {
