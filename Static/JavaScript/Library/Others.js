@@ -39,8 +39,9 @@ function setSelectionRange(input, selectionStart, selectionEnd) {
 function setCaretToPos(input, pos, end) {
     if (pos === "END") {
         $(input).focusToEnd();
+    } else if(pos === "START") {
+        setSelectionRange(input, 0, 0);        
     } else {
-        console.log(pos + " " + end)
         setSelectionRange(input, pos, end);
     }
 }

@@ -103,14 +103,14 @@
                 // check the keys
                 switch (keyCode) {
                     case app.data.keys["ARROW-UP"].code:
-                        if (line.cursorPosition === currentPosition) {
+                        if (currentPosition === 0) {
                             editor.moveUp();
                             return false;
                         }
                     case app.data.keys["ARROW-DOWN"].code:
-                        if (line.cursorPosition === currentPosition) {
-                             event.preventDefault();
+                        if (currentPosition === (idea.getContent().length )) {
                             editor.moveDown();
+                            return false;
                         }
                         break;
                 }
