@@ -98,9 +98,7 @@ Class MindBook {
             return $nextSpacePosition;
         }
 
-        function getOccurences($content, $term) {
-
-
+        function getOccurences($content, $term, $isParent) {
 
             $occurences = array();
             $tempArray = array();
@@ -115,7 +113,7 @@ Class MindBook {
             $lungimeContent = strlen($content);
             $lungimeTermen = strlen($term);
 
-            if ($lungimeContent > $maxLengthOfContent) {
+            if ($lungimeContent > $maxLengthOfContent && !$isParent) {
                 // find the first occurence
                 while (($position = stripos($content, $term, $lastPos)) !== false) {
 
@@ -203,9 +201,6 @@ Class MindBook {
             return $occurences;
         }
 
-        function processContent($content, $term) {
-            return getOccurences($content, $term);
-        }
 
         $toReturn = array();
 
@@ -221,12 +216,12 @@ Class MindBook {
             $id = $row["id"];
             $parent_id = $row["parent"];
 
-            $safeContent = processContent($content, $termenCautat);
+            $safeContent = getOccurences($content, $termenCautat, false);
 
             if ($parent_id !== null) {
-                $idea = new ChildIdea($parent_id);
-                $parent = array("id" => $idea->getParent(),
-                    "content" => processContent($idea->getContent(), $termenCautat));
+                $parentIdea = new ChildIdea($parent_id);
+                $parent = array("id" => $parentIdea->getId(),
+                    "content" => getOccurences($parentIdea->getContent(), $termenCautat, true));
             } else {
                 $parent = null;
             }

@@ -15,6 +15,12 @@
             }
             this.line = new ChildLine(this, elementBefore);
         },
+        getTextLines: function () {
+            var content = this.getContent(),
+                matches = content.match(/\n/g),
+                breaks = matches ? matches.length : 0;
+            return breaks;
+        },
         isHome: function () {
             return false;
         },
@@ -34,11 +40,16 @@
             return this.level;
         },
         select: function (cursorPosition, cursorPositionEnds) {
-            this.getLine().select(cursorPosition, cursorPositionEnds);
-            this.getParent().fired_childSelected();
+            var line = this.getLine(),
+                parent = this.getParent();
+            line.fired_selected(cursorPosition, cursorPositionEnds);
+            parent.fired_childSelected();
         },
         deselect: function () {
-            this.getLine().deselect();
+            var line = this.getLine(),
+                parent = this.getParent();
+            line.fired_deselected();
+            parent.fired_childRealeased();
         },
         /* to check */
         removeIdeaAndSaveChildren: function () {
@@ -115,10 +126,7 @@
                 itemBefore = child;
                 child.moveChildrenAfterParent();
             }
-            this.highLight();
-        },
-        highLight: function () {
-            this.getLine().highLight();
+            this.getLine().getTextarea().highlight();
         },
         isCorrelatedToServer: function () {
             return this.getServerIdea().isCorrelated();
@@ -126,16 +134,22 @@
         getParent: function () {
             return this.parent;
         },
+        update: function () {
+            var line = this.getLine(),
+                serverIdea = this.getServerIdea();
+            line.removeUpdateDelay();
+            serverIdea.update();
+            this.updateLine();
+        },
+        updateOnServer: function () {
+            this.serverIdea.update();
+        },
         /* Listeners */
         fired_childSelected: function () {
-            if (this.getLine()) {
-                this.getLine().boldText();
-            }
+            this.getLine().fired_childSelected();
         },
         fired_childRealeased: function () {
-            if (this.getLine()) {
-                this.getLine().unboldText();
-            }
+            this.getLine().fired_childRealeased();
         },
         fired_tabKeyPressed: function () {
             var oldParent = this.getParent(),
@@ -143,7 +157,7 @@
                 position = null;
             if (newParent) {
                 position = newParent.getNumberOfChildren();
-                newParent.addChildAtPosition(this, position);   
+                newParent.addChildAtPosition(this, position);
                 this.update();
                 newParent.fired_childSelected();
                 oldParent.fired_childRealeased();
@@ -153,22 +167,11 @@
             var oldParent = this.getParent(),
                 newParent = oldParent.getParent();
             if (newParent) {
-                this.reduceLevel();  
+                this.reduceLevel();
                 this.update();
                 newParent.fired_childSelected();
                 oldParent.fired_childRealeased();
             }
-        },
-        update: function () {
-            var editor = this.getEditor(),
-                line = this.getLine(),
-                serverIdea = this.getServerIdea();
-            line.removeUpdateDelay();
-            serverIdea.update();
-            this.updateLine();
-        },
-        updateOnServer: function () {
-            this.serverIdea.update();
         }
     };
     ChildIdea = Idea.extend(ChildIdeaTemplate);

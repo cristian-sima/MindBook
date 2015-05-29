@@ -24,7 +24,7 @@
         },
         setCorrelatedId: function (correlatedId) {
             this.correlatedId = correlatedId;
-            this.localIdea.getLine().updateCorrelation();
+            this.localIdea.getLine().update();
         },
         getId: function () {
             if (this.serverId) {

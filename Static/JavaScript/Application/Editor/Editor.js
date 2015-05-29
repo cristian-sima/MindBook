@@ -93,12 +93,6 @@
             if (oldIdea) {
                 line = oldIdea.getLine();
                 textarea = line.getTextarea();
-                if (!cursorPosition) {
-                    cursorPosition = textarea.prop("selectionStart");
-                }
-                if (!cursorPositionEnds) {
-                    cursorPositionEnds = cursorPosition;
-                }
                 oldIdea.deselect();
             }
             this.currentIdea = idea;
