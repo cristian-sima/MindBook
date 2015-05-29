@@ -210,7 +210,6 @@
                             serverIdea.setCorrelatedId(null);
                             break;
                     }
-                    i.updateLine();
                     editor.requestList.splice(editor.requestList.indexOf(report.requestId), 1);
                     if (editor.callbackRequestsOver) {
                         if (editor.requestList.length === 0) {
