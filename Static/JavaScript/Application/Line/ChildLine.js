@@ -7,6 +7,7 @@
             this._super(idea, previousLine);
             this.highlightTimeout = null;
             this.delayUpdateIdea = null;
+            this.isSelected = false;
         },
         insertElement: function (previousLine) {
             var HTML = this.getHTML();
@@ -108,7 +109,7 @@
                             return false;
                         }
                     case app.data.keys["ARROW-DOWN"].code:
-                        if (currentPosition === (idea.getContent().length )) {
+                        if (currentPosition === (idea.getContent().length)) {
                             editor.moveDown();
                             return false;
                         }
@@ -142,11 +143,14 @@
             });
         },
         select: function (cursorPosition, cursorPositionEnds) {
+            this.isSelected = true;
             setCaretToPos(this.textarea[0], cursorPosition, cursorPositionEnds);
+            this.updateTextarea();
         },
         deselect: function () {
-            this.getIdea().getParent().fired_childRealeased();
+            this.isSelected = false;
             this.textarea.removeClass("current-textarea");
+            this.getIdea().getParent().fired_childRealeased();
         },
         boldText: function () {
             this.textarea.addClass("parent-focused");
@@ -172,7 +176,9 @@
             this.updateHTML();
             this.updateWarning();
             this.updateCorrelation();
-            this.updateTextarea();
+            if (this.isSelected) {
+                this.updateTextarea();
+            }
         },
         updateHTML: function () {
             var levelWidth = 20,
@@ -225,6 +231,12 @@
                 });
             }
         },
+        hideShadow: function () {
+            this.textarea.removeClass("current-textarea");
+        },
+        showShadow: function () {
+            this.textarea.addClass("current-textarea");
+        },
         updateTextarea: function () {
             var idea = this.getIdea(),
                 content = idea.getContent(),
@@ -235,9 +247,9 @@
                 'height': height + "px"
             });
             if (breaks > 0) {
-                this.textarea.addClass("current-textarea");
+                this.showShadow();
             } else {
-                this.textarea.removeClass("current-textarea");
+                this.hideShadow();
             }
         },
         remove: function () {
