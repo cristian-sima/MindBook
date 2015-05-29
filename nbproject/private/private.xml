@@ -4,10 +4,15 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group name="Local">
             <file>file:/W:/Local/MindBook/Static/CSS/Application/index.css</file>
+            <file>file:/W:/Local/MindBook/Static/JavaScript/Application/Idea/ServerIdea.js</file>
+            <file>file:/W:/Local/MindBook/index.html</file>
+            <file>file:/W:/Local/MindBook/Static/JavaScript/Application/Idea/ChildIdea.js</file>
+            <file>file:/W:/Local/MindBook/Static/JavaScript/Application/Line/Textarea.js</file>
+            <file>file:/W:/Local/MindBook/Static/JavaScript/Application/Editor/Editor.js</file>
             <file>file:/W:/Local/MindBook/Static/JavaScript/Library/Others.js</file>
             <file>file:/W:/Local/MindBook/Static/JavaScript/Application/Search.js</file>
             <file>file:/W:/Local/MindBook/api/MindBook.php</file>
-            <file>file:/W:/Local/MindBook/Static/JavaScript/Application/Data.js</file>
+            <file>file:/W:/Local/MindBook/Static/JavaScript/Application/Line/Line.js</file>
             <file>file:/W:/Local/MindBook/api/Idea.php</file>
             <file>file:/W:/Local/MindBook/Static/JavaScript/Application/Line/ChildLine.js</file>
         </group>

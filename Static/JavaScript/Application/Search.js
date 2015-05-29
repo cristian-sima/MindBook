@@ -18,8 +18,6 @@ Search.prototype = {
             var result = "";
 
             function processContent(occurences) {
-                console.log('Aici sunt occurences: ');
-                console.log(occurences);
                 function getOccurenceText(number) {
                     return (number === 1) ? '' : "<div class='numberOfOccurences '> " + occurences.number + " " + "occurences" + ":</div>";
                 }
