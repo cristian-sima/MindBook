@@ -96,7 +96,7 @@
                 if (!cursorPosition) {
                     cursorPosition = textarea.prop("selectionStart");
                 }
-                if(!cursorPositionEnds) {
+                if (!cursorPositionEnds) {
                     cursorPositionEnds = cursorPosition;
                 }
                 oldIdea.deselect();

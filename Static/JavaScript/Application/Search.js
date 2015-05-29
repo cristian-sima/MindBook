@@ -18,6 +18,8 @@ Search.prototype = {
             var result = "";
 
             function processContent(occurences) {
+                console.log('Aici sunt occurences: ');
+                console.log(occurences);
                 function getOccurenceText(number) {
                     return (number === 1) ? '' : "<div class='numberOfOccurences '> " + occurences.number + " " + "occurences" + ":</div>";
                 }
@@ -45,7 +47,7 @@ Search.prototype = {
                         if (occurenceContent.after === true) {
                             oc_html += afterOccurenceText;
                         }
-                        oc_html += "<div class='endOfOccurence'></div>";
+                        oc_html += (((iterator + 1) === occurences.content.length )? "" : "<div class='endOfOccurence'></div>");
                         content += oc_html;
                     }
                 }
