@@ -31,6 +31,7 @@ header #logo {
 
 #menu {
     position: fixed;
+    z-index: 20;
     top: 100px;
     left: 0px;
     padding-bottom: 2px;

@@ -28,12 +28,12 @@
             },
             "ARROW-UP": {
                 code: 38,
-                special: true,
+                special: false,
                 canModifyText: false
             },
             "ARROW-DOWN": {
                 code: 40,
-                special: true,
+                special: false,
                 canModifyText: false
             },
             "BACKSPACE": {

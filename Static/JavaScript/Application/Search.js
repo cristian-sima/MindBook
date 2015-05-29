@@ -69,7 +69,7 @@ Search.prototype = {
             return "<div class='search-result'>" + result + "</div>";
         }
         this.element.autocomplete({
-            minLength: 3,
+            minLength: 2,
             autoFocus: true,
             source: function (request, response) {
                 var term = request.term;

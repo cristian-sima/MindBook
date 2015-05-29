@@ -100,7 +100,6 @@
                     cursorPositionEnds = cursorPosition;
                 }
                 oldIdea.deselect();
-                console.log('da')
             }
             this.currentIdea = idea;
             this.currentIdea.select(cursorPosition, cursorPositionEnds);

@@ -83,54 +83,37 @@
                         break;
                     case app.data.keys["ARROW-UP"].code:
                         var line = idea.getLine(),
-                            textarea = line.textarea,
-                            position = textarea.prop("selectionStart"),
-                            content = idea.getContent(),
-                            p = content.substr(0, $(textarea)[0].selectionStart).split("\n"),
-                            line = null,
-                            col = null,
-                            newPosition= null;
-                        // line is the number of lines
-                        line = p.length;
-                        // col is the length of the last line
-                        col = p[p.length - 1].length;
-                        if (line === 1) {
-                            editor.moveUp();
-                        } else {
-                            newPosition = position - col  -1;
-                            idea.getLine().select(newPosition, newPosition);
-                        }
+                            textarea = line.textarea;
+                        line.cursorPosition = textarea.prop("selectionStart");
                         break;
                     case app.data.keys["ARROW-DOWN"].code:
                         var line = idea.getLine(),
-                            textarea = line.textarea,
-                            position = textarea.prop("selectionStart"),
-                            content = idea.getContent(),
-                            p = content.substr(0, $(textarea)[0].selectionStart).split("\n"),
-                            line = null,
-                            col = null,
-                            matches = content.match(/\n/g),
-                            breaks = matches ? matches.length : 0,
-                            newPosition= null;
-                        // line is the number of lines
-                        line = p.length;
-                        // col is the length of the last line
-                        col = p[p.length - 1].length;
-                        if ((line) === breaks) {
-                            editor.moveDown();
-                        } else {
-                            newPosition = position + col + 1;
-                            idea.getLine().select(newPosition, newPosition);
-                        }
-                        break;
+                            textarea = line.textarea;
+                        line.cursorPosition = textarea.prop("selectionStart");
                 }
             });
             this.textarea.on("keyup", function (event) {
                 var line = idea.getLine(),
-                    content = line.textarea.val(),
-                    keyCode = event.keyCode || event.which;;
+                    textarea = line.textarea,
+                    content = textarea.val(),
+                    keyCode = event.keyCode || event.which,
+                    currentPosition = textarea.prop("selectionStart");
                 idea.setContent(content);
                 idea.updateLine();
+                // check the keys
+                switch (keyCode) {
+                    case app.data.keys["ARROW-UP"].code:
+                        if (line.cursorPosition === currentPosition) {
+                            editor.moveUp();
+                            return false;
+                        }
+                    case app.data.keys["ARROW-DOWN"].code:
+                        if (line.cursorPosition === currentPosition) {
+                             event.preventDefault();
+                            editor.moveDown();
+                        }
+                        break;
+                }
                 if (app.data.isModyfingKey(keyCode)) {
                     line.delayUpdate();
                 }
@@ -163,7 +146,6 @@
         },
         deselect: function () {
             this.getIdea().getParent().fired_childRealeased();
-            console.log('ajunge')
             this.textarea.removeClass("current-textarea");
         },
         boldText: function () {
@@ -252,7 +234,7 @@
             this.textarea.css({
                 'height': height + "px"
             });
-            if(breaks > 0) {
+            if (breaks > 0) {
                 this.textarea.addClass("current-textarea");
             } else {
                 this.textarea.removeClass("current-textarea");
