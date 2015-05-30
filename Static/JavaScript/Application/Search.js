@@ -90,7 +90,7 @@ Search.prototype = {
             },
             select: function (event, ui) {
                 var idea = ui.item.id;
-                app.gui.section.select("standard", idea);
+                app.gui.section.select("visual", idea);
                 $(this).val(instance.getTerm());
                 return false;
             }

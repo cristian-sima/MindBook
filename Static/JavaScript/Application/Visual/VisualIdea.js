@@ -11,7 +11,11 @@ VisualIdea.prototype = {
             child = null,
             data = this.data;
         toReturn += "<div class='idea' >";
+        toReturn += this.getParent(data);
         toReturn += this.getContent(data);
+        if (data.parent !== null) {
+            toReturn += this.getEditButton(data);
+        }
         toReturn += this.getWait();
         toReturn += this.getChildren(data);
         toReturn += "</div>";
@@ -63,7 +67,7 @@ VisualIdea.prototype = {
         return html;
     },
     getParent: function (idea) {
-        if (idea.isRoot && idea.parent) {
+        if (idea.parent) {
             return '<span class="parent editor-parent" id="option-parent" data-id="' + idea.parent + '">Parent</span><br /><div style="display:inline-block;width:20px;position:relative"><img style="positon:absolute;top:0px;" src="Static/Images/link.png" aling="absmiddle"></div>';
         }
         return '';
@@ -100,6 +104,13 @@ VisualIdea.prototype = {
     },
     activateListeners: function () {
         var instance = this.visual,
+            parentButton = (function () {
+                var visual = instance;
+                return function () {
+                    var id = $(this).data("id");
+                    app.gui.section.select("visual", id);
+                };
+            })(),
             editButton = (function () {
                 var visual = instance;
                 return function () {
@@ -122,6 +133,7 @@ VisualIdea.prototype = {
                 };
             })();
         this.visual.container.off();
+        this.visual.container.find(".parent").click(parentButton);
         this.visual.container.find(".edit").click(editButton);
         this.visual.container.find('.expand').click(expand);
     }
