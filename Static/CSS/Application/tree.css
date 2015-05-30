@@ -76,7 +76,7 @@
     font-size: 14px;
 }
 
-#visual .parent div:focus {
+#visual .parent:hover {
     text-decoration: underline;
     cursor:pointer;
 }
