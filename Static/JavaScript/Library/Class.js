@@ -23,6 +23,8 @@
      this.Data = function () {};
      this.Section = function () {};
      this.App = function () {};
+     this.Visual = function () {};
+     this.VisualIdea = function () {};
      // Create a new Class that inherits from this class
      Class.extend = function (prop) {
          var _super = this.prototype;

@@ -12,7 +12,6 @@
 }
 
 #visual .name:hover {
-    cursor:pointer;  
     background: #F4FCFF;
     border: 1px solid #A9DEF5;
 }
@@ -42,7 +41,8 @@
     position: absolute;
     top: 0;
     left: -2px;
-    bottom: 70%;
+    height: 20px;
+    bottom: 60px;
     width: 0.75em;
     border: 2px solid #000;
     border-top: 0 none transparent;
@@ -51,4 +51,36 @@
 
 #visual ul > li:last-child {
     border-left: 2px solid transparent;
+}
+
+#visual .expand {
+}
+
+#visual .button {
+    margin-right: 10px;
+    margin-left: 5px;
+    height: 16px;
+    width: 16px;
+    cursor: pointer;
+}
+#visual .option {    
+    display: none;
+}
+
+#visual .hidden {
+    display: none;
+}
+
+#visual .parent {
+    color: rgb(34, 153, 221);
+    font-size: 14px;
+}
+
+#visual .parent div:focus {
+    text-decoration: underline;
+    cursor:pointer;
+}
+
+#visual .idea:hover > .option {
+    display: inline-block;
 }

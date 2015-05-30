@@ -43,7 +43,7 @@ class Idea {
                 if ($level === "ALL") {
                     return "0,";
                 }
-                return $level;
+                return "0,".$level;
             }
 
             function insertValues($quantifier, $prefix, $digit) {
@@ -70,7 +70,7 @@ class Idea {
         $regex = getRegex($level, $this->path, $this->id);
         $sql = getSQL($regex);
 
-
+        
 
         // echo "Regex: <b>/" . $regex . "/gm</b><br />";
         // echo "SQL:<pre> " . $sql . "</pre><br />";
@@ -97,12 +97,8 @@ class Idea {
         }
     }
 
-    public function getAllChildren() {
-        $this->getChildrenAtLevel("ALL");
-    }
-
-    public function getChildren() {
-        $this->getChildrenAtLevel(0);
+    public function getChildren($level) {
+        $this->getChildrenAtLevel($level);
     }
 
     public function getParent() {
@@ -185,6 +181,10 @@ class Idea {
             "children" => $this->children);
 
         return json_encode($array, JSON_PRETTY_PRINT);
+    }
+    
+    public function getDelimitator($id) {
+        return "[" + $id +  "]";
     }
 
 }

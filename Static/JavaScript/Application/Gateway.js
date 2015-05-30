@@ -2,8 +2,7 @@
 
 function Gateway() {
     this.connection = null;
-}
-;
+};
 Gateway.prototype = {
     start: function () {
         this.getInitData(function (data) {
@@ -12,29 +11,30 @@ Gateway.prototype = {
     },
     getHomeIdeaID: function (callback) {
         this.sendAjaxRequest({
-            "action": "getHomeIdeaID"
+            action: "getHomeIdeaID"
         }, callback);
     },
     getInitData: function (callback) {
         this.sendAjaxRequest({
-            "action": "init"
-        }, callback);
-    },
-    getIdea: function (id, callback) {
-        this.sendAjaxRequest({
-            "action": "getIdea",
-            "id": id
+            action: "init"
         }, callback);
     },
     getEntireIdea: function (id, callback) {
-        this.sendAjaxRequest({
-            "action": "getEntireIdea",
-            "id": id
+        this.getIdea({
+            id: id,
+            level: "ALL"
         }, callback);
+    },
+    getIdea: function (idea, callback, error) {
+        this.sendAjaxRequest({
+            action: "getIdea",
+            id: idea.id,
+            level: idea.level
+        }, callback, error);
     },
     createIdea: function (idea, callback) {
         this.sendAjaxRequest({
-            "action": "createIdea",
+            action: "createIdea",
             "parent": idea.parent,
             "content": idea.content,
             "id": idea.id
@@ -67,27 +67,28 @@ Gateway.prototype = {
         this.sendAjaxRequest({
             "action": "removeIdea",
             "id": idea.id
-        }, callback, true, callback);
+        }, callback);
     },
-    sendAjaxRequest: function (data, callback, notShowLoading) {
-
+    sendAjaxRequest: function (data, callback, error) {
         app.gui.showLoading();
-
-        var fired_requestDone = (function () {
-            var c = callback,
-                show = notShowLoading;
-            return function (data) {
-
-                app.gui.hideLoading();
-
-                c(jQuery.parseJSON(data));
+        var fired_requestDone = function (cal, t) {
+                var c = cal,
+                    type = t;
+                return function (data) {
+                    app.gui.hideLoading();
+                    if (type === "done") {
+                        c(jQuery.parseJSON(data));
+                    } else {
+                        c();
+                    }
+                };
             };
-        })();
         $.ajax({
             url: "api/",
             data: data,
-            success: fired_requestDone,
-            type: "POST"
+            success: fired_requestDone(callback, "done"),
+            type: "POST",
+            error: fired_requestDone(error, "error")
         });
     }
 };

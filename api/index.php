@@ -24,14 +24,9 @@ switch (Request::extract("action")) {
         break;
     case "getIdea":
         $id = Request::extract("id");
+        $level = Request::extract("level");
         $childIdea = new ChildIdea($id);
-        $childIdea->getChildren();
-        echo $childIdea;
-        break;
-    case "getEntireIdea":
-        $id = Request::extract("id");
-        $childIdea = new ChildIdea($id);
-        $childIdea->getAllChildren();
+        $childIdea->getChildren($level);
         echo $childIdea;
         break;
     case "findIdeas":
