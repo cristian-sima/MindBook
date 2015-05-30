@@ -16,6 +16,7 @@ VisualIdea.prototype = {
         if (data.parent !== null) {
             toReturn += this.getEditButton(data);
         }
+        toReturn += this.getListButton(data);
         toReturn += this.getWait();
         toReturn += this.getChildren(data);
         toReturn += "</div>";
@@ -44,6 +45,7 @@ VisualIdea.prototype = {
         }
         toReturn += this.getContent(child);
         toReturn += this.getEditButton(child);
+        toReturn += this.getListButton(child);
         toReturn += this.getWait();
         toReturn += "</div></li>";
         return toReturn;
@@ -82,6 +84,9 @@ VisualIdea.prototype = {
     getEditButton: function (idea) {
         return '<img data-id="' + idea.id + '" class="edit button option" src="Static/Images/Menu/default.svg" alt="Default" />';
     },
+    getListButton: function (idea) {
+        return '<img data-id="' + idea.id + '" class="list button option" src="Static/Images/Menu/list.png" alt="List" />';
+    },
     getChildrenIdeaHTML: function (idea) {
         function getChildrenProperty(idea) {
             return "visible";
@@ -111,6 +116,13 @@ VisualIdea.prototype = {
                     app.gui.section.select("visual", id);
                 };
             })(),
+            listListener = (function () {
+                var visual = instance;
+                return function () {
+                    var id = $(this).data("id");
+                    visual.showLines(id);
+                };
+            })(),
             editButton = (function () {
                 var visual = instance;
                 return function () {
@@ -136,5 +148,6 @@ VisualIdea.prototype = {
         this.visual.container.find(".parent").click(parentButton);
         this.visual.container.find(".edit").click(editButton);
         this.visual.container.find('.expand').click(expand);
+        this.visual.container.find('.list').click(listListener);
     }
 };

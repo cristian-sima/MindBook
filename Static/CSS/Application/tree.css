@@ -84,3 +84,13 @@
 #visual .idea:hover > .option {
     display: inline-block;
 }
+
+#lines {
+    overflow: hidden;
+}
+
+#lines #target {
+    width: 100%;
+    overflow: visible;
+    height: 100%;
+}

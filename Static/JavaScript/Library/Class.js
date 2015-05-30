@@ -25,6 +25,7 @@
      this.App = function () {};
      this.Visual = function () {};
      this.VisualIdea = function () {};
+     this.VisualLine = function () {};
      // Create a new Class that inherits from this class
      Class.extend = function (prop) {
          var _super = this.prototype;

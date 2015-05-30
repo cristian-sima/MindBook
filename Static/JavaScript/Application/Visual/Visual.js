@@ -9,6 +9,25 @@ function Visual(id, html) {
     }, this.container);
 };
 Visual.prototype = {
+    showLines: function (id) {
+        var linesDiv = $("#lines"),
+            textarea = linesDiv.find('#target');
+        linesDiv.dialog({
+            resizable: false,
+            height: 500,
+            width: 800,
+            modal: true,
+            title: "Please wait..."
+        });
+        textarea.hide();
+         app.gateway.getEntireIdea(id, function (data) {
+            var idea = new VisualLine(Data.prepare(data));
+                linesDiv.dialog('option', 'title', idea.data.content);
+                textarea.val(idea.getLines());
+                textarea.show();  
+                textarea.focus();
+         });
+    },
     showRootIdea: function (idea, container) {
         this.loadData(idea, {
             isRoot: true,
