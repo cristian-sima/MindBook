@@ -16,6 +16,12 @@
             });
             firstIdea = this.createNewFirstChildIdea();
             this.setCurrentIdea(firstIdea);
+        },
+        getDataFromServer: function (id) {
+            this.loadData({
+                id: id,
+                content: ""
+            });
         }
     };
     DefaultEditor = Editor.extend(DefaultEditorTemplate);

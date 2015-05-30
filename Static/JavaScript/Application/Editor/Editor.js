@@ -12,11 +12,7 @@
             this.requestId = 1;
         },
         getDataFromServer: function (id) {
-            var editor = this;
-            app.gateway.getEntireIdea(id, function (data) {
-                data = Data.prepare(data);
-                editor.loadData(data);
-            });
+           
         },
         loadData: function (data) {},
         loadFirstIdea: function (firstChild) {

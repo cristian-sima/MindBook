@@ -1,4 +1,4 @@
-/*global Editor*/
+/*global Editor,app,Data*/
 (function () {
     "use strict";
     var StandardEditorTemplate = {
@@ -27,6 +27,13 @@
                 firstIdea = this.createNewFirstChildIdea();
             }
             this.setCurrentIdea(firstIdea, "END");
+        },
+        getDataFromServer: function (id) {
+            var editor = this;
+            app.gateway.getEntireIdea(id, function (data) {
+                data = Data.prepare(data);
+                editor.loadData(data);
+            });
         }
     };
     StandardEditor = Editor.extend(StandardEditorTemplate);
