@@ -6,13 +6,10 @@
         init: function (id, containerId, type) {
             this.container = $("#" + containerId);
             this.type = type;
-            this.getDataFromServer(id);
             this.waitingList = [];
             this.requestList = [];
             this.requestId = 1;
-        },
-        getDataFromServer: function (id) {
-           
+            this.getDataFromServer(id);
         },
         loadData: function (data) {},
         loadFirstIdea: function (firstChild) {
@@ -28,7 +25,7 @@
         loadIdeas: function (parentIdea, children) {
             var iterator = null,
                 child = null,
-                childIdea;
+                childIdea = null;
             for (iterator = 0; iterator < children.length; iterator = iterator + 1) {
                 child = children[iterator];
                 childIdea = this.createChildIdea(parentIdea, child);
@@ -203,6 +200,7 @@
                     editor.requestList.splice(editor.requestList.indexOf(report.requestId), 1);
                     if (editor.callbackRequestsOver) {
                         if (editor.requestList.length === 0) {
+                            editor.remove();
                             editor.callbackRequestsOver();
                         }
                     }
@@ -224,11 +222,15 @@
             if (((this.waitingList.length !== 0) || (this.requestList.length !== 0))) {
                 throw "Requests waiting";
             } else {
-                if (this.home) {
-                    this.home.remove();
-                    this.home = null;
-                }
+                this.remove();
             }
+        },
+        remove: function () {
+            if (this.home) {
+                this.home.remove();
+                this.home = null;
+            }
+            this.container.html("");
         },
         forceClose: function (callback) {
             var iterator = null,

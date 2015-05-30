@@ -104,7 +104,7 @@
     };
     Data.prepare = function (data) {
         var temp = {
-            id: parseInt(data.id, 10),
+            id: 0 + parseInt(data.id, 10),
             parent: parseInt(data.parent, 10),
             content: data.content
         },
@@ -133,15 +133,15 @@
         for (i = 0; i < data.children.length; i = i + 1) {
             c = data.children[i];
             child = {
-                id: parseInt(c.id, 10),
+                id: 0 + parseInt(c.id, 10),
                 content: c.content,
                 children: []
             };
-            parent = findParentOfChild(temp, parseInt(c.parent, 10));
+            parent = findParentOfChild(temp, 0 + parseInt(c.parent, 10));
             if (!parent) {
-                console.log("Nu am gasit parinte pentru " + c.id + ". Trebuia sa fie parintele " + c.parent);
-                console.log("Toate datele:  ");
-                console.log(data);
+                console.warn("Nu am gasit parinte pentru " + c.id + ". Trebuia sa fie parintele " + c.parent);
+                console.warn("Toate datele:  ");
+                console.warn(data);
                 throw "Problem with pre-processing !";
             }
             parent.children.push(child);

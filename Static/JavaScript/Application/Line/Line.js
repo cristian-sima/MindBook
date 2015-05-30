@@ -46,9 +46,9 @@
         activateListeners: function () {
             // overwriteen             
         },
-        getElements: function () {           
+        getElements: function () {
             var id = this.idea.id;
-            this.element = $("#element-" + id);
+            this.element =  $("#element-" + id);
         }
     };
     Line = Class.extend(LineTemplate);

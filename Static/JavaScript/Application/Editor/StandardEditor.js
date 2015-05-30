@@ -5,8 +5,13 @@
         init: function (id, container) {
             this._super(id, container, "Standard");
         },
+        getDataFromServer: function (id) {
+            var editor = this;
+            app.gateway.getEntireIdea(id, function (data) {
+                editor.loadData(Data.prepare(data));
+            });
+        },
         loadData: function (data) {
-            
             var firstIdea = null,
                 firstChild = null;
             this.createHomeIdea({
@@ -27,13 +32,6 @@
                 firstIdea = this.createNewFirstChildIdea();
             }
             this.setCurrentIdea(firstIdea, "END");
-        },
-        getDataFromServer: function (id) {
-            var editor = this;
-            app.gateway.getEntireIdea(id, function (data) {
-                data = Data.prepare(data);
-                editor.loadData(data);
-            });
         }
     };
     StandardEditor = Editor.extend(StandardEditorTemplate);

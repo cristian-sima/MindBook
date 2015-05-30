@@ -51,7 +51,6 @@
                             break;
                     }
                 } catch (err) {
-                    console.log(err)
                     var section = this,
                         c = content,
                         i = ideaId,
