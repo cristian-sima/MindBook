@@ -34,8 +34,9 @@ class Idea {
         function getRegex($level, $path, $id) {
 
             function getPrefix($p, $id) {
-                return $p . "@" . $id;
-                //return str_replace("@", "@", $path);
+                $p = str_replace ("[", "\\\\[", $p);
+                $p = str_replace ("]", "\\\\]", $p);
+                return $p . "\\\\[" . $id."\\\\]";
             }
 
             function getQuantifier($level) {
@@ -47,7 +48,7 @@ class Idea {
             }
 
             function insertValues($quantifier, $prefix, $digit) {
-                return "^(" . $prefix . ")(@(" . $digit . "+)){" . $quantifier . "}$";
+                return "^(" . $prefix . ")(\\\\[(" . $digit . "+)\\\\]){" . $quantifier . "}$";
             }
 
             $quantifier = getQuantifier($level);
@@ -129,20 +130,35 @@ class Idea {
         return "true";
     }
 
-    public function setParent($newParent) {
+    public function setParent($newParentId) {
 
-        $parent = new ChildIdea($newParent);
-        $path = $parent->getPath() . "@" . $parent->getId();
+        $oldPath = $this->getPath() . "[" . $this->getId(). "]";
+        
+        $parent = new ChildIdea($newParentId);
+        $path = $parent->getPath() . "[" . $parent->getId() . ']';
 
         $stmt = Database::$db->prepare('UPDATE idea
         SET parent = :parent, path = :path       
         WHERE id = :id ');
         $stmt->bindParam(':id', $this->id);
-        $stmt->bindParam(':parent', $newParent);
+        $stmt->bindParam(':parent', $newParentId);
         $stmt->bindParam(':path', $path);
         $stmt->execute();
 
-        $this->content = $newParent;
+        $this->content = $newParentId;
+        
+        
+        $newPath = $path . "[" . $this->getId() . ']';
+        
+        // change the path of the subchildren
+        
+        $stmt2 = Database::$db->prepare('UPDATE idea
+        SET path = replace(path, :oldPath, :newPath)');
+        $stmt2->bindParam(':oldPath', $oldPath);
+        $stmt2->bindParam(':newPath', $newPath);
+        $stmt2->execute();
+        
+        
         return "true";
     }
 
@@ -183,8 +199,4 @@ class Idea {
         return json_encode($array, JSON_PRETTY_PRINT);
     }
     
-    public function getDelimitator($id) {
-        return "[" + $id +  "]";
-    }
-
 }

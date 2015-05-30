@@ -236,7 +236,7 @@ Class MindBook {
 
         $parent = new ChildIdea($parent_id);
 
-        $path = $parent->getPath() . "@" . $parent->getId();
+        $path = $parent->getPath() . "[" . $parent->getId() .']';
 
         $stmt = Database::$db->prepare("INSERT INTO idea (id, path, content, parent) VALUES (:id, :path, :content, :parent)");
         $stmt->bindParam(':id', $id);
@@ -349,7 +349,7 @@ Class MindBook {
                 $idea = new ChildIdea($id);
 
                 $parent = $idea->getId();
-                $path = $idea->getPath() . "@" . $parent;
+                $path = $idea->getPath() . "[" . $parent . ']';
 
                 // take back its children
                 $children = explode(',', $childrenJSON);
