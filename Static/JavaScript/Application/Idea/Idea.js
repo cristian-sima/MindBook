@@ -10,6 +10,7 @@
             this.content = content;
             this.serverIdea = new ServerIdea(this);
             this.serverIdea.setId(serverId);
+            this.getEditor().registerIdea(this);
         },
         /* Its methods */
         getParent: function () {
@@ -32,9 +33,10 @@
         },
         getJSON: function () {
             var data = {
-                "id": this.id,
-                "content": this.getContent(),
-                "children": {}
+                id: this.id,
+                content: this.getContent(),
+                children: {},
+                parent: this.getParent()
             },
                 position = null,
                 child = null;
@@ -44,8 +46,19 @@
             }
             return data;
         },
+        getChildren: function () {
+            var childId = [],
+                position = null;
+            for (position = 0; position < this.children.length; position = position + 1) {
+                childId.push(this.children[position].getId());
+            }
+            return childId;
+        },
         remove: function () {
             var position, child;
+            
+            this.getEditor().unregisterIdea(this);
+            
             for (position = 0; position < this.children.length; position = position + 1) {
                 child = this.children[position];
                 child.remove();
@@ -216,14 +229,6 @@
         },
         isCorelated: function () {
             // to do
-        },
-        getChildren: function () {
-            var childId = [],
-                position = null;
-            for (position = 0; position < this.children.length; position = position + 1) {
-                childId.push(this.children[position].getId());
-            }
-            return childId;
         }
     };
     Idea = Class.extend(IdeaTemplate);

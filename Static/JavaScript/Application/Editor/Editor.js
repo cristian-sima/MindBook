@@ -9,7 +9,14 @@
             this.waitingList = [];
             this.requestList = [];
             this.requestId = 1;
+            this.ideas = {};
             this.getDataFromServer(id);
+        },
+        registerIdea: function (idea) {
+            this.ideas[idea.id] = idea;
+        },
+        unregisterIdea: function (idea) {
+            delete this.ideas[idea.id];
         },
         loadData: function (data) {},
         loadFirstIdea: function (firstChild) {
@@ -94,6 +101,7 @@
         getIdeaByIndex: function (id) {
             return this.home.getChildByIndex(id);
         },
+        getIdeaById: function (id) {},
         moveUp: function () {
             var idea = this.currentIdea,
                 previous = null;

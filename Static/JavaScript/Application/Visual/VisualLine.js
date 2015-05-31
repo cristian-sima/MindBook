@@ -31,7 +31,7 @@ VisualLine.prototype = {
         var iterator = 0,
             toReturn = "",
             character = this.indentationChar;
-        for (iterator = 0; iterator <= level; iterator = iterator + 1) {
+        for (iterator = 0; iterator < level; iterator = iterator + 1) {
             toReturn += character;
         }
         return toReturn;
