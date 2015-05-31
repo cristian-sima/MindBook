@@ -47,7 +47,7 @@ Gateway.prototype = {
             "id": idea.id
         }, callback);
     },
-    updateIdea: function (idea, callback, requestId) {
+    updateIdea: function (idea, callback, requestId, errorCallback) {
         this.sendAjaxRequest({
             action: "updateIdea",
             content: idea.content,
@@ -55,7 +55,7 @@ Gateway.prototype = {
             parent: idea.parent,
             children: idea.children,
             requestId: requestId
-        }, callback);
+        }, callback, errorCallback);
     },
     findIdeasByContent: function (term, callback) {
         this.sendAjaxRequest({
@@ -89,6 +89,13 @@ Gateway.prototype = {
             success: fired_requestDone(callback, "done"),
             type: "POST",
             error: fired_requestDone(error, "error")
+        });
+    },
+    connectionLost: function () {
+        $("#connection-lost").dialog({
+            modal: true,
+            dialogClass: 'no-close',
+            closeOnEscape: false
         });
     }
 };

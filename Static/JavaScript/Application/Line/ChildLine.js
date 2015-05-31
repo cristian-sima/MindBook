@@ -46,7 +46,6 @@
         },
         getElements: function () {
             this._super();
-            console.log('Textarea se formeaza')
             this.textarea = new Textarea(this);
         },
         delayUpdate: function () {

@@ -205,8 +205,11 @@
                         }
                     }
                 };
-            }(idea));
-            app.gateway.updateIdea(info, functie, this.requestId);
+            }(idea)),
+                errorCallback = function () {
+                    app.gateway.connectionLost();
+                };
+            app.gateway.updateIdea(info, functie, this.requestId, errorCallback);
             this.requestList.push(this.requestId);
         },
         incrementRequestCounter: function () {

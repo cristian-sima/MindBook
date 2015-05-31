@@ -380,3 +380,6 @@ header #logo {
 .idea-home:hover > .options {
     display: inline-block;
 }
+
+
+.no-close .ui-dialog-titlebar-close {display: none }
