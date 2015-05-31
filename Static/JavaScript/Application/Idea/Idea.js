@@ -227,7 +227,7 @@
         updateOnServer: function () {
             // empty
         },
-        isCorelated: function () {
+        isCorrelated: function () {
             // to do
         }
     };

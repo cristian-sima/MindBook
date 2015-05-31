@@ -275,13 +275,13 @@
                 serverIdea = idea.getServerIdea();
                 switch (ideaReport.status) {
                     case "creation":
-                        serverIdea.removeAssociation();
+                        serverIdea.removeCorrelation();
                         break;
                     case "modification":
-                        serverIdea.removeAssociation();
+                        serverIdea.removeCorrelation();
                         break;
-                    case "association":
-                        serverIdea.associate(parseInt(ideaReport.associatedId, 10));
+                    case "correlation":
+                        serverIdea.corellate(parseInt(ideaReport.correlatedId, 10));
                         break;
                     case "nothing_done":
                         break;

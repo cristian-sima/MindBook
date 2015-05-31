@@ -38,15 +38,15 @@ Class Software {
         $correlationIdeaId = $book->findIdeaIdByContentAndParent($clientIdea["parent"], $clientIdea["content"]);
         $clientIdExists = $book->checkIdeaExistsById($clientIdea["id"]);
 
-        $correspondingIdea = new ChildIdea($correlationIdeaId);
+        $correlatedIdea = new ChildIdea($correlationIdeaId);
 
         // corresponding idea id is the same as the client one
-        if ($correspondingIdea->getId() == $clientIdea["id"]) {
+        if ($correlatedIdea->getId() == $clientIdea["id"]) {
             // check it has the same parent
-            if ($correspondingIdea->getParent() != $clientIdea["parent"]) {
+            if ($correlatedIdea->getParent() != $clientIdea["parent"]) {
                 // UPDATE IT
-                $correspondingIdea->setContent($clientIdea["content"]);
-                $correspondingIdea->setParent($clientIdea["parent"]);
+                $correlatedIdea->setContent($clientIdea["content"]);
+                $correlatedIdea->setParent($clientIdea["parent"]);
                 $ideasReport["status"] = "modification";
                 $ideasReport["id"] = $clientIdea["id"];
             } else {
@@ -59,7 +59,7 @@ Class Software {
                 // mark it as the corresponding
                 $oldIdea = new ChildIdea($clientIdea["id"]);
 
-                $oldIdea->changeParentOfChildren($correspondingIdea->getId(), $correspondingIdea->getPath());
+                $oldIdea->changeParentOfChildren($correlatedIdea->getId(), $correlatedIdea->getPath());
 
                 // do it for its children 
                 $childrenArray = $this->extractChildren($clientIdea);                
@@ -74,8 +74,8 @@ Class Software {
                 }                
             }
 
-            $ideasReport["status"] = "association";
-            $ideasReport["associatedId"] = $correspondingIdea->getId();
+            $ideasReport["status"] = "correlated";
+            $ideasReport["correlatedId"] = $correlatedIdea->getId();
         }
         
         return $ideasReport;
@@ -100,7 +100,7 @@ Class Software {
             // take back its children
             $childrenArray = $this->extractChildren($clientIdea);
 
-            // in case it was associated 
+            // in case it was correlated 
             foreach ($childrenArray as $id) { //forea
                 $stmt = Database::$db->prepare('UPDATE idea
                         SET parent = :parent, path = :path       
