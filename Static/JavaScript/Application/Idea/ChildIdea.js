@@ -128,8 +128,8 @@
             }
             this.getLine().getTextarea().highlight();
         },
-        isCorrelatedToServer: function () {
-            return this.getServerIdea().isCorrelated();
+        isAssociated: function () {
+            return this.getServerIdea().isAssociated();
         },
         getParent: function () {
             return this.parent;

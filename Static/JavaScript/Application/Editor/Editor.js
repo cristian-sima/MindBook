@@ -101,7 +101,9 @@
         getIdeaByIndex: function (id) {
             return this.home.getChildByIndex(id);
         },
-        getIdeaById: function (id) {},
+        getIdeaById: function (id) {
+            return this.ideas[id];
+        },
         moveUp: function () {
             var idea = this.currentIdea,
                 previous = null;
@@ -162,10 +164,6 @@
         getContainer: function () {
             return this.container;
         },
-        fired_enterKeyPressed: function (idea) {
-            var newIdea = this.createEmptyIdea(idea, idea.getPosition() + 1);
-            this.setCurrentIdea(newIdea);
-        },
         createIdeaOnServer: function (id, content, parent, idea) {
             var functie = (function () {
                 var i = idea;
@@ -192,26 +190,8 @@
             var functie = (function () {
                 var i = idea;
                 return function (report) {
-                    var editor = i.getEditor(),
-                        serverIdea = i.getServerIdea();
-                    switch (report.status) {
-                        case "correspondence":
-                            serverIdea.setId(parseInt(report.id, 10));
-                            serverIdea.setCorrelatedId(parseInt(report.id, 10));
-                            break;
-                        case "create":
-                        case "update":
-                            serverIdea.setId(parseInt(report.id, 10));
-                            serverIdea.setCorrelatedId(null);
-                            break;
-                    }
-                    editor.requestList.splice(editor.requestList.indexOf(report.requestId), 1);
-                    if (editor.callbackRequestsOver) {
-                        if (editor.requestList.length === 0) {
-                            editor.remove();
-                            editor.callbackRequestsOver();
-                        }
-                    }
+                    var editor = i.getEditor();
+                    editor.fired_requestReceived(report);
                 };
             }(idea)),
                 errorCallback = function () {
@@ -275,6 +255,42 @@
             var index = this.findIdeaIndexInWaitingList(idea);
             if (index > -1) {
                 this.waitingList.splice(index, 1);
+            }
+        },
+        fired_enterKeyPressed: function (idea) {
+            var newIdea = this.createEmptyIdea(idea, idea.getPosition() + 1);
+            this.setCurrentIdea(newIdea);
+        },
+        fired_requestReceived: function (serverReport) {
+            var requestId = serverReport.requestId,
+                ideas = serverReport.ideas,
+                iterator = 0,
+                idea = null,
+                serverIdea = null,
+                ideaReport = null,
+                indexOfRequest = this.requestList.indexOf(requestId);
+            for (iterator = 0; iterator < ideas.length; iterator = iterator + 1) {
+                ideaReport = ideas[iterator];
+                idea = this.getIdeaById(parseInt(ideaReport.clientIdeaId, 10));
+                serverIdea = idea.getServerIdea();
+                switch (ideaReport.status) {
+                    case "creation":
+                        serverIdea.removeAssociation();
+                        break;
+                    case "modification":
+                        serverIdea.removeAssociation();
+                        break;
+                    case "association":
+                        serverIdea.associate(parseInt(ideaReport.associatedId, 10));
+                        break;
+                    case "nothing_done":
+                        break;
+                }
+            }
+            this.requestList.splice(indexOfRequest, 1);
+            if (this.requestList.length === 0 && this.callbackRequestsOver) {
+                this.remove();
+                this.callbackRequestsOver();
             }
         }
     };

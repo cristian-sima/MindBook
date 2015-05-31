@@ -11,7 +11,7 @@ Textarea.prototype = {
     update: function () {
         var line = this.getLine();
         this.updateHeight();
-        this.updateCorrelation();
+        this.updateAssociation();
         if (line.isSelected()) {
             this.shadow.update();
         }
@@ -23,9 +23,9 @@ Textarea.prototype = {
             'height': height + "px"
         });
     },
-    updateCorrelation: function () {
+    updateAssociation: function () {
         var idea = this.getIdea();
-        if (idea.isCorrelatedToServer()) {
+        if (idea.isAssociated()) {
             this.element.css({
                 color: "rgb(87, 237, 87)"
             });

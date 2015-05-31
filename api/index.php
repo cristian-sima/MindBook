@@ -4,6 +4,7 @@ require_once "Idea.php";
 require_once "ChildIdea.php";
 require_once "MindBook.php";
 require_once "Request.php";
+require_once "Software.php";
 
 Database::connect();
 $book = new MindBook();
@@ -39,15 +40,27 @@ switch (Request::extract("action")) {
         break;
     case "updateIdea":
 
-        $report = array();
+        $software = new Software($book);
 
-        $id = Request::extract("id");
-        $newContent = Request::extract("content");
-        $parentID = Request::extract("parent");
+        $content = Request::extract("content");
+        $parent = Request::extract("parent");
         $requestId = Request::extract("requestId");
-                $childrenJSON = Request::extract("children");
+        $id = Request::extract("id");
+        $children = Request::extract("children");
 
-        $book->updateIdea($id, $newContent, $parentID, $requestId, $childrenJSON);
+
+        $clientIdea = array(
+            "id" => $id,
+            "content" => $content,
+            "children" => $children,
+            "parent" => $parent
+        );
+
+        $report["ideas"] = array($software->getIdeaReport($clientIdea));
+
+        $report["requestId"] = $requestId;
+
+        echo json_encode($report);
 
         break;
 

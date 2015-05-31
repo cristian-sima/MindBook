@@ -35,14 +35,14 @@
             var data = {
                 id: this.id,
                 content: this.getContent(),
-                children: {},
-                parent: this.getParent()
+                children: [],
+                parent: this.getParent().getServerIdea().getId()
             },
-                position = null,
+                iterator = null,
                 child = null;
-            for (position = 0; position < this.children.length; position = position + 1) {
-                child = this.children[position];
-                data.children[child.id] = child.getJSON();
+            for (iterator = 0; iterator < this.children.length; iterator = iterator + 1) {
+                child = this.children[iterator];
+                data.children.push(child.getJSON());
             }
             return data;
         },

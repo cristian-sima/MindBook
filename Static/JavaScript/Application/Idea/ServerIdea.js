@@ -4,7 +4,7 @@
     ServerIdea = function ServerIdea(localIdea) {
         this.localIdea = localIdea;
         this.serverId = null;
-        this.correlatedId = null;
+        this.associationId = null;
     };
     ServerIdea.prototype = {
         isOnServer: function () {
@@ -16,14 +16,21 @@
         setId: function (serverId) {
             this.serverId = serverId;
         },
-        getCorrelatedId: function () {
-            return this.correlatedId;
+        getAssociationId: function () {
+            return this.associationId;
         },
-        isCorrelated: function () {
-            return (this.correlatedId !== null);
+        isAssociated: function () {
+            return (this.associationId !== null);
         },
-        setCorrelatedId: function (correlatedId) {
-            this.correlatedId = correlatedId;
+        associate: function (id) {
+            this.changeAssociationId(id);
+        },
+        removeAssociation: function () {
+            this.changeAssociationId(null); 
+        },
+        changeAssociationId: function (id) {   
+            this.setId(id);
+            this.associationId = id;
             this.localIdea.getLine().update();
         },
         getId: function () {
@@ -53,18 +60,8 @@
         },
         getSyncData: function () {
             var idea = this.getLocalIdea(),
-                localId = idea.getId(),
-                localParent = idea.getParent(),
-                content = idea.getContent(),
-                serverParentId = localParent.getServerIdea().getId(),
-                childrenIDsArray = idea.getChildren(),
-                data;
-            data = {
-                id: localId,
-                content: content,
-                parent: serverParentId,
-                children: childrenIDsArray.toString()
-            };
+                data = null;
+            data = idea.getJSON();
             return data;
         },
         canIdeaBeUpdated: function () {
