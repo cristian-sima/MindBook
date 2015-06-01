@@ -79,7 +79,7 @@ switch (Request::extract("action")) {
         if ($ideaExists) {
             $idea = new ChildIdea($id);
             
-            $parent = $this->getParent();
+            $parent = $idea->getParent();
             
             $idea->removeItAndChildren();
 
@@ -87,7 +87,6 @@ switch (Request::extract("action")) {
 
 
             $clientIdea = array(
-                "id" => $id,
                 "content" => "",
                 "children" => $children,
                 "parent" => ""
@@ -106,7 +105,9 @@ switch (Request::extract("action")) {
             $report["requestId"] = $requestId;
 
             echo json_encode($report);
-        } 
+        } else {
+            echo "Idea nu se afla pe server";
+        }
         break;
     /* to delete */
     case "clear":

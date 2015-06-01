@@ -34,7 +34,7 @@ Visual.prototype = {
         app.gateway.getEntireIdea(id, function (data) {
             var idea = new VisualLine(Data.prepare(data));
             linesDiv.dialog('option', 'title', idea.data.content);
-            textarea.val(idea.getLines());
+            textarea.val(idea.getLines().trim());
             textarea.show();
             textarea.focus();
         });

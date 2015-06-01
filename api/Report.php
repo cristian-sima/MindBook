@@ -57,7 +57,7 @@ Class Report {
 
         if ($ideaExists) {
             $oldIdea = new ChildIdea($clientIdea["id"]);
-            $oldIdea->remove();
+            $oldIdea->removeItAndChildren();
         }
 
         $this->processChildren($correlationIdea, $clientIdea);

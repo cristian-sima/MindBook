@@ -168,6 +168,7 @@ class Idea {
         WHERE id = :id ');
         $stmt1->bindParam(':id', $this->id);
         
+        $stmt1->execute();
         
         // delete all children        
         $prefix = $this->getPath(). "[" . $this->getId(). "]";

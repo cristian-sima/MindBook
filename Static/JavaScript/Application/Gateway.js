@@ -35,16 +35,16 @@ Gateway.prototype = {
     createIdea: function (idea, callback, error) {
         this.sendAjaxRequest({
             action: "createIdea",
-            "parent": idea.parent,
-            "content": idea.content,
-            "id": idea.id
+            parent: idea.parent,
+            content: idea.content,
+            id: idea.id
         }, callback, error);
     },
     changeIdeaContent: function (idea, callback) {
         this.sendAjaxRequest({
-            "action": "changeIdeaContent",
-            "content": idea.content,
-            "id": idea.id
+            action: "changeIdeaContent",
+            content: idea.content,
+            id: idea.id
         }, callback);
     },
     updateIdea: function (idea, requestId, callback, errorCallback) {
@@ -59,7 +59,7 @@ Gateway.prototype = {
     },
     findIdeasByContent: function (term, callback) {
         this.sendAjaxRequest({
-            action: findIdeas,
+            action: "findIdeas",
             term: term
         }, callback);
     },

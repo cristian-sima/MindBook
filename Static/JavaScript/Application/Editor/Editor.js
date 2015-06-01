@@ -146,11 +146,20 @@
                 requestId = null;
             if (this.canIdeaBeRemoved(idea)) {
                 event.preventDefault();
-                requestId = this.getNewRequestId();
                 serverIdea = idea.getServerIdea();
-                callbackSuccess = this.fired_requestReceived;
-                callbackError = app.gateway.connectionLost;
-                app.gateway.removeIdea(serverIdea.getSyncData(), requestId, callbackSuccess, callbackError);
+                if (serverIdea.isOnServer()) {
+                    requestId = this.getNewRequestId();
+                    callbackSuccess = (function () {
+                        var id = idea.getId(),
+                            editor = idea.getEditor();
+                        return function (report) {
+                            editor.fired_requestReceived(report);
+                            editor.updateCorrelatedIdeas(id);
+                        };
+                    }());
+                    callbackError = app.gateway.connectionLost;
+                    app.gateway.removeIdea(serverIdea.getSyncData(), requestId, callbackSuccess, callbackError);
+                }
                 idea.removeIdeaAndSaveChildren();
                 idea = null;
             }
@@ -270,30 +279,32 @@
                 indexOfRequest = this.requestList.indexOf(requestId),
                 localId = null;
             for (iterator in ideas) {
-                ideaReport = ideas[iterator];
-                localId = parseInt(ideaReport.clientIdeaId, 10);
-                idea = this.getIdeaById(localId);
-                serverIdea = idea.getServerIdea();
-                switch (ideaReport.status) {
-                    case "creation":
-                        serverIdea.removeCorrelation();
-                        break;
-                    case "modification":
-                        serverIdea.removeCorrelation();
-                        break;
-                    case "correlation":
-                        serverIdea.correlate(parseInt(ideaReport.correlatedId, 10));
-                        break;
-                    case "nothing_done":
-                        break;
+                if (ideas.hasOwnProperty(iterator)) {
+                    ideaReport = ideas[iterator];
+                    localId = parseInt(ideaReport.clientIdeaId, 10);
+                    idea = this.getIdeaById(localId);
+                    serverIdea = idea.getServerIdea();
+                    switch (ideaReport.status) {
+                        case "creation":
+                            serverIdea.removeCorrelation();
+                            break;
+                        case "modification":
+                            serverIdea.removeCorrelation();
+                            break;
+                        case "correlation":
+                            serverIdea.correlate(parseInt(ideaReport.correlatedId, 10));
+                            break;
+                        case "nothing_done":
+                            break;
+                    }
+                    // update the correlated ones
+                    this.updateCorrelatedIdeas(localId);
                 }
-                // update the correlated ones
-                this.updateCorrelatedIdeas(localId);
-            }
-            this.requestList.splice(indexOfRequest, 1);
-            if (this.requestList.length === 0 && this.callbackRequestsOver) {
-                this.remove();
-                this.callbackRequestsOver();
+                this.requestList.splice(indexOfRequest, 1);
+                if (this.requestList.length === 0 && this.callbackRequestsOver) {
+                    this.remove();
+                    this.callbackRequestsOver();
+                }
             }
         },
         updateCorrelatedIdeas: function (oldCorrelatedId) {
