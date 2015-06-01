@@ -107,7 +107,7 @@ Class Report {
         $this->reportIdea($id, $report);
     }
 
-    private function processChildren($idea, &$clientIdea) {
+    public function processChildren($idea, &$clientIdea) {
 
         if (is_array($idea)) {
             $newParent = $idea['id'];

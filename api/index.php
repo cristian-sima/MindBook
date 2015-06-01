@@ -53,13 +53,13 @@ switch (Request::extract("action")) {
             "children" => $children,
             "parent" => $parent
         );
-        
+
 
         $IdeaReport = new Report($book);
         $IdeaReport->processIdea($clientIdea);
-        
+
         $report["ideas"] = $IdeaReport->getReport();
-        
+
         $report["requestId"] = $requestId;
 
         echo json_encode($report);
@@ -67,15 +67,46 @@ switch (Request::extract("action")) {
         break;
 
     case "removeIdea":
+
+
+        // sterge idea
+        $requestId = Request::extract("requestId");
         $id = Request::extract("id");
+        $children = Request::extract("children");
+
         $ideaExists = $book->checkIdeaExists($id);
 
         if ($ideaExists) {
             $idea = new ChildIdea($id);
-            echo $idea->remove();
-        } else {
-            echo 'false';
-        }
+            
+            $parent = $this->getParent();
+            
+            $idea->removeItAndChildren();
+
+            // proceseaza copii
+
+
+            $clientIdea = array(
+                "id" => $id,
+                "content" => "",
+                "children" => $children,
+                "parent" => ""
+            );
+
+
+            $IdeaReport = new Report($book);
+            
+            // similate the parent
+            $parentArray = array("id" => $parent);
+            
+            $IdeaReport->processChildren($parentArray, $clientIdea);
+
+            $report["ideas"] = $IdeaReport->getReport();
+
+            $report["requestId"] = $requestId;
+
+            echo json_encode($report);
+        } 
         break;
     /* to delete */
     case "clear":

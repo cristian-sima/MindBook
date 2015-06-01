@@ -141,19 +141,16 @@
         },
         removeIdea: function (idea, event) {
             var callbackSuccess = null,
-                callbackError = null;
+                callbackError = null,
+                serverIdea = null,
+                requestId = null;
             if (this.canIdeaBeRemoved(idea)) {
                 event.preventDefault();
-                callbackSuccess = (function () {
-                    var correlatedId = idea.getServerIdea().getCorrelatedId(),
-                        editor = idea.getEditor();
-                    return function () {
-                        editor.updateCorrelatedIdeas(correlatedId);
-                    };
-                })(), callbackError = app.gateway.connectionLost;
-                app.gateway.removeIdea({
-                    id: idea.id
-                }, callbackSuccess, callbackError);
+                requestId = this.getNewRequestId();
+                serverIdea = idea.getServerIdea();
+                callbackSuccess = this.fired_requestReceived;
+                callbackError = app.gateway.connectionLost;
+                app.gateway.removeIdea(serverIdea.getSyncData(), requestId, callbackSuccess, callbackError);
                 idea.removeIdeaAndSaveChildren();
                 idea = null;
             }
@@ -187,22 +184,23 @@
         },
         updateIdeaOnServer: function (info, idea) {
             this.incrementCounter();
-            this.incrementRequestCounter();
-            var functie = (function () {
-                var i = idea;
-                return function (report) {
-                    var editor = i.getEditor();
-                    editor.fired_requestReceived(report);
-                };
-            }(idea)),
+            var requestId = this.getNewRequestId(),
+                functie = (function () {
+                    var i = idea;
+                    return function (report) {
+                        var editor = i.getEditor();
+                        editor.fired_requestReceived(report);
+                    };
+                }(idea)),
                 errorCallback = function () {
                     app.gateway.connectionLost();
                 };
-            app.gateway.updateIdea(info, functie, this.requestId, errorCallback);
-            this.requestList.push(this.requestId);
+            app.gateway.updateIdea(info, requestId, functie, errorCallback);
         },
-        incrementRequestCounter: function () {
+        getNewRequestId: function () {
             this.requestId = this.requestId + 1;
+            this.requestList.push(this.requestId);
+            return this.requestId;
         },
         isStandard: function () {
             return this.type === "Standard";

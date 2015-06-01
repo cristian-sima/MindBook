@@ -162,20 +162,6 @@ class Idea {
         return "true";
     }
 
-    public function remove() {
-        // move the children to the grandparent
-
-        $this->changeParentOfChildren($this->getParent(), $this->getPath());
-
-        // delete idea
-        $stmt2 = Database::$db->prepare('DELETE from idea
-        WHERE id = :id ');
-        $stmt2->bindParam(':id', $this->id);
-        $stmt2->execute();
-
-        return "true";
-    }
-
     public function removeItAndChildren() {
         // delete idea
         $stmt1 = Database::$db->prepare('DELETE from idea

@@ -17,16 +17,27 @@ Visual.prototype = {
             height: 500,
             width: 800,
             modal: true,
-            title: "Please wait..."
+            title: "Please wait...",
+            close: function (event, ui) {
+                $('#wrap').show();
+            },
+            open: (function () {
+                var dialog = linesDiv;
+                return function (event, ui) {
+                    $('.ui-widget-overlay').bind('click', function () {
+                        $(dialog).dialog('close');
+                    });
+                };
+            }())
         });
         textarea.hide();
-         app.gateway.getEntireIdea(id, function (data) {
+        app.gateway.getEntireIdea(id, function (data) {
             var idea = new VisualLine(Data.prepare(data));
-                linesDiv.dialog('option', 'title', idea.data.content);
-                textarea.val(idea.getLines());
-                textarea.show();  
-                textarea.focus();
-         });
+            linesDiv.dialog('option', 'title', idea.data.content);
+            textarea.val(idea.getLines());
+            textarea.show();
+            textarea.focus();
+        });
     },
     showRootIdea: function (idea, container) {
         this.loadData(idea, {
@@ -44,7 +55,7 @@ Visual.prototype = {
         var visual = this,
             container = info.container,
             info = info;
-            container.find(".wait").first().html("Please wait...");
+        container.find(".wait").first().html("Please wait...");
         app.gateway.getIdea(idea, function (data) {
             var idea = new VisualIdea(Data.prepare(data), visual),
                 html = "";

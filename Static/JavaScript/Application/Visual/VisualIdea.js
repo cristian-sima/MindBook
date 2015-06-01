@@ -60,6 +60,7 @@ VisualIdea.prototype = {
             data = this.data;
         toReturn += this.getContent(data);
         toReturn += this.getEditButton(data);
+        toReturn += this.getListButton(data);
         toReturn += this.getChildren(data);
         return toReturn;
     },

@@ -47,7 +47,7 @@ Gateway.prototype = {
             "id": idea.id
         }, callback);
     },
-    updateIdea: function (idea, callback, requestId, errorCallback) {
+    updateIdea: function (idea, requestId, callback, errorCallback) {
         this.sendAjaxRequest({
             action: "updateIdea",
             content: idea.content,
@@ -59,14 +59,16 @@ Gateway.prototype = {
     },
     findIdeasByContent: function (term, callback) {
         this.sendAjaxRequest({
-            "action": "findIdeas",
-            "term": term
+            action: findIdeas,
+            term: term
         }, callback);
     },
-    removeIdea: function (idea, callback, error) {
+    removeIdea: function (idea, requestId, callback, error) {
         this.sendAjaxRequest({
-            "action": "removeIdea",
-            "id": idea.id
+            action: "removeIdea",
+            id: idea.id,
+            children: idea.children,
+            requestId: requestId
         }, callback, error);
     },
     sendAjaxRequest: function (data, callback, error) {
