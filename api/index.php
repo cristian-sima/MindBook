@@ -76,6 +76,8 @@ switch (Request::extract("action")) {
 
         $ideaExists = $book->checkIdeaExists($id);
 
+        $report = array();
+        
         if ($ideaExists) {
             $idea = new ChildIdea($id);
             
@@ -102,12 +104,14 @@ switch (Request::extract("action")) {
 
             $report["ideas"] = $IdeaReport->getReport();
 
-            $report["requestId"] = $requestId;
 
-            echo json_encode($report);
+           
         } else {
-            echo "Idea nu se afla pe server";
+             $report["ideas"] = array ();
         }
+            $report["requestId"] = $requestId;
+            
+             echo json_encode($report);
         break;
     /* to delete */
     case "clear":
