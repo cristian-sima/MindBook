@@ -44,6 +44,7 @@
                 child = this.children[iterator];
                 data.children.push(child.getJSON());
             }
+            console.log(data)
             return data;
         },
         getChildren: function () {

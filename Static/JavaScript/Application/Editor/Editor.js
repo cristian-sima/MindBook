@@ -281,7 +281,7 @@
                         serverIdea.removeCorrelation();
                         break;
                     case "correlation":
-                        serverIdea.corellate(parseInt(ideaReport.correlatedId, 10));
+                        serverIdea.correlate(parseInt(ideaReport.correlatedId, 10));
                         break;
                     case "nothing_done":
                         break;

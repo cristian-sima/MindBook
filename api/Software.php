@@ -23,10 +23,10 @@ Class Software {
         } else {
             $ideasReport = $this->getNonCorrelationReport($clientIdea);
         }
-       
-        
+
+
         $ideasReport["clientIdeaId"] = $clientIdea["id"];
-        
+
         return $ideasReport;
     }
 
@@ -40,9 +40,9 @@ Class Software {
 
         $correlatedIdea = new ChildIdea($correlationIdeaId);
 
-        // corresponding idea id is the same as the client one
         if ($correlatedIdea->getId() == $clientIdea["id"]) {
-            // check it has the same parent
+            // id-ul local la fel cu cel de pe server
+
             if ($correlatedIdea->getParent() != $clientIdea["parent"]) {
                 // UPDATE IT
                 $correlatedIdea->setContent($clientIdea["content"]);
@@ -53,31 +53,33 @@ Class Software {
                 $ideasReport["status"] = "nothing_done";
             }
         } else {
+            // id-ul local este diferit de cel de pe server
+
             if ($clientIdExists === "true") {
-                // change the children to the new one
-                // delete it
-                // mark it as the corresponding
+                // idea locala exista deja in sistem
+
                 $oldIdea = new ChildIdea($clientIdea["id"]);
 
                 $oldIdea->changeParentOfChildren($correlatedIdea->getId(), $correlatedIdea->getPath());
-
-                // do it for its children 
-                $childrenArray = $this->extractChildren($clientIdea);                
-                               
+               
                 $oldIdea->remove();
                 
+                $childrenArray = $clientIdea['children'];
+                
                 foreach ($childrenArray as $child) {
-                    var_dump($child);
-                    die();
+                    $child["parent"] = $correlatedIdea->getId();
                     $childReport = $this->getIdeaReport($child);
                     array_push($ideasReport, $childReport);
-                }                
+                }
             }
 
-            $ideasReport["status"] = "correlated";
+
+            $ideasReport["status"] = "correlation";
             $ideasReport["correlatedId"] = $correlatedIdea->getId();
+
+            // var_dump($clientIdea["children"][0]);
         }
-        
+
         return $ideasReport;
     }
 
@@ -98,10 +100,11 @@ Class Software {
             $path = $idea->getPath() . "[" . $parent . ']';
 
             // take back its children
-            $childrenArray = $this->extractChildren($clientIdea);
+            $childrenArray = $clientIdea["children"];
 
             // in case it was correlated 
-            foreach ($childrenArray as $id) { //forea
+            /*foreach ($childrenArray as $id) { //forea
+                
                 $stmt = Database::$db->prepare('UPDATE idea
                         SET parent = :parent, path = :path       
                         WHERE id = :id ');
@@ -110,7 +113,7 @@ Class Software {
                 $stmt->bindParam(':id', $id);
                 $stmt->execute();
                 $ideasReport["children_change"] = "true";
-            }
+            }*/
 
             $ideasReport["status"] = "creation";
         } else {
@@ -122,10 +125,6 @@ Class Software {
             $oldIdea->setParent($clientIdea["parent"]);
         }
         $ideasReport["id"] = $clientIdea["id"];
-    return $ideasReport;
+        return $ideasReport;
     }
-    
-    private function extractChildren (&$clientIdea) {
-        return explode(',', $clientIdea["children"]);
-    }    
 }
