@@ -65,6 +65,7 @@ VisualIdea.prototype = {
     },
     getContent: function (idea) {
         var content = Data.htmlView(idea.content),
+            content = (content.length === 0) ? "<span style='font-style:italic'>Empty</span>": content,
             html = "<span class='name' data-id='" + this.data.id + "' >" + content + "</span>";;
         return html;
     },

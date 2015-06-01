@@ -150,15 +150,15 @@ header #logo {
     -webkit-animation-delay: 2s; /* Chrome, Safari, Opera */
     animation-delay: 2s;
     padding: 3px;
-    min-width: 1000px;
+    min-width: 566px;
     font-size:  19px;
     display: inline;
     border: 1px solid #FFFFFF;
     resize: none;  
     border-bottom: 1px solid rgb(234, 239, 255);
-    -moz-tab-size : 4;
-    -o-tab-size : 4;
-    tab-size : 4;
+    -moz-tab-size : 5;
+    -o-tab-size : 5;
+    tab-size : 5;
     padding-bottom: 0px;
     transition:all 0.2s;
     height:27px;
@@ -196,6 +196,7 @@ header #logo {
 .warning, .problem {
     width: 30px;  
     margin-left: 5px;
+    display: inline-block;
 }
 
 .content {

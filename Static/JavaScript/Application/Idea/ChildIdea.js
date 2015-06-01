@@ -66,16 +66,8 @@
                 editor = this.getEditor();
             if (!toBeSelected) {
                 // este prima sau nu mai sus mai sus
-                console.log("parent")
-                console.log(parent);
-                console.log("editor.home: ");
-                console.log(editor.home)
                 if (parent === editor.home) {
-                    console.log('da')
-                    console.log("Copii: ");
-                    console.log(realChildren)
                     if (realChildren[0]) {
-                        console.log("primul copil")
                         previousIdea = this.getHome();
                         toBeSelected = realChildren[0];
                     } else {

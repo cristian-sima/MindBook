@@ -18,10 +18,10 @@
 
 
 #visual ul {
-    padding: 0;
     margin: 0;
     list-style-type: none;
     position: relative;
+    padding-left: 10px;
 }
 
 #visual li {
@@ -93,4 +93,7 @@
     width: 100%;
     overflow: visible;
     height: 100%;
+    -moz-tab-size : 5;
+    -o-tab-size : 5;
+    tab-size : 5;
 }

@@ -17,7 +17,7 @@ VisualLine.prototype = {
             iterator = 0,
             child = null;
         toReturn += this.getIndentation(level);
-        toReturn += data.content;
+        toReturn += this.getContent(data);
         toReturn += this.getBreakingLine();
         if (children.length !== 0) {
             for (iterator = 0; iterator < children.length; iterator = iterator + 1) {
@@ -26,6 +26,11 @@ VisualLine.prototype = {
             }
         }
         return toReturn;
+    },
+    getContent: function (data) {
+        var content = data.content,
+            content = (content.length === 0) ? "Empty" : content;
+        return content;
     },
     getIndentation: function (level) {
         var iterator = 0,
