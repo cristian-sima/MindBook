@@ -29,7 +29,6 @@
             return this.line;
         },
         getPosition: function () {
-            return this.getParent().getPositionOfChild(this);
         },
         getJSON: function () {
             var data = {

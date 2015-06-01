@@ -140,11 +140,20 @@
             }
         },
         removeIdea: function (idea, event) {
+            var callbackSuccess = null,
+                callbackError = null;
             if (this.canIdeaBeRemoved(idea)) {
                 event.preventDefault();
+                callbackSuccess = (function () {
+                    var correlatedId = idea.getServerIdea().getCorrelatedId(),
+                        editor = idea.getEditor();
+                    return function () {
+                        editor.updateCorrelatedIdeas(correlatedId);
+                    };
+                })(), callbackError = app.gateway.connectionLost;
                 app.gateway.removeIdea({
                     id: idea.id
-                }, function (data) {});
+                }, callbackSuccess, callbackError);
                 idea.removeIdeaAndSaveChildren();
                 idea = null;
             }
@@ -165,21 +174,13 @@
             return this.container;
         },
         createIdeaOnServer: function (id, content, parent, idea) {
-            var functie = (function () {
-                var i = idea;
-                return function (status) {
-                    if (status !== true) {
-                        i.getLine().showProblem("Ideea nu a fost adaugata.");
-                    } else {
-                        i.getLine().hideProblem();
-                    }
-                };
-            }(idea));
+            var callbackSuccess = function () {},
+                callbackError = app.gateway.connectionLost;
             app.gateway.createIdea({
                 id: id,
                 parent: parent,
                 content: content
-            }, functie);
+            }, callbackSuccess, callbackError);
         },
         getCounter: function () {
             return app.getCounter();
@@ -299,14 +300,13 @@
         },
         updateCorrelatedIdeas: function (oldCorrelatedId) {
             var iterator = null,
-                idea= null,
+                idea = null,
                 correlatedId = null;
             for (iterator in this.ideas) {
                 if (this.ideas.hasOwnProperty(iterator)) {
                     idea = this.ideas[iterator];
                     correlatedId = idea.getServerIdea().getCorrelatedId();
-                    if (idea.isCorrelated() && idea.getId() !== oldCorrelatedId &&
-                        correlatedId === oldCorrelatedId) {
+                    if (idea.isCorrelated() && idea.getId() !== oldCorrelatedId && correlatedId === oldCorrelatedId) {
                         idea.update();
                     }
                 }

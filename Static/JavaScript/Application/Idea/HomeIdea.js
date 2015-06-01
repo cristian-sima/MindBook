@@ -37,6 +37,9 @@
         },
         isTheHomeRoot: function () {
             return (!this.getParentId());
+        },
+        getPosition: function () {
+            return -1;
         }
     };
     HomeIdea = Idea.extend(HomeIdeaTemplate);

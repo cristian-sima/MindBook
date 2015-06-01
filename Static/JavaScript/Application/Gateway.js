@@ -32,13 +32,13 @@ Gateway.prototype = {
             level: idea.level
         }, callback, error);
     },
-    createIdea: function (idea, callback) {
+    createIdea: function (idea, callback, error) {
         this.sendAjaxRequest({
             action: "createIdea",
             "parent": idea.parent,
             "content": idea.content,
             "id": idea.id
-        }, callback);
+        }, callback, error);
     },
     changeIdeaContent: function (idea, callback) {
         this.sendAjaxRequest({
@@ -63,11 +63,11 @@ Gateway.prototype = {
             "term": term
         }, callback);
     },
-    removeIdea: function (idea, callback) {
+    removeIdea: function (idea, callback, error) {
         this.sendAjaxRequest({
             "action": "removeIdea",
             "id": idea.id
-        }, callback);
+        }, callback, error);
     },
     sendAjaxRequest: function (data, callback, error) {
         app.gui.showLoading();

@@ -14,6 +14,9 @@
                 this.getLine().remove();
             }
             this.line = new ChildLine(this, elementBefore);
+        },        
+        getPosition: function () {
+            return this.getParent().getPositionOfChild(this);
         },
         getTextLines: function () {
             var content = this.getContent(),
@@ -63,8 +66,16 @@
                 editor = this.getEditor();
             if (!toBeSelected) {
                 // este prima sau nu mai sus mai sus
+                console.log("parent")
+                console.log(parent);
+                console.log("editor.home: ");
+                console.log(editor.home)
                 if (parent === editor.home) {
+                    console.log('da')
+                    console.log("Copii: ");
+                    console.log(realChildren)
                     if (realChildren[0]) {
+                        console.log("primul copil")
                         previousIdea = this.getHome();
                         toBeSelected = realChildren[0];
                     } else {
@@ -78,9 +89,7 @@
                     toBeSelected = toBeSelected.getLastPossibleChild();
                 }
             }
-            if (parent && previousIdea && previousIdea.id === editor.home.id && parent.id === editor.home.id) {
-                previousIdea = null;
-            }
+            
             for (index = 0; index < realChildren.length; index = index + 1) {
                 position = previousIdea.getPosition() + 1;
                 child = realChildren[index];
