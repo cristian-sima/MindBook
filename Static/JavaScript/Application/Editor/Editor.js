@@ -269,7 +269,7 @@
                 serverIdea = null,
                 ideaReport = null,
                 indexOfRequest = this.requestList.indexOf(requestId);
-            for (iterator = 0; iterator < ideas.length; iterator = iterator + 1) {
+            for (iterator in ideas) {
                 ideaReport = ideas[iterator];
                 idea = this.getIdeaById(parseInt(ideaReport.clientIdeaId, 10));
                 serverIdea = idea.getServerIdea();
