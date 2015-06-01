@@ -68,7 +68,7 @@ switch (Request::extract("action")) {
 
     case "removeIdea":
         $id = Request::extract("id");
-        $ideaExists = $book->checkIdeaExistsById($id);
+        $ideaExists = $book->checkIdeaExists($id);
 
         if ($ideaExists) {
             $idea = new ChildIdea($id);

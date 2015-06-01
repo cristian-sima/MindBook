@@ -1,4 +1,5 @@
 <?php
+
 require_once("MindBook.php");
 
 Class Report {
@@ -12,142 +13,141 @@ Class Report {
 
     public function processIdea(&$clientIdea) {
 
-        $book = $this->book;
+     
+        
+        $isCorrelation = $this->book->isCorrelation($clientIdea);
 
-        $correlationExists = $book->checkIdeaExists($clientIdea["parent"], $clientIdea["content"]);
-
-        if ($correlationExists === "true") {
+        if ($isCorrelation) {
             $this->processCorrelation($clientIdea);
         } else {
             $this->processNonCorrelation($clientIdea);
         }
     }
 
-    private function processCorrelation($clientIdea) {
+    private function processCorrelation(&$clientIdea) {
 
-        $book = $this->book;
+        $correlationId = $this->book->getIdeaIdByContentAndParent($clientIdea);
 
-        $correlationIdeaId = $book->findIdeaIdByContentAndParent($clientIdea["parent"], $clientIdea["content"]);
-        $clientIdExists = $book->checkIdeaExistsById($clientIdea["id"]);
-
-        $correlatedIdea = new ChildIdea($correlationIdeaId);
-
-        if ($correlatedIdea->getId() == $clientIdea["id"]) {
-            // id-ul local la fel cu cel de pe server
-
-            if ($correlatedIdea->getParent() != $clientIdea["parent"]) {
-                // UPDATE IT
-                $correlatedIdea->setContent($clientIdea["content"]);
-                $correlatedIdea->setParent($clientIdea["parent"]);
-
-                $this->addIdeatoReport($clientIdea["id"], array("status" => "modification",
-                    "id" => $clientIdea["id"]));
-            } else {
-
-                $this->addIdeatoReport($clientIdea["id"], array("status" => "nothing_done"));
-            }
+        $correlationIdea = new ChildIdea($correlationId);
+     
+        if (intval($correlationId) === intval($clientIdea["id"])) {
+            $this->cor_sameLocalIdAsCorrId($clientIdea, $correlationIdea);
         } else {
-            // id-ul local este diferit de cel de pe server
+            $this->cor_localIdDifferFromCorrId($clientIdea, $correlationIdea);
+        }
+    }
 
-            if ($clientIdExists === "true") {
-                // idea locala exista deja in sistem
+    private function cor_sameLocalIdAsCorrId(&$clientIdea, $correlationIdea) {
 
-                $oldIdea = new ChildIdea($clientIdea["id"]);
+        if ($correlationIdea->getParent() != $clientIdea["parent"]) {
+            // UPDATE IT
+            $correlationIdea->setContent($clientIdea["content"]);
+            $correlationIdea->setParent($clientIdea["parent"]);
 
-                $newPath = $correlatedIdea->getPath() . "[" . $correlatedIdea->getId() . "]";
-                $oldIdea->changeParentOfChildren($correlatedIdea->getId(), $newPath);
+            $this->reportIdea($clientIdea["id"], array("status" => "modification",
+                "id" => $clientIdea["id"]));
+        } else {
+            $this->reportIdea($clientIdea["id"], array("status" => "nothing_done"));
+        }
+    }
 
-                $oldIdea->remove();
+    private function cor_localIdDifferFromCorrId(&$clientIdea, $correlationIdea) {
 
-                $this->processChildren($clientIdea, $correlatedIdea->getId());
-            }
+        $ideaExists = $this->book->checkIdeaExists($clientIdea["id"]);
 
-            $this->addIdeatoReport($clientIdea["id"], array("status" => "correlation",
-                "correlatedId" => $correlatedIdea->getId()));
-
-
-            // var_dump($clientIdea["children"][0]);
+        if ($ideaExists) {
+            $oldIdea = new ChildIdea($clientIdea["id"]);
+            $oldIdea->remove();
         }
 
+        $this->processChildren($correlationIdea, $clientIdea);
+
+        $report = array("status" => "correlation",
+            "correlatedId" => $correlationIdea->getId());
+        $this->reportIdea($clientIdea["id"], $report);
     }
 
     private function processNonCorrelation($clientIdea) {
         // the id is not
 
-        $book = $this->book;
-
-        $clientIdExists = $book->checkIdeaExistsById($clientIdea["id"]);
+        $ideaExists = $this->book->checkIdeaExists($clientIdea["id"]);
 
         // the idea is not in the database
-        if ($clientIdExists === "false") {
-            $book->createIdea($clientIdea["parent"], $clientIdea["content"], $clientIdea["id"]);
-            $idea = new ChildIdea($clientIdea["id"]);
-
-            $parent = $idea->getId();
-            $path = $idea->getPath() . "[" . $parent . ']';
-
-
-            $this->addIdeatoReport($clientIdea["id"], array("status" => "creation",
-                "id" => $clientIdea["id"]));
-
-
-            if (isset($clientIdea["children"])) {
-                // take back its children
-                $childrenArray = $clientIdea["children"];
-
-                // in case it was correlated 
-                foreach ($childrenArray as $child) { //forea
-                    $id = $child["id"];
-                    $stmt = Database::$db->prepare('UPDATE idea
-              SET parent = :parent, path = :path
-              WHERE id = :id ');
-                    $stmt->bindParam(':parent', $parent);
-                    $stmt->bindParam(':path', $path);
-                    $stmt->bindParam(':id', $id);
-                    $stmt->execute();
-                    ///$ideasReport["children_change"] = "true";
-                }
-
-                $this->processChildren($clientIdea, $clientIdea["id"]);
-            }
+        if ($ideaExists) {
+            $this->non_IdeaExists($clientIdea);
         } else {
-
-            $this->addIdeatoReport($clientIdea["id"], array("status" => "modification",
-                "id" => $clientIdea["id"]));
-
-            $oldIdea = new ChildIdea($clientIdea["id"]);
-
-            // UPDATE IT
-            $oldIdea->setContent($clientIdea["content"]);
-            $oldIdea->setParent($clientIdea["parent"]);
+            $this->non_noLocalIdea($clientIdea);
         }
     }
 
-    private function processChildren(&$clientIdea, $newParent) {
+    private function non_noLocalIdea(&$clientIdea) {
 
-        $childrenReport = array();
+        $report = array("status" => "creation",
+            "id" => $clientIdea["id"]);
+        
+        $idea = $this->book->createIdeaByArray($clientIdea);        
+
+        
+        $this->reportIdea($clientIdea["id"], $report);
+
+        $this->processChildren($idea, $clientIdea);
+    }
+
+    private function non_IdeaExists(&$clientIdea) {
+
+        $id = $clientIdea["id"];
+        $report = array("status" => "modification", "id" => $id);
+
+        $oldIdea = new ChildIdea($id);
+        
+        // UPDATE IT
+        $oldIdea->setContent($clientIdea["content"]);
+        $oldIdea->setParent($clientIdea["parent"]);        
+        
+        $this->reportIdea($id, $report);
+    }
+
+    private function processChildren($idea, &$clientIdea) {
+
+        if (is_array($idea)) {
+            $newParent = $idea['id'];
+        } else {
+            $newParent = $idea->getId();
+        }
+
         if (isset($clientIdea["children"])) {
+
             $childrenArray = $clientIdea["children"];
 
-            foreach ($childrenArray as $child) {
+            // remove existing ones
+            foreach ($childrenArray as &$child) {
+                $this->removeEntireIdeaById($child["id"]);
                 $child["parent"] = $newParent;
                 $this->processIdea($child);
             }
         }
-        return $childrenReport;
     }
 
-    private function addIdeatoReport($id, $info) {
+    private function removeEntireIdeaById($id) {
+        $ideaExists = $this->book->checkIdeaExists($id);
+
+        if ($ideaExists) {
+            $childIdea = new Idea($id);
+            $childIdea->removeItAndChildren();
+        }
+    }
+
+    private function reportIdea($id, $info) {
         $info["clientIdeaId"] = $id;
         $this->report[$id] = $info;
     }
 
-    public function debug($arr) {
-        echo "<pre>". print_r($arr)."</pre>";
+    public function debug(&$arr) {
+        echo "<pre>" . print_r($arr) . "</pre>";
     }
-    
+
     public function getReport() {
         return $this->report;
     }
+
 }
-    

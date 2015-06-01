@@ -201,7 +201,6 @@ Class MindBook {
             return $occurences;
         }
 
-
         $toReturn = array();
 
         $sth = Database::$db->prepare('SELECT id, content, parent
@@ -232,11 +231,14 @@ Class MindBook {
         return json_encode($toReturn);
     }
 
+    function createIdeaByArray(&$array) {
+        return $this->createIdea($array["parent"], $array["content"], $array["id"]);
+    }
     function createIdea($parent_id, $content, $id) {
 
         $parent = new ChildIdea($parent_id);
 
-        $path = $parent->getPath() . "[" . $parent->getId() .']';
+        $path = $parent->getPath() . "[" . $parent->getId() . ']';
 
         $stmt = Database::$db->prepare("INSERT INTO idea (id, path, content, parent) VALUES (:id, :path, :content, :parent)");
         $stmt->bindParam(':id', $id);
@@ -244,10 +246,10 @@ Class MindBook {
         $stmt->bindParam(':content', $content);
         $stmt->bindParam(':parent', $parent_id);
         $stmt->execute();
-        return "true";
+        return new ChildIdea($id);
     }
 
-    public function checkIdeaExistsById($id) {
+    public function checkIdeaExists($id) {
         $sth = Database::$db->prepare('SELECT id, content
             FROM idea
             WHERE id = :id
@@ -258,45 +260,46 @@ Class MindBook {
         $sth->execute();
 
         foreach ($sth->fetchAll() as $row) {
-            return "true";
+            return true;
         }
-        return "false";
+        return false;
     }
 
-    public function findIdeaIdByContentAndParent($parent, $content) {
-        $sth = Database::$db->prepare('SELECT id
+    public function getIdeaIdByContentAndParent($idea) {
+
+        $parent = $idea["parent"];
+        $content = $idea["content"];
+        $sql = Database::$db->prepare('SELECT id
             FROM idea
             WHERE parent = :parent AND
                   content = :content
             LIMIT 0,1');
 
-        $sth->bindParam(':parent', $parent);
-        $sth->bindParam(':content', $content);
+        $sql->bindParam(':parent', $parent);
+        $sql->bindParam(':content', $content);
+        $sql->execute();
 
-        $sth->execute();
-
-        foreach ($sth->fetchAll() as $row) {
-            return $row['id'];
+        foreach ($sql->fetchAll() as $idea) {
+            return $idea['id'];
         }
-        return null;
+        return NULL;
     }
 
-    public function checkIdeaExists($parent, $content) {
+    public function isCorrelation(&$array) {
 
-        $id = $this->findIdeaIdByContentAndParent($parent, $content);
-        if ($id !== null) {
-            return "true";
+     
+        $ideaId = $this->getIdeaIdByContentAndParent($array); 
+  
+        if (is_null($ideaId)) {
+            return false;
         }
-        return "false";
+        return true;
     }
 
     public function clearAll() {
-
-        // delete idea
         $stmt2 = Database::$db->prepare('DELETE from idea
         WHERE id > 1 ');
         $stmt2->execute();
     }
-
 
 }

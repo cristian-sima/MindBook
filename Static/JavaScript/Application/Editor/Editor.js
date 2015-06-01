@@ -268,10 +268,12 @@
                 idea = null,
                 serverIdea = null,
                 ideaReport = null,
-                indexOfRequest = this.requestList.indexOf(requestId);
+                indexOfRequest = this.requestList.indexOf(requestId),
+                localId = null;
             for (iterator in ideas) {
                 ideaReport = ideas[iterator];
-                idea = this.getIdeaById(parseInt(ideaReport.clientIdeaId, 10));
+                localId = parseInt(ideaReport.clientIdeaId, 10);
+                idea = this.getIdeaById(localId);
                 serverIdea = idea.getServerIdea();
                 switch (ideaReport.status) {
                     case "creation":
@@ -286,11 +288,28 @@
                     case "nothing_done":
                         break;
                 }
+                // update the correlated ones
+                this.updateCorrelatedIdeas(localId);
             }
             this.requestList.splice(indexOfRequest, 1);
             if (this.requestList.length === 0 && this.callbackRequestsOver) {
                 this.remove();
                 this.callbackRequestsOver();
+            }
+        },
+        updateCorrelatedIdeas: function (oldCorrelatedId) {
+            var iterator = null,
+                idea= null,
+                correlatedId = null;
+            for (iterator in this.ideas) {
+                if (this.ideas.hasOwnProperty(iterator)) {
+                    idea = this.ideas[iterator];
+                    correlatedId = idea.getServerIdea().getCorrelatedId();
+                    if (idea.isCorrelated() && idea.getId() !== oldCorrelatedId &&
+                        correlatedId === oldCorrelatedId) {
+                        idea.update();
+                    }
+                }
             }
         }
     };

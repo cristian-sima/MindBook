@@ -34,9 +34,9 @@ class Idea {
         function getRegex($level, $path, $id) {
 
             function getPrefix($p, $id) {
-                $p = str_replace ("[", "\\\\[", $p);
-                $p = str_replace ("]", "\\\\]", $p);
-                return $p . "\\\\[" . $id."\\\\]";
+                $p = str_replace("[", "\\\\[", $p);
+                $p = str_replace("]", "\\\\]", $p);
+                return $p . "\\\\[" . $id . "\\\\]";
             }
 
             function getQuantifier($level) {
@@ -44,7 +44,7 @@ class Idea {
                 if ($level === "ALL") {
                     return "0,";
                 }
-                return "0,".$level;
+                return "0," . $level;
             }
 
             function insertValues($quantifier, $prefix, $digit) {
@@ -71,7 +71,7 @@ class Idea {
         $regex = getRegex($level, $this->path, $this->id);
         $sql = getSQL($regex);
 
-        
+
 
         // echo "Regex: <b>/" . $regex . "/gm</b><br />";
         // echo "SQL:<pre> " . $sql . "</pre><br />";
@@ -132,8 +132,8 @@ class Idea {
 
     public function setParent($newParentId) {
 
-        $oldPath = $this->getPath() . "[" . $this->getId(). "]";
-        
+        $oldPath = $this->getPath() . "[" . $this->getId() . "]";
+
         $parent = new ChildIdea($newParentId);
         $path = $parent->getPath() . "[" . $parent->getId() . ']';
 
@@ -146,19 +146,19 @@ class Idea {
         $stmt->execute();
 
         $this->content = $newParentId;
-        
-        
+
+
         $newPath = $path . "[" . $this->getId() . ']';
-        
+
         // change the path of the subchildren
-        
+
         $stmt2 = Database::$db->prepare('UPDATE idea
         SET path = replace(path, :oldPath, :newPath)');
         $stmt2->bindParam(':oldPath', $oldPath);
         $stmt2->bindParam(':newPath', $newPath);
         $stmt2->execute();
-        
-        
+
+
         return "true";
     }
 
@@ -174,6 +174,28 @@ class Idea {
         $stmt2->execute();
 
         return "true";
+    }
+
+    public function removeItAndChildren() {
+        // delete idea
+        $stmt1 = Database::$db->prepare('DELETE from idea
+        WHERE id = :id ');
+        $stmt1->bindParam(':id', $this->id);
+        
+        
+        // delete all children        
+        $prefix = $this->getPath(). "[" . $this->getId(). "]";
+
+        $leftChange = str_replace("[", "\\\\[", $prefix);
+        $prefix = str_replace("]", "\\\\]", $leftChange);
+
+        $regex = "^(" . $prefix . ")(\\\\[([[:digit:]]+)\\\\]){0,}$";
+
+        $stmt2 = Database::$db->prepare("DELETE from idea
+        WHERE path REGEXP '" . $regex . "'");
+        $stmt2->bindParam(':id', $this->id);
+
+        $stmt2->execute();
     }
 
     public function changeParentOfChildren($newParentId, $path) {
@@ -198,5 +220,5 @@ class Idea {
 
         return json_encode($array, JSON_PRETTY_PRINT);
     }
-    
+
 }
