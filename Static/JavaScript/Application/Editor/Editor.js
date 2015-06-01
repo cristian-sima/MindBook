@@ -145,9 +145,14 @@
                 serverIdea = null,
                 requestId = null;
             if (this.canIdeaBeRemoved(idea)) {
+                
                 event.preventDefault();
+                idea.blockUpdate();
+                idea.getLine().removeUpdateDelay();
                 serverIdea = idea.getServerIdea();
+                console.log(serverIdea)
                 if (serverIdea.isOnServer()) {
+                    console.log('e pe server')
                     requestId = this.getNewRequestId();
                     callbackSuccess = (function () {
                         var id = idea.getId(),
@@ -287,9 +292,11 @@
                     switch (ideaReport.status) {
                         case "creation":
                             serverIdea.removeCorrelation();
+                            serverIdea.setId(localId);
                             break;
                         case "modification":
                             serverIdea.removeCorrelation();
+                            serverIdea.setId(localId);
                             break;
                         case "correlation":
                             serverIdea.correlate(parseInt(ideaReport.correlatedId, 10));

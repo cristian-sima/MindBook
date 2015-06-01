@@ -4,7 +4,15 @@
     var ChildIdeaTemplate = {
         init: function (info, home) {
             this.home = home;
+            this.updateBlocked = false;
             this._super(info.id, info.content, info.server);
+        },
+        blockUpdate: function () {
+            this.updateBlocked = true;
+            console.log('am blocat')
+        },
+        isUpdateBlocked: function () {
+            return this.updateBlocked;
         },
         setParent: function (newParent) {
             this.parent = newParent;
@@ -14,7 +22,7 @@
                 this.getLine().remove();
             }
             this.line = new ChildLine(this, elementBefore);
-        },        
+        },
         getPosition: function () {
             return this.getParent().getPositionOfChild(this);
         },
@@ -81,7 +89,6 @@
                     toBeSelected = toBeSelected.getLastPossibleChild();
                 }
             }
-            
             for (index = 0; index < realChildren.length; index = index + 1) {
                 position = previousIdea.getPosition() + 1;
                 child = realChildren[index];
@@ -136,11 +143,13 @@
             return this.parent;
         },
         update: function () {
-            var line = this.getLine(),
-                serverIdea = this.getServerIdea();
-            line.removeUpdateDelay();
-            serverIdea.update();
-            this.updateLine();
+            if (!this.isUpdateBlocked()) {
+                var line = this.getLine(),
+                    serverIdea = this.getServerIdea();
+                line.removeUpdateDelay();
+                serverIdea.update();
+                this.updateLine();
+            }
         },
         updateOnServer: function () {
             this.serverIdea.update();
