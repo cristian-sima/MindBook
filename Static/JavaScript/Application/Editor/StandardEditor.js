@@ -7,6 +7,7 @@
         },
         getDataFromServer: function (id) {
             var editor = this;
+            this.container.html("Please wait to load...");
             app.gateway.getEntireIdea(id, function (data) {
                 editor.loadData(Data.prepare(data));
             });

@@ -6,22 +6,15 @@ function Textarea(line) {
     this.shadow = new Shadow(this);
     this.highlightTimeout = null;
     this.cursorPosition = null;
+    autosize(this.element);
 };
 Textarea.prototype = {
     update: function () {
         var line = this.getLine();
-        this.updateHeight();
         this.updateCorrelation();
         if (line.isSelected()) {
             this.shadow.update();
         }
-    },
-    updateHeight: function () {
-        var breaks = this.getIdea().getTextLines(),
-            height = (breaks + 1) * 24;
-        this.element.css({
-            'height': height + "px"
-        });
     },
     updateCorrelation: function () {
         var idea = this.getIdea();
@@ -115,6 +108,9 @@ Textarea.prototype = {
             if (app.data.isModyfingKey(keyCode)) {
                 line.delayUpdate();
             }
+            while ($(this).outerHeight() < this.scrollHeight + parseFloat($(this).css("borderTopWidth")) + parseFloat($(this).css("borderBottomWidth"))) {
+                $(this).height($(this).height() + 1);
+            };
         });
     },
     activateMouseListeners: function () {
@@ -161,7 +157,7 @@ Textarea.prototype = {
         this.shadow.update();
     },
     deselect: function () {
-        this.shadow.hide();
+        //this.shadow.hide();
     }
 };
 var Shadow = function Shadow(textarea) {

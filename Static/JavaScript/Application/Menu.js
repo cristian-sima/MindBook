@@ -16,6 +16,24 @@ Menu.prototype = {
                 instance.fired_changeContent(option);
             }
         });
+        this.element.mouseenter(function () {
+           $(this).find("ul li a img").animate({
+               height: "48px",
+               width: "48px"
+           },  { duration: 200, queue: false });
+           $("#main-section").animate({
+               marginLeft: "97px"
+           },  { duration: 200, queue: false });
+        });
+        this.element.mouseleave(function () {
+           $(this).find("ul li a img").animate({
+               height: "18px",
+               width: "18px"
+           }, { duration: 200, queue: false });
+           $("#main-section").animate({
+               marginLeft: "67px"
+           },  { duration: 200, queue: false });
+        });
     },
     fired_changeContent: function (option) {
         app.gui.section.select(option);

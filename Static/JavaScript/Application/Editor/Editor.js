@@ -145,14 +145,11 @@
                 serverIdea = null,
                 requestId = null;
             if (this.canIdeaBeRemoved(idea)) {
-                
                 event.preventDefault();
                 idea.blockUpdate();
                 idea.getLine().removeUpdateDelay();
                 serverIdea = idea.getServerIdea();
-                console.log(serverIdea)
                 if (serverIdea.isOnServer()) {
-                    console.log('e pe server')
                     requestId = this.getNewRequestId();
                     callbackSuccess = (function () {
                         var id = idea.getId(),

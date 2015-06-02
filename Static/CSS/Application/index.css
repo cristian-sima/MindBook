@@ -9,11 +9,11 @@ and open the template in the editor.
 */
 
 body, html{
-    width: 700px;
+    width:  100%;
 }
 
 #application {
-    width: 700px;
+    width:   100%;
 }
 
 /* Header */
@@ -70,8 +70,8 @@ header #logo {
 }
 
 #menu ul li a img  {
-    width: 48px;
-    height: 48px;
+    width: 18px;
+    height: 18px;
     margin: 20px;
     -webkit-filter: brightness(50%);
     margin-left: 10px;
@@ -90,8 +90,8 @@ header #logo {
 
 #main-section {
     width: 100%;
-    margin-left: 117px;
-    margin-top: 21px;
+    margin-left: 67px;
+    margin-top: 0px;
 }
 
 
@@ -147,8 +147,6 @@ header #logo {
 }
 
 .idea-textarea {  
-    -webkit-animation-delay: 2s; /* Chrome, Safari, Opera */
-    animation-delay: 2s;
     padding: 3px;
     min-width: 566px;
     font-size:  19px;
@@ -160,13 +158,12 @@ header #logo {
     -o-tab-size : 5;
     tab-size : 5;
     padding-bottom: 0px;
-    transition:all 0.2s;
     height:27px;
     margin-left: 5px;
 }
 
 .current-textarea {
-    box-shadow: rgb(136, 136, 121) 3px -7px 9px
+    box-shadow: rgb(136, 136, 121) 0px -4px 4px;
 }
 
 .idea-textarea:focus {

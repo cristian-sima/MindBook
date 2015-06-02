@@ -9,7 +9,6 @@
         },
         blockUpdate: function () {
             this.updateBlocked = true;
-            console.log('am blocat')
         },
         isUpdateBlocked: function () {
             return this.updateBlocked;
