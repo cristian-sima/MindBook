@@ -297,9 +297,13 @@ Class MindBook {
     }
 
     public function clearAll() {
-        $stmt2 = Database::$db->prepare('DELETE from idea
+        /*
+          $stmt2 = Database::$db->prepare('DELETE from idea
+         
         WHERE id > 1 ');
         $stmt2->execute();
+         
+         */
     }
 
 }
