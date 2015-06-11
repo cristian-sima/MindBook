@@ -55,7 +55,7 @@
             editor.addIdeaToWaitingList(idea);
             this.updateDelay = setTimeout(function () {
                 idea.update();
-            }, 500);
+            }, 1500);
         },
         removeUpdateDelay: function () {
             var idea = this.getIdea(),
