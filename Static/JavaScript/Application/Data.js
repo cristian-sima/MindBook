@@ -85,21 +85,32 @@
             return this.keys[name];
         }
     };
-    Data.htmlView = function (content) {
+    Data.htmlView = function (content, settings) {
         var inputText = replaceSearchedTerm(content, "\n", "<br />"),
             replacedText = "",
             replacePattern1 = null,
             replacePattern2 = null,
-            replacePattern3 = null;
+            replacePattern3 = null,
+            settings = settings || {},
+            replaceText = '<span class="link">$1</span>';
         //URLs starting with http://, https://, or ftp://
         replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
-        replacedText = inputText.replace(replacePattern1, '<a href="$1" target="_blank">$1</a>');
+        if (!settings.colour) {
+            replaceText = '<a style="color:rgb(98, 87, 250);" href="$1" target="_blank">$1</a>';
+        }
+        replacedText = inputText.replace(replacePattern1, replaceText);
         //URLs starting with "www." (without // before it, or it'd re-link the ones done above).
         replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
-        replacedText = replacedText.replace(replacePattern2, '$1<a href="http://$2" target="_blank">$2</a>');
+        if (!settings.colour) {
+            replaceText = '$1<a style="color: rgb(98, 87, 250);" href="http://$2" target="_blank">$2</a>';
+        }
+        replacedText = replacedText.replace(replacePattern2, replaceText);
         //Change email addresses to mailto:: links.
         replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
-        replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
+        if (!settings.colour) {
+            replaceText = '<a style="color: rgb(98, 87, 250);" href="mailto:$1">$1</a>';
+        }
+        replacedText = replacedText.replace(replacePattern3, replaceText);
         return replacedText;
     };
     Data.prepare = function (data) {

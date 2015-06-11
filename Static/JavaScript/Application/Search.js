@@ -28,6 +28,7 @@ Search.prototype = {
                     afterOccurenceText = "<span class='afterDots'>... </span>",
                     htmlData = "",
                     oc_html = "";
+                    occurences.plainContent = occurences.content[0].content;
                 if (occurences.number === 0) {
                     content = occurences.content;
                     content = replaceSearchedTerm(content, instance.getTerm(), "<span class='highlightWord'>$1</span>");
@@ -36,12 +37,14 @@ Search.prototype = {
                     for (iterator = 0; iterator < occurences.content.length; iterator = iterator + 1) {
                         oc_html = "";
                         occurenceContent = occurences.content[iterator];
-                        occurenceContent.content = replaceSearchedTerm(occurenceContent.content, instance.getTerm(), "<span class='highlightWord'>$1</span>");
-                        htmlData = Data.htmlView(occurenceContent.content);
+                        htmlData = Data.htmlView(occurenceContent.content, {
+                            colour : true
+                        });
+                        occurenceContent.content = replaceSearchedTerm(htmlData, instance.getTerm(), "<span class='highlightWord'>$1</span>");
                         if (occurenceContent.before === true) {
                             oc_html += beforeOccurenceText;
                         }
-                        oc_html += htmlData;
+                        oc_html += occurenceContent.content;
                         if (occurenceContent.after === true) {
                             oc_html += afterOccurenceText;
                         }
@@ -89,9 +92,14 @@ Search.prototype = {
                 });
             },
             select: function (event, ui) {
-                var idea = ui.item.id;
-                app.gui.section.select("visual", idea);
-                $(this).val(instance.getTerm());
+                var idea = ui.item.id,
+                    plainContent = ui.item.content.plainContent;
+                if(plainContent && isURL(plainContent)) {
+                    window.open(plainContent, '_blank');
+                } else {
+                    app.gui.section.select("visual", idea);
+                    $(this).val(instance.getTerm());
+                }
                 return false;
             }
         });

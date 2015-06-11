@@ -117,6 +117,13 @@ header h1 {
     border-bottom : 1px solid #F4F4F4;
     outline : 0;
 }
+.link {
+    color: rgb(98, 87, 250);
+}
+
+a {
+    text-decoration: none;
+}
 .shadow-textarea {
     box-shadow : 0 -4px 4px rgb(136, 136, 121);
 }
@@ -164,8 +171,9 @@ header h1 {
     border : none;
     transition : all 0.2s;
     border-bottom : 1px solid #F4F4F4;
-    height : 22px;
+    height : 23px;
     width : 200px;
+    font-size: 17px;
     background-image : url('../../Images/search.png');
     background-repeat : no-repeat;
     padding-left : 25px;
