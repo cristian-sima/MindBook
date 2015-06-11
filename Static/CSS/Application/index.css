@@ -22,10 +22,11 @@ header {
     height: 50px;
 }
 
-header #logo {
+header h1 {
     color: #29d;
     font-size: 23px;
     font-family: fantasy;
+    font-weight: normal;
 }
 
 

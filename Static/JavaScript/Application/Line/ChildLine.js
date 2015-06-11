@@ -69,7 +69,7 @@
             this.getTextarea().update();
         },
         updateHTML: function () {
-            var levelWidth = 25,
+            var levelWidth = 40,
                 level = parseInt(this.idea.getLevel(), 10) - 1,
                 margin = levelWidth * level,
                 numberOfChildren = this.idea.getNumberOfChildren();

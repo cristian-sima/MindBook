@@ -9,15 +9,23 @@ and open the template in the editor.
         <title>Mind Book</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="Static/CSS/Application/index.css">
-        <link rel="stylesheet" type="text/css" href="Static/CSS/Application/tree.css">
+        <link rel="stylesheet" href="Static/CSS/Application/index.css">
+        <link rel="stylesheet" href="Static/CSS/Application/tree.css">
 
-        <link rel="stylesheet" type="text/css" href="Static/CSS/Library/nprogress.css">
-        <link rel="stylesheet" type="text/css" href="Static/CSS/Library/jquery-ui.min.css">
+        <link rel="stylesheet" href="Static/CSS/Library/nprogress.css">
+        <link rel="stylesheet" href="Static/CSS/Library/jquery-ui.min.css">
         <link rel="shortcut icon" href="Static/Images/favicon.ico" />
     </head>
     <body>
-        <div id="application"> 
+        <div id="application">
+            <header>
+                <h1>Mind Book</h1>
+                &nbsp;<br />
+                <form action="api/" method='post'>
+                    <input type='hidden' name='action' value='clear'/>
+                    <input type='submit' style='display:none' value='Clear All' />
+                </form>
+            </header>
             <div id="search-tab">                
                 <input id='search' type='text' placeholder="Search everything"/>
             </div>
@@ -37,14 +45,6 @@ and open the template in the editor.
                     </li>
                 </ul>
             </div>
-            <header>
-                <span id='logo'>Mind Book</span>
-                &nbsp;<br />
-                <form action="api/" method='post'>
-                    <input type='hidden' name='action' value='clear'/>
-                    <input type='submit' style='display:none' value='Clear All' />
-                </form>
-            </header>
             <div id="main-section" >
                 <div id="visual"></div>
                 <div id="default"></div>
@@ -57,55 +57,43 @@ and open the template in the editor.
                     The connection was lost. Please refresh the page!
                 </div>
             </div>
-
-
-            <!-- JavaScript Files -->
-
-
-            <script type="text/javascript" src="Static/JavaScript/Library/JQuery.js"></script>
-            <script type="text/javascript" src="Static/JavaScript/Library/autosize.js"></script>
-            <script type="text/javascript" src="Static/JavaScript/Library/jquery-ui.min.js"></script>
-            <script type="text/javascript" src="Static/JavaScript/Library/nprogress.js"></script>
-            <script type="text/javascript" src="Static/JavaScript/Library/Others.js"></script>
-            <script type="text/javascript" src="Static/JavaScript/Library/Class.js"></script>
-            <script type="text/javascript" src="Static/JavaScript/Application/Data.js"></script>
-
-            <script type="text/javascript" src="Static/JavaScript/Application/Idea/Idea.js"></script>
-            <script type="text/javascript" src="Static/JavaScript/Application/Idea/HomeIdea.js"></script>
-            <script type="text/javascript" src="Static/JavaScript/Application/Idea/ChildIdea.js"></script>
-            <script type="text/javascript" src="Static/JavaScript/Application/Idea/ServerIdea.js"></script>
-
-            <script type="text/javascript" src="Static/JavaScript/Application/Line/Line.js"></script>
-            <script type="text/javascript" src="Static/JavaScript/Application/Line/HomeLine.js"></script>
-            <script type="text/javascript" src="Static/JavaScript/Application/Line/ChildLine.js"></script>
-            
-            <script type="text/javascript" src="Static/JavaScript/Application/Line/Textarea.js"></script>
-
-
-            <script type="text/javascript" src="Static/JavaScript/Application/Editor/Editor.js"></script>
-            <script type="text/javascript" src="Static/JavaScript/Application/Editor/StandardEditor.js"></script>
-            <script type="text/javascript" src="Static/JavaScript/Application/Editor/DefaultEditor.js"></script>
-
-            <script type="text/javascript" src="Static/JavaScript/Application/Search.js"></script>
-            <script type="text/javascript" src="Static/JavaScript/Application/GUI.js"></script>
-            <script type="text/javascript" src="Static/JavaScript/Application/Gateway.js"></script>
-            <script type="text/javascript" src="Static/JavaScript/Application/Menu.js"></script>
-
-            <script type="text/javascript" src="Static/JavaScript/Application/Visual/Visual.js"></script>
-            <script type="text/javascript" src="Static/JavaScript/Application/Visual/VisualIdea.js"></script>
-            <script type="text/javascript" src="Static/JavaScript/Application/Visual/VisualLine.js"></script>
-            
-            <script type="text/javascript" src="Static/JavaScript/Application/Section/Section.js"></script>
-
-
-
-            <script type="text/javascript" src="Static/JavaScript/Application/App.js"></script>  
-            <script type="text/javascript" src="Static/JavaScript/Application/init.js"></script>
-
-
-            <!-- 
-            
-            -->
         </div>
+        <script src="Static/JavaScript/Library/JQuery.js"></script>
+        <script src="Static/JavaScript/Library/autosize.js"></script>
+        <script src="Static/JavaScript/Library/jquery-ui.min.js"></script>
+        <script src="Static/JavaScript/Library/nprogress.js"></script>
+        <script src="Static/JavaScript/Library/Others.js"></script>
+        <script src="Static/JavaScript/Library/Class.js"></script>
+        <script src="Static/JavaScript/Application/Data.js"></script>
+
+        <script src="Static/JavaScript/Application/Idea/Idea.js"></script>
+        <script src="Static/JavaScript/Application/Idea/HomeIdea.js"></script>
+        <script src="Static/JavaScript/Application/Idea/ChildIdea.js"></script>
+        <script src="Static/JavaScript/Application/Idea/ServerIdea.js"></script>
+
+        <script src="Static/JavaScript/Application/Line/Line.js"></script>
+        <script src="Static/JavaScript/Application/Line/HomeLine.js"></script>
+        <script src="Static/JavaScript/Application/Line/ChildLine.js"></script>
+
+        <script src="Static/JavaScript/Application/Line/Textarea.js"></script>
+
+
+        <script src="Static/JavaScript/Application/Editor/Editor.js"></script>
+        <script src="Static/JavaScript/Application/Editor/StandardEditor.js"></script>
+        <script src="Static/JavaScript/Application/Editor/DefaultEditor.js"></script>
+
+        <script src="Static/JavaScript/Application/Search.js"></script>
+        <script src="Static/JavaScript/Application/GUI.js"></script>
+        <script src="Static/JavaScript/Application/Gateway.js"></script>
+        <script src="Static/JavaScript/Application/Menu.js"></script>
+
+        <script src="Static/JavaScript/Application/Visual/Visual.js"></script>
+        <script src="Static/JavaScript/Application/Visual/VisualIdea.js"></script>
+        <script src="Static/JavaScript/Application/Visual/VisualLine.js"></script>
+
+        <script src="Static/JavaScript/Application/Section/Section.js"></script>
+
+        <script src="Static/JavaScript/Application/App.js"></script>  
+        <script src="Static/JavaScript/Application/init.js"></script>
     </body>
 </html>
