@@ -121,10 +121,12 @@
             if (this.getTextarea()) {
                 this.getTextarea().select(startPosition, endPosition);
             }
+            this.element.addClass("current-line");
         },
         fired_deselected: function () {
             this.selected = false;
             this.getTextarea().deselect();
+            this.element.removeClass("current-line");
         },
         fired_childSelected: function () {
             this.getTextarea().boldText();
