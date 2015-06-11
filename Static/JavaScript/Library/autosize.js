@@ -67,8 +67,14 @@
                 // If the scrollHeight is 0, then the element probably has display:none or is detached from the DOM.
                 ta.style.height = originalHeight;
                 return;
-            } 
+            }
+            
             ta.style.height = (endHeight) + 'px';
+            if(endHeight === 27) {
+                $(ta).removeClass("shadow-textarea");
+            } else {                
+                $(ta).addClass("shadow-textarea");
+            }
             // prevents scroll-position jumping
             document.documentElement.scrollTop = htmlTop;
             document.body.scrollTop = bodyTop;
