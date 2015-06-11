@@ -75,6 +75,22 @@ Visual.prototype = {
     fired_ideaClicked: function (id) {
         app.gui.section.select("standard", id);
     },
+    fired_expand: function (id) {
+        var container = $("#viz-child-" + id),
+            children = container.find(".children:first-child"),
+            expand = container.find(".expand:first-child"),
+            content = container.find(".ideaContentName");
+        console.log(content)
+        content.css({
+            color:'#29d'
+        });
+        expand.hide();
+        children.fadeIn();
+        this.showIdea({
+            id: id,
+            level: 1
+        }, container);
+    },
     close: function () {
         this.container.html("");
         this.container.off();

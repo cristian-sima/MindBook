@@ -193,7 +193,7 @@ a {
     color : rgb(226, 226, 226);
 }
 #search-tab #search:focus {
-    color : rgb(197, 197, 197);
+    color : rgb(34, 153, 221);
     outline : none;
     border-bottom : 1px solid #A0C2F9;
 }
@@ -287,4 +287,8 @@ a {
 }
 .no-close .ui-dialog-titlebar-close {
     display : none;
+}
+
+.hover {
+    cursor:pointer;
 }

@@ -58,16 +58,18 @@ VisualIdea.prototype = {
             iterator = null,
             child = null,
             data = this.data;
-        toReturn += this.getContent(data);
+        toReturn += this.getContent(data, true);
         toReturn += this.getEditButton(data);
         toReturn += this.getListButton(data);
         toReturn += this.getChildren(data);
         return toReturn;
     },
-    getContent: function (idea) {
+    getContent: function (idea, noHover) {
         var content = Data.htmlView(idea.content),
-            content = (content.length === 0) ? "<span style='font-style:italic'>Empty</span>": content,
-            html = "<span class='name' data-id='" + this.data.id + "' >" + content + "</span>";;
+            classes = (noHover ? "" :(this.hasChildren(idea) ? "ideaContentName hover" : "")),
+            html = "";
+        content = (content.length === 0) ? "<span style='font-style:italic'>Empty</span>" : content;
+        html = "<span class='"+ classes + "' data-id='" + idea.id + "' >" + content + "</span>";
         return html;
     },
     getParent: function (idea) {
@@ -80,7 +82,7 @@ VisualIdea.prototype = {
         return "<span class='wait'></span>";
     },
     getExpand: function (idea) {
-        return "<img src='Static/Images/expand.png' class='expand button' data-id='" + idea.id + "' />";
+        return "<img src='Static/Images/expand.png' class='expand button' id='expand-" + idea.id + "' data-id='" + idea.id + "' />";
         return "";
     },
     getEditButton: function (idea) {
@@ -132,24 +134,18 @@ VisualIdea.prototype = {
                     visual.fired_ideaClicked(id);
                 };
             })(),
-            expand = (function () {
+            expandButton = (function () {
                 var visual = instance;
                 return function () {
-                    var id = $(this).data("id"),
-                        element = $("#children-" + id),
-                        container = $("#viz-child-" + id);
-                    $(this).hide();
-                    $(element).fadeIn();
-                    visual.showIdea({
-                        id: id,
-                        level: 1
-                    }, container);
+                    var id = $(this).data("id");
+                    visual.fired_expand(id);
                 };
             })();
         this.visual.container.off();
         this.visual.container.find(".parent").click(parentButton);
         this.visual.container.find(".edit").click(editButton);
-        this.visual.container.find('.expand').click(expand);
+        this.visual.container.find('.expand').click(expandButton);
         this.visual.container.find('.list').click(listListener);
+        this.visual.container.find('.ideaContentName').click(expandButton);
     }
 };
