@@ -117,7 +117,7 @@ VisualIdea.prototype = {
                 var visual = instance;
                 return function () {
                     var id = $(this).data("id");
-                    app.gui.section.select("visual", id);
+                    app.changePage("visual", id);
                 };
             })(),
             listListener = (function () {

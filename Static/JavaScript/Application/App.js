@@ -8,7 +8,7 @@
         this.enable = true;
     };
     App.prototype = {
-        start: function () {
+        preload: function () {
             this.disableInteraction();
             this.gateway.start();
         },
@@ -16,7 +16,10 @@
             this.data.homeIdeaId = parseInt(data.home, 10);
             this.data.counter = parseInt(data.counter, 10) + 1;
             this.allowInteraction();
-            this.gui.start();
+            this.start();
+        },
+        start: function () {
+            this.fired_hashChanged();
         },
         getCounter: function () {
             return this.data.getCounter();
@@ -37,6 +40,31 @@
         },
         isEnabled: function () {
             return this.enable;
+        },
+        fired_hashChanged: function () {
+            var hash = window.location.hash.substring(1),
+                array = null,
+                type = null,
+                id = null;
+            if (!hash || hash.trim() === "") {
+                this.gui.section.select('default');
+            } else {
+                array = hash.split("/");
+                type = (array[0] === "" || !array[0]) ? "default" : array[0];
+                if(type !== "standard" && type !== "visual" && type !== "default") {
+                    type = "default";
+                }
+                id = array[1];
+                this.gui.section.select(type, id);
+            }
+        },
+        changePage: function (content, id) {
+            if (id) {
+                id = "/" + id;
+            } else {
+                id = "";
+            }
+            window.location.hash = content + id;
         }
     };
 }($));

@@ -97,7 +97,7 @@ Search.prototype = {
                 if(plainContent && isURL(plainContent)) {
                     window.open(plainContent, '_blank');
                 } else {
-                    app.gui.section.select("visual", idea);
+                    app.changePage("visual", idea);
                     $(this).val(instance.getTerm());
                 }
                 return false;

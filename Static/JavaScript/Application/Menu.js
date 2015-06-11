@@ -36,7 +36,7 @@ Menu.prototype = {
         });
     },
     fired_changeContent: function (option) {
-        app.gui.section.select(option);
+        app.changePage(option);
     },
     selectOption: function (option) {
         if (this.option) {

@@ -6,9 +6,6 @@ function GUI() {
     this.section = new Section();
 }
 GUI.prototype = {
-    start: function () {
-        this.section.start();        
-    },
     showLoading: function () {
         NProgress.start();
     },

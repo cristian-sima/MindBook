@@ -27,10 +27,6 @@
             this.element = $("#main-section");
             this.status = new Status(this);
         },
-        start: function () {
-            this.select('default');
-            this.status.clear();
-        },
         select: function (content, ideaId) {
             if (app.isEnabled()) {
                 if (!ideaId) {
@@ -50,6 +46,7 @@
                             this.selectStandardEditor(ideaId);
                             break;
                     }
+                    this.status.clear();
                 } catch (err) {
                     console.log(err)
                     var section = this,

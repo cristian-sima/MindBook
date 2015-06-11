@@ -56,11 +56,11 @@
         activateListeners: function () {
             this.element.find("#option-show-visual").click(function () {
                 var id = $(this).data("id");
-                app.gui.section.select("visual", id);
+                app.changePage("visual", id);
             });
             this.element.find("#option-parent").click(function () {
                 var id = $(this).data("id");
-                app.gui.section.select("standard", id);
+                app.changePage("standard", id);
             });
         },
         getElements: function () {

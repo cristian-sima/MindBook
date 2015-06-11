@@ -73,14 +73,13 @@ Visual.prototype = {
         });
     },
     fired_ideaClicked: function (id) {
-        app.gui.section.select("standard", id);
+        app.changePage("standard", id);
     },
     fired_expand: function (id) {
         var container = $("#viz-child-" + id),
             children = container.find(".children:first-child"),
             expand = container.find(".expand:first-child"),
             content = container.find(".ideaContentName");
-        console.log(content)
         content.css({
             color:'#29d'
         });
